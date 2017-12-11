@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.naming.InitialContext;
 import java.util.Iterator;
 
 @Service("dbservice")
@@ -16,9 +17,9 @@ public class DBServiceImpl implements DBService {
 
     static {
         try {
-            MongoClientURI uri  = new MongoClientURI("mongodb://daniel:daniel89@ds129386.mlab.com:29386/quiniela2018");
-            mongoClient = new MongoClient(uri);
-            db =  mongoClient.getDatabase(uri.getDatabase());
+            InitialContext initialContext = new InitialContext();
+            mongoClient = (MongoClient) initialContext.lookup("java:global/MyMongoClient");
+            db =  mongoClient.getDatabase("quiniela2018");
             init();
         } catch (Exception ex) {
             ex.printStackTrace();
