@@ -1,0 +1,1 @@
+ReactDOM.render(<Cp2 hello="Helo world!"/>,document.getElementById("root"));
