@@ -16,10 +16,10 @@ public class TeamServiceImpl implements TeamService {
 
     static {
         List<String> values = CVSParser.ParseMatches("teams.cvs");
-        for(int i=CSV_MAX_VALUES_TEAM;i<values.size() ; i+=CSV_MAX_VALUES_TEAM){
-            listTeams.add(new Team(Integer.parseInt(values.get(i)),values.get(i+1),values.get(i+2),"URL"));
-            if(groupService.getGroupByName(values.get(i+3)) == null){
-                groupService.setGroup(new Group(values.get(i+3)));
+        for (int i = CSV_MAX_VALUES_TEAM; i < values.size(); i += CSV_MAX_VALUES_TEAM) {
+            listTeams.add(new Team(Integer.parseInt(values.get(i)), values.get(i + 1), values.get(i + 2), values.get(i + 3), "URL"));
+            if (groupService.getGroupByName(values.get(i + 3)) == null) {
+                groupService.setGroup(new Group(values.get(i + 3)));
             }
         }
     }
@@ -35,7 +35,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team getTeamByName(TeamName name) {
+    public Team getTeamByName(String name) {
         for (Team t : listTeams) {
             if (t.getName().equals(name)) return t;
         }

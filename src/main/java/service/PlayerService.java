@@ -15,5 +15,7 @@ public interface PlayerService {
 
     List<Player> getAllPlayers();
 
+    Player validateUsername(String userName, String password);
 
+    Player getPlayerByUsername(String username);
 }

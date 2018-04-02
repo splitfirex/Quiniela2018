@@ -7,13 +7,22 @@ public class Team {
     private int idTeam;
     private String name;
     private String shortName;
+    private String group;
     private String flagUrl;
 
-    public Team(int idTeam, String name, String shortName, String flagUrl) {
+    public Team(int idTeam, String name, String shortName, String group ,String flagUrl) {
         this.idTeam = idTeam;
         this.name = name;
         this.shortName = shortName;
         this.flagUrl = flagUrl;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public int getIdTeam() {

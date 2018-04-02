@@ -29,7 +29,7 @@ public class PlayerServiceImpl implements PlayerService {
         }
     }
 
-    private Player validateUsername(String userName, String password){
+    public Player validateUsername(String userName, String password){
 
         Player p = playerList.get(userName);
         if (p.getUsername().equals(userName) &&
@@ -38,6 +38,11 @@ public class PlayerServiceImpl implements PlayerService {
         }
 
         return null;
+    }
+
+    @Override
+    public Player getPlayerByUsername(String username) {
+        return  playerList.get(username);
     }
 
     private void cascadeUpdateMatchs(Player p){

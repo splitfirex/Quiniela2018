@@ -51,16 +51,18 @@ public class Match {
         return scoreHomeTeam;
     }
 
-    public void setScoreHomeTeam(Integer scoreHomeTeam) {
+    public Match setScoreHomeTeam(Integer scoreHomeTeam) {
         this.scoreHomeTeam = scoreHomeTeam;
+        return this;
     }
 
     public Integer getScoreVisitorTeam() {
         return scoreVisitorTeam;
     }
 
-    public void setScoreVisitorTeam(Integer scoreVisitorTeam) {
+    public Match setScoreVisitorTeam(Integer scoreVisitorTeam) {
         this.scoreVisitorTeam = scoreVisitorTeam;
+        return this;
     }
 
     public LocalDateTime getDate() {

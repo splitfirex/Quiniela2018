@@ -1,13 +1,7 @@
 package model;
 
-import model.enums.GroupName;
-import model.enums.TeamName;
 import model.views.TeamGroup;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Player {
 
@@ -17,7 +11,7 @@ public class Player {
 
     private Integer points;
     private List<Match> matchList = new ArrayList<>();
-    private Map<GroupName,List<TeamGroup>> groupTeams= new HashMap<>();
+    private Map<String, Map<String,TeamGroup>> groupTeams = new HashMap<>();
 
     public Player(String username, String password) {
         this.username = username;
@@ -64,11 +58,8 @@ public class Player {
         this.matchList = matchList;
     }
 
-    public Map<GroupName, List<TeamGroup>> getGroupTeams() {
-        return groupTeams;
-    }
 
-    public void setGroupTeams(Map<GroupName, List<TeamGroup>> groupTeams) {
-        this.groupTeams = groupTeams;
+    public Map<String, Map<String,TeamGroup>> getGroupTeams() {
+        return groupTeams;
     }
 }
