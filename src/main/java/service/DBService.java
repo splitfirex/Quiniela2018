@@ -3,13 +3,14 @@ package service;
 import model.MongoDBObject;
 import model.Player;
 
-public interface DBService {
+public interface DBService<T> {
 
-    <T extends MongoDBObject> insertObject(Class<T> obj);
+    int insertObject(T obj);
 
-    <T extends MongoDBObject> deleteObjectById(int id);
+    int deleteObjectById(T obj);
 
-    <T extends MongoDBObject> selectObjectById(int id);
+    T selectObjectById(int id);
 
-    int updateObject(int id, Class<T> obj);
+    int updateObject(int id, T obj);
+
 }
