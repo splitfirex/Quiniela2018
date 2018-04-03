@@ -6,7 +6,7 @@ import model.enums.TeamName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Group {
+public class Group extends MongoDBObject {
 
     private String name;
     private List<String> teams = new ArrayList<>();

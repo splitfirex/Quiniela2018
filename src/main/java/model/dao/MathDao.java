@@ -1,5 +1,5 @@
-package model.dto;
+package model.dao;
 
-public class MathDto {
+public class MathDao {
 
 }

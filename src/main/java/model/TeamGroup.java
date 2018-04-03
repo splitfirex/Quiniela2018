@@ -1,4 +1,4 @@
-package model.views;
+package model;
 
 import model.enums.TeamName;
 

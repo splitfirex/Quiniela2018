@@ -1,0 +1,33 @@
+html, body{
+    padding: 0;
+    margin: 0;
+}
+
+.container{
+    height: 100%;
+    display:grid;
+    grid-gap:2px;
+    grid-template-columns: repeat(12, 1fr) ;
+    grid-template-rows: 40px 120px auto 100px ;
+    grid-template-areas:
+    "m m m m m m m m m m m m"
+    "h h h h h h h h h h h h"
+    "l l l c c c c c c c c c"
+    "f f f f f f f f f f f f"
+}
+
+.header{
+    grid-area: h;
+}
+
+.menu{
+    grid-area: m;
+}
+
+.leftSlider{
+    grid-area: l;
+}
+
+.footer{
+    grid-area: f;
+}

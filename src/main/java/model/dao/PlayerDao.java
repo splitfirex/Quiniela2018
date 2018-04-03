@@ -1,4 +1,4 @@
-package model.dto;
+package model.dao;
 
-public class PlayerDto {
+public class PlayerDao {
 }

@@ -4,6 +4,7 @@ import model.Match;
 import model.Player;
 import model.Team;
 import model.views.ViewPlayerInfo;
+import model.views.ViewPlayerMatchesGroups;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,11 +23,23 @@ public class UserController {
 
     @GetMapping("/users")
     @ResponseBody
-    public List<ViewPlayerInfo> getPlayer(@RequestParam(name="name", required=false, defaultValue="") String name) {
+    public List<ViewPlayerInfo> getPlayer(@RequestParam(name="username", required=false, defaultValue="") String name) {
         List<ViewPlayerInfo> result = new ArrayList<>();
         for(Player p: PlayerService.instance.getAllPlayers()){
             if(name.isEmpty() || name.equals(p.getUsername()) ) {
                 result.add(new ViewPlayerInfo(p));
+            }
+        }
+        return result;
+    }
+
+    @GetMapping("/users/matches")
+    @ResponseBody
+    public List<ViewPlayerMatchesGroups> getPlayerMatches(@RequestParam(name="username", required=false, defaultValue="") String name) {
+        List<ViewPlayerMatchesGroups> result = new ArrayList<>();
+        for(Player p: PlayerService.instance.getAllPlayers()){
+            if(name.isEmpty() || name.equals(p.getUsername()) ) {
+                result.add(new ViewPlayerMatchesGroups(p));
             }
         }
         return result;

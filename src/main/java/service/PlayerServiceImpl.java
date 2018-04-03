@@ -2,8 +2,6 @@ package service;
 
 import model.Match;
 import model.Player;
-import model.enums.TeamName;
-import model.views.TeamGroup;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

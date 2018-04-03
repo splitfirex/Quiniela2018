@@ -1,9 +1,8 @@
 package model;
 
-import model.views.TeamGroup;
 import java.util.*;
 
-public class Player {
+public class Player extends MongoDBObject{
 
     private String imageUrl;
     private String username;
@@ -57,7 +56,6 @@ public class Player {
     public void setMatchList(List<Match> matchList) {
         this.matchList = matchList;
     }
-
 
     public Map<String, Map<String,TeamGroup>> getGroupTeams() {
         return groupTeams;

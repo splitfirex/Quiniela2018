@@ -5,9 +5,8 @@ import model.enums.TypeMatch;
 
 import java.time.LocalDateTime;
 
-public class Match {
+public class Match extends MongoDBObject{
 
-    private int idMatch;
     private String homeTeam;
     private String visitorTeam;
     private Integer scoreHomeTeam;
@@ -16,17 +15,9 @@ public class Match {
     private TypeMatch typeMatch;
 
     public Match(int idMatch, LocalDateTime date, TypeMatch type) {
-        this.idMatch = idMatch;
+        this.id = idMatch;
         this.typeMatch = type;
         this.date = date;
-    }
-
-    public int getIdMatch() {
-        return idMatch;
-    }
-
-    public void setIdMatch(int idMatch) {
-        this.idMatch = idMatch;
     }
 
     public String getHomeTeam() {
@@ -71,6 +62,10 @@ public class Match {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public TypeMatch getTypeMatch() {
+        return typeMatch;
     }
 }
 

@@ -2,16 +2,14 @@ package model;
 
 import model.enums.TeamName;
 
-public class Team {
+public class Team extends MongoDBObject{
 
-    private int idTeam;
     private String name;
     private String shortName;
     private String group;
     private String flagUrl;
 
-    public Team(int idTeam, String name, String shortName, String group ,String flagUrl) {
-        this.idTeam = idTeam;
+    public Team(String name, String shortName, String group ,String flagUrl) {
         this.name = name;
         this.shortName = shortName;
         this.flagUrl = flagUrl;
@@ -23,14 +21,6 @@ public class Team {
 
     public void setGroup(String group) {
         this.group = group;
-    }
-
-    public int getIdTeam() {
-        return idTeam;
-    }
-
-    public void setIdTeam(int idTeam) {
-        this.idTeam = idTeam;
     }
 
     public String getName() {

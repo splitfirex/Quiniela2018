@@ -10,12 +10,10 @@ public class ViewPlayerInfo {
     private String username;
     private String url;
     private Integer points;
-    private List<Match> ListMatches = new ArrayList<>();
 
     public ViewPlayerInfo(Player player) {
         this.username = player.getUsername();
         this.points = player.getPoints();
-        this.ListMatches = player.getMatchList();
     }
 
     public String getUsername() {
@@ -30,7 +28,4 @@ public class ViewPlayerInfo {
         return points;
     }
 
-    public List<Match> getListMatches() {
-        return ListMatches;
-    }
 }
