@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public class Match extends MongoDBObject{
 
+    private int idPlayer;
     private String homeTeam;
     private String visitorTeam;
     private Integer scoreHomeTeam;
@@ -66,6 +67,14 @@ public class Match extends MongoDBObject{
 
     public TypeMatch getTypeMatch() {
         return typeMatch;
+    }
+
+    public int getIdPlayer() {
+        return idPlayer;
+    }
+
+    public void setIdPlayer(int idPlayer) {
+        this.idPlayer = idPlayer;
     }
 }
 

@@ -1,16 +1,14 @@
 package service;
 
-import model.MongoDBObject;
-import model.Player;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
 
-public interface DBService<T> {
+public interface DBService {
 
-    int insertObject(T obj);
+   static DBService instance = new DBServiceImpl();
 
-    int deleteObjectById(T obj);
+   DB getDBConnection();
 
-    T selectObjectById(int id);
-
-    int updateObject(int id, T obj);
+   DBCollection getDBCollection(String name);
 
 }
