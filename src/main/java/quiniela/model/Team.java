@@ -1,22 +1,21 @@
 package quiniela.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "team")
 public class Team{
 
+    @Id
     private long id;
+
+    @Indexed(unique = true)
     private String name;
+
     private String shortName;
     private String group;
     private String flagUrl;
-
-    public Team(int id, String name, String shortName, String group ,String flagUrl) {
-        this.name = name;
-        this.shortName = shortName;
-        this.flagUrl = flagUrl;
-        this.id = id;
-    }
 
     public String getGroup() {
         return group;
@@ -48,6 +47,14 @@ public class Team{
 
     public void setFlagUrl(String flagUrl) {
         this.flagUrl = flagUrl;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
 

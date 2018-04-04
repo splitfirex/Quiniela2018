@@ -1,20 +1,27 @@
 package quiniela.utils;
 
-import quiniela.model.Match;
-import quiniela.model.Player;
-import quiniela.model.TeamGroup;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import quiniela.model.*;
+import quiniela.service.TeamService;
 
+import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class ScoreMath {
 
-    public static void processScores(Player realPlayer, Player myPlayer) {
-     /*   Integer points = 0;
+    @Autowired
+    TeamService teamService;
+
+    public void processScores(Player realPlayer, Player myPlayer) {
+       Integer points = 0;
+       myPlayer.setGroupTeams(new HashMap<>());
         for (int i = 0; i < myPlayer.getMatchList().size(); i++) {
-            Match realMatch = realPlayer.getMatchList().get(i);
-            Match myMatch = myPlayer.getMatchList().get(i);
-            if (realMatch.getScoreVisitorTeam() != null
-                    && realMatch.getScoreHomeTeam() != null) {
+            PlayerMatch realMatch = realPlayer.getMatchList().get(i);
+            PlayerMatch myMatch = myPlayer.getMatchList().get(i);
+            if (realMatch.getvScore() != null
+                    && realMatch.gethScore() != null) {
                 // 3 points same score
                 if (sameTeam(realMatch, myMatch) && sameScore(realMatch, myMatch)) {
                     points += 3;
@@ -25,76 +32,76 @@ public class ScoreMath {
                 }
             }
 
-            if (myMatch.getScoreVisitorTeam() != null
-                    && myMatch.getScoreHomeTeam() != null) {
-                String teamGroup = TeamService.instance.getTeamByName(myMatch.getHomeTeam()).getGroup();
-                if (myPlayer.getGroupTeams().containsKey(teamGroup)) {
+            if (myMatch.getvScore() != null
+                    && myMatch.gethScore() != null) {
+                System.out.println(myMatch.gethTeam());
+                Team team = teamService.getTeamByName(myMatch.gethTeam());
+                String teamGroup = team.getGroup();
+
+                if (!myPlayer.getGroupTeams().containsKey(teamGroup)) {
                     myPlayer.getGroupTeams().put(teamGroup, new HashMap<String, TeamGroup>() {{
-                        put(myMatch.getHomeTeam(), assignPoints(myMatch, false, new TeamGroup()));
-                        put(myMatch.getVisitorTeam(), assignPoints(myMatch, true, new TeamGroup()));
+                        put(myMatch.gethTeam(), assignPoints(myMatch, false, new TeamGroup()));
+                        put(myMatch.getvTeam(), assignPoints(myMatch, true, new TeamGroup()));
                     }});
                 } else {
-                    if (myPlayer.getGroupTeams().get(teamGroup).get(myMatch.getHomeTeam()) == null) {
-                        myPlayer.getGroupTeams().get(teamGroup).put(myMatch.getHomeTeam(), new TeamGroup());
+                    if (myPlayer.getGroupTeams().get(teamGroup).get(myMatch.gethTeam()) == null) {
+                        myPlayer.getGroupTeams().get(teamGroup).put(myMatch.gethTeam(), new TeamGroup());
                     }
-                    if (myPlayer.getGroupTeams().get(teamGroup).get(myMatch.getVisitorTeam()) == null) {
-                        myPlayer.getGroupTeams().get(teamGroup).put(myMatch.getVisitorTeam(), new TeamGroup());
+                    if (myPlayer.getGroupTeams().get(teamGroup).get(myMatch.getvTeam()) == null) {
+                        myPlayer.getGroupTeams().get(teamGroup).put(myMatch.getvTeam(), new TeamGroup());
                     }
-                    assignPoints(myMatch, false, myPlayer.getGroupTeams().get(teamGroup).get(myMatch.getHomeTeam()));
-                    assignPoints(myMatch, true, myPlayer.getGroupTeams().get(teamGroup).get(myMatch.getVisitorTeam()));
+                    assignPoints(myMatch, false, myPlayer.getGroupTeams().get(teamGroup).get(myMatch.gethTeam()));
+                    assignPoints(myMatch, true, myPlayer.getGroupTeams().get(teamGroup).get(myMatch.getvTeam()));
 
                 }
             }
         }
-
         myPlayer.setPoints(points);
-        */
-
     }
 
-    public static boolean sameTeam(Match m1, Match m2) {
-        return m1.getHomeTeam().equals(m2.getHomeTeam()) &&
-                m2.getVisitorTeam().equals(m1.getVisitorTeam());
+    private boolean sameTeam(PlayerMatch m1, PlayerMatch m2) {
+        return m1.gethTeam().equals(m2.gethTeam()) &&
+                m2.getvTeam().equals(m1.getvTeam());
     }
 
-    public static boolean sameScore(Match m1, Match m2) {
-        return m1.getScoreVisitorTeam().equals(m2.getScoreVisitorTeam()) &&
-                m2.getScoreHomeTeam().equals(m1.getScoreHomeTeam());
+    private boolean sameScore(PlayerMatch m1, PlayerMatch m2) {
+        return m1.getvScore().equals(m2.getvScore()) &&
+                m2.gethScore().equals(m1.gethScore());
     }
 
-    public static boolean sameResult(Match m1, Match m2) {
-        return (m1.getScoreVisitorTeam() > m1.getScoreHomeTeam() && m2.getScoreVisitorTeam() > m2.getScoreHomeTeam())
-                || (m1.getScoreVisitorTeam() <= m1.getScoreHomeTeam() && m2.getScoreVisitorTeam() <= m2.getScoreHomeTeam());
+    private boolean sameResult(PlayerMatch m1, PlayerMatch m2) {
+        return (m1.getvScore() > m1.gethScore() && m2.getvScore() > m2.gethScore())
+                || (m1.getvScore() <= m1.gethScore() && m2.getvScore() <= m2.gethScore());
     }
 
-    public static TeamGroup assignPoints(Match m1, boolean visitor, TeamGroup tg) {
+    private TeamGroup assignPoints(PlayerMatch m1, boolean visitor, TeamGroup tg) {
         if (!visitor) {
-            if (m1.getScoreHomeTeam() > m1.getScoreVisitorTeam()) {
+            if (m1.gethScore() > m1.getvScore()) {
                 tg.setPoints(tg.getPoints() + 3);
 
             }
-            if (m1.getScoreHomeTeam() == m1.getScoreVisitorTeam()) {
+            if (m1.gethScore() == m1.getvScore()) {
                 tg.setPoints(tg.getPoints() + 1);
             }
-            tg.setPositiveGoals(tg.getPositiveGoals() + m1.getScoreHomeTeam());
-            tg.setNegativeGoals(tg.getNegativeGoals() + m1.getScoreVisitorTeam());
+            tg.setPositiveGoals(tg.getPositiveGoals() + m1.gethScore());
+            tg.setNegativeGoals(tg.getNegativeGoals() + m1.getvScore());
 
         } else {
-            if (m1.getScoreHomeTeam() < m1.getScoreVisitorTeam()) {
+            if (m1.gethScore() < m1.getvScore()) {
                 tg.setPoints(tg.getPoints() + 3);
 
             }
-            if (m1.getScoreHomeTeam() == m1.getScoreVisitorTeam()) {
+            if (m1.gethScore() == m1.getvScore()) {
                 tg.setPoints(tg.getPoints() + 1);
             }
-            tg.setPositiveGoals(tg.getPositiveGoals() + m1.getScoreVisitorTeam());
-            tg.setNegativeGoals(tg.getNegativeGoals() + m1.getScoreHomeTeam());
+            tg.setPositiveGoals(tg.getPositiveGoals() + m1.getvScore());
+            tg.setNegativeGoals(tg.getNegativeGoals() + m1.gethScore());
         }
 
         return tg;
     }
 
-    public static String getTeamFromGroup(Map<String, Map<String,TeamGroup>> groupTeams, String group, int position){
+    private String getTeamFromGroup(Map<String, Map<String,TeamGroup>> groupTeams, String group, int position){
 
         return null;
     }

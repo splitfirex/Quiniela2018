@@ -1,20 +1,26 @@
 package quiniela.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import quiniela.model.Match;
 import quiniela.model.Player;
+import quiniela.model.PlayerMatch;
+import quiniela.model.PlayerMatchUpdate;
 import quiniela.model.views.ViewPlayerInfo;
+import quiniela.model.views.ViewPlayerMatchesGroups;
 import quiniela.service.PlayerService;
+import quiniela.utils.ScoreMath;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.toIntExact;
+
 @Controller
 @RequestMapping("/user")
+@ComponentScan({"quiniela.service"})
 public class UserController {
 
     private static final String REAL_WORLD_SCORES = "_NOT_A_PLAYER_";
@@ -22,49 +28,58 @@ public class UserController {
     @Autowired
     private PlayerService playerService;
 
-    @GetMapping("/id/{username}")
+    @Autowired
+    private ScoreMath scoreMath;
+
+    @RequestMapping(value = "/id/{username}")
     @ResponseBody
-    public ViewPlayerInfo getPlayer(@PathVariable("username" ) String username) {
+    public ViewPlayerInfo getPlayer(@PathVariable("username") String username) {
         return new ViewPlayerInfo(playerService.getPlayerByUsername(username));
     }
 
-    @GetMapping("/all")
+    @RequestMapping(value = "/all")
     @ResponseBody
     public List<ViewPlayerInfo> getPlayers() {
         List<ViewPlayerInfo> result = new ArrayList<>();
-        for(Player p : playerService.getAllPlayers()){
+        for (Player p : playerService.getAllPlayers()) {
             result.add(new ViewPlayerInfo(p));
         }
         return result;
     }
-/*
-    @GetMapping("/users/matches")
+
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseBody
-    public List<ViewPlayerMatchesGroups> getPlayerMatches(@RequestParam(name="username", required=false, defaultValue="") String name) {
+    public ViewPlayerInfo newPlayer(@RequestBody Player player) {
+        return new ViewPlayerInfo(playerService.createPlayer(player.getUsername(), player.getPassword()));
+    }
+
+
+    @RequestMapping(value = "/matches/{username}")
+    @ResponseBody
+    public List<ViewPlayerMatchesGroups> getPlayerMatches(@PathVariable(name = "username") String username) {
         List<ViewPlayerMatchesGroups> result = new ArrayList<>();
-        for(Player p: PlayerService.instance.getAllPlayers()){
-            if(name.isEmpty() || name.equals(p.getUsername()) ) {
+        for (Player p : playerService.getAllPlayers()) {
+            if (username.isEmpty() || username.equals(p.getUsername())) {
                 result.add(new ViewPlayerMatchesGroups(p));
             }
         }
         return result;
     }
 
-    @GetMapping("/users/update")
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
-    public int updateMatch(@RequestParam(name="username", required=true) String username,
-                                            @RequestParam(name="password", required=true) String password,
-                                            @RequestParam(name="idMatch", required=true) String idMatch,
-                                            @RequestParam(name="homeScore", required=true) String homeScore,
-                                            @RequestParam(name="visitScore", required=true) String visitScore) {
-        if(username == null || password == null) return -1;
-        Player p = PlayerService.instance.validateUsername(username,password);
-        p.getMatchList().get(Integer.parseInt(idMatch))
-                .setScoreHomeTeam(Integer.parseInt(homeScore))
-                .setScoreVisitorTeam(Integer.parseInt(visitScore));
-        ScoreMath.processScores(PlayerService.instance.getPlayerByUsername(REAL_WORLD_SCORES),p);
-        return 0;
-
+    public ViewPlayerMatchesGroups updateMatch(@RequestBody PlayerMatchUpdate playerMatch ) {
+        if (playerMatch.getUsername() == null || playerMatch.getPassword() == null) return null;
+        Player p = playerService.validateUsername(playerMatch.getUsername(), playerMatch.getPassword());
+        for(PlayerMatch pm : p.getMatchList()){
+            if(pm.getId() == playerMatch.getId()){
+                pm.sethScore(Long.valueOf(playerMatch.gethScore()));
+                pm.setvScore(Long.valueOf(playerMatch.getvScore()));
+                break;
+            }
+        }
+        scoreMath.processScores(playerService.getPlayerByUsername("_NOT_A_PLAYER_"), p);
+        playerService.updatePlayer(p);
+        return new ViewPlayerMatchesGroups(p);
     }
-*/
 }

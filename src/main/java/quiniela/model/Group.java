@@ -34,7 +34,11 @@ public class Group {
         this.name = name;
     }
 
-    public Group(String name) {
-        this.name = name;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

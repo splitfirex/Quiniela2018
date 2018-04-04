@@ -1,30 +1,32 @@
 package quiniela.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import quiniela.model.Group;
+import quiniela.repository.GroupRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class GroupServiceImpl implements GroupService {
 
-    static private List<Group> listGroup = new ArrayList<>();
+    @Autowired
+    GroupRepository groupRepository;
 
     @Override
     public List<Group> getAllGroups() {
-        return listGroup;
+        return groupRepository.findAll();
     }
 
     @Override
     public Group getGroupByName(String groupName) {
-        for(Group g : listGroup){
-            if(g.getName().equals(groupName)) return g;
-        }
-        return null;
+       return groupRepository.findByName(groupName);
     }
 
     @Override
-    public void setGroup(Group group) {
-        listGroup.add(group);
+    public Group getGroupById(Integer idGroup) {
+        return groupRepository.findById(idGroup);
     }
 
 }

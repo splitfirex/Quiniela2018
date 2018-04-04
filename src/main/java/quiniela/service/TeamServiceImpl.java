@@ -11,33 +11,60 @@ import quiniela.repository.GroupRepository;
 import quiniela.repository.TeamRepository;
 import quiniela.utils.CVSParser;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class TeamServiceImpl implements TeamService {
 
-    static private List<Team> listTeams = new ArrayList<>();
+    static private AtomicLong counter = new AtomicLong();
 
     final static private Integer CSV_MAX_VALUES_TEAM = 4;
 
     @Autowired
-    static private TeamRepository teamRepository;
+    private TeamRepository teamRepository;
 
     @Autowired
-    static private GroupRepository groupRepository;
+    private GroupRepository groupRepository;
 
-    static {
+    @PostConstruct
+    private void init(){
         List<String> values = CVSParser.ParseMatches("teams.cvs");
-        for (int i = CSV_MAX_VALUES_TEAM; i < values.size(); i += CSV_MAX_VALUES_TEAM) {
-            teamRepository.save(new Team(Integer.parseInt(values.get(i)), values.get(i + 1), values.get(i + 2), values.get(i + 3), "URL"));
 
-            if (groupRepository.findByName(values.get(i + 3)) == null) {
-                groupRepository.save(new Group(values.get(i + 3)));
+        List<Team> inserTeam = new ArrayList<>();
+        HashMap<String,Group> inserGroup = new HashMap<>();
+
+        teamRepository.deleteAll();
+        groupRepository.deleteAll();
+
+        for (int i = CSV_MAX_VALUES_TEAM; i < values.size(); i += CSV_MAX_VALUES_TEAM) {
+            if(values.get(i+1).contains("_")) continue;
+            Team t = new Team();
+            t.setId(Long.parseLong(values.get(i)));
+            t.setName(values.get(i + 1));
+            t.setShortName(values.get(i + 2));
+            t.setGroup(values.get(i + 3));
+            t.setFlagUrl("URL");
+            inserTeam.add(t);
+
+            if(values.get(i + 3).equals("-")) continue;
+            if (!inserGroup.keySet().contains(values.get(i + 3))) {
+                Group group = new Group();
+                group.setName(values.get(i + 3));
+                group.setId(counter.incrementAndGet());
+                group.addTeam(values.get(i + 1));
+                inserGroup.put(values.get(i + 3), group);
+            }else{
+                Group group = inserGroup.get(values.get(i + 3));
+                group.addTeam(values.get(i + 1));
             }
         }
+        teamRepository.saveAll(inserTeam);
+        groupRepository.saveAll(inserGroup.values());
     }
-
 
     @Override
     public List<Team> getAllTeams() {

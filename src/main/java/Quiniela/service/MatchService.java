@@ -1,9 +1,11 @@
 package quiniela.service;
 
+import org.springframework.stereotype.Service;
 import quiniela.model.Match;
 
 import java.util.List;
 
+@Service
 public interface MatchService {
 
     static MatchService instance = new MatchServiceImpl();

@@ -9,10 +9,6 @@ import java.util.List;
 @Service
 public interface PlayerService {
 
-    static PlayerService instance = new PlayerServiceImpl();
-
-    List<Match> updatePlayerMatch(String userName, String password, Match updatedMatch);
-
     List<String> getAllPlayersUsername();
 
     List<Player> getAllPlayers();
@@ -20,4 +16,8 @@ public interface PlayerService {
     Player validateUsername(String userName, String password);
 
     Player getPlayerByUsername(String username);
+
+    Player createPlayer(String username, String password);
+
+    Player updatePlayer(Player player);
 }

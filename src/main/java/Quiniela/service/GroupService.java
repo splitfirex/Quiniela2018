@@ -1,17 +1,17 @@
 package quiniela.service;
 
+import org.springframework.stereotype.Service;
 import quiniela.model.Group;
 
 import java.util.List;
 
+@Service
 public interface GroupService {
-
-    static GroupService instance = new GroupServiceImpl();
 
     List<Group> getAllGroups();
 
     Group getGroupByName(String groupName);
 
-    void setGroup(Group groupName);
+    Group getGroupById(Integer idGroup);
 
 }

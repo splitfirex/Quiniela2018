@@ -1,85 +1,102 @@
 package quiniela.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
 import quiniela.model.Match;
 import quiniela.model.Player;
+import quiniela.repository.PlayerRepository;
 
+import javax.annotation.PostConstruct;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:application.properties")
+@Service
 public class PlayerServiceImpl implements PlayerService {
 
-    static private Map<String, Player> playerList = new HashMap<>();
-    private static MessageDigest md;
-    private static GroupService groupService = GroupService.instance;
-    private static MatchService matchService = MatchService.instance;
+    private static MessageDigest sha;
 
-    static {
-        Player p =  new Player("splitfire", "splitfire");
-        p.setMatchList(matchService.getAllMatches());
-        playerList.put("splitfire",p);
-        p.getMatchList().get(1).setScoreHomeTeam(100);
+    private AtomicLong counter = new AtomicLong();
 
+    @Autowired
+    PlayerRepository playerRepository;
+
+    @Autowired
+    MatchService matchService;
+
+    @Value("${player.username}")
+    String genericUsername;
+
+    @Value("${player.password}")
+    String genericPassword;
+
+    @Value("${encryption.algorithm}")
+    String algorithmEncode;
+
+    @PostConstruct
+    private void init() {
+        playerRepository.deleteAll();
         try {
-            md = MessageDigest.getInstance("MD5");
+            sha = MessageDigest.getInstance(algorithmEncode);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        Player p =  new Player();
+        p.setId(counter.incrementAndGet());
+        p.addMatches(matchService.getAllMatches());
+        p.setUsername(genericUsername);
+        sha.update(genericPassword.getBytes());
+        p.setPassword(Base64.getEncoder().encodeToString( sha.digest()));
+        playerRepository.save(p);
+
     }
 
     public Player validateUsername(String userName, String password){
-
-        Player p = playerList.get(userName);
-        if (p.getUsername().equals(userName) &&
-                md.digest(password.getBytes()).equals(p.getPassword().getBytes())) {
-            return p;
-        }
-
-        return null;
+        sha.update(password.getBytes());
+        return playerRepository.validateUser(userName,Base64.getEncoder().encodeToString( sha.digest()));
     }
 
     @Override
     public Player getPlayerByUsername(String username) {
-        return  playerList.get(username);
+        return  playerRepository.findByUsername(username);
     }
-
-    private void cascadeUpdateMatchs(Player p){
-
-     /*   for(Set<List<TeamGroup>> group : p.getGroupTeams().entrySet()){
-            if(){
-
-            }
-        }
-
-        for(Match m: p.getMatchList()){
-            if(){
-
-            }
-        }*/
-
-    }
-
 
     @Override
-    public List<Match> updatePlayerMatch(String userName, String password, Match updatedMatch) {
-        List<Match> result =new ArrayList<>();
-        Player player = validateUsername(userName,password);
-        if(player == null) return result;
-
-     //   player.getMatchList().set(updatedMatch.getIdMatch(),updatedMatch);
-        result.add(updatedMatch);
+    public List<String> getAllPlayersUsername() {
+        List<String> result = new ArrayList<>();
+        for(Player p : playerRepository.findAll()){
+            result.add(p.getUsername());
+        }
 
         return result;
     }
 
     @Override
-    public List<String> getAllPlayersUsername() {
-        return new ArrayList<>(playerList.keySet());
+    public List<Player> getAllPlayers() {
+        return playerRepository.findAll();
     }
 
     @Override
-    public List<Player> getAllPlayers() {
-        return  new ArrayList<>(playerList.values());
+    public Player createPlayer(String username, String password) {
+
+        if(genericUsername.equals(username)) return null;
+
+        Player p =  new Player();
+        p.setId(counter.incrementAndGet());
+        p.addMatches(matchService.getAllMatches());
+        p.setUsername(username);
+        sha.update(password.getBytes());
+        p.setPassword(Base64.getEncoder().encodeToString( sha.digest()));
+        return playerRepository.save(p);
+    }
+
+    @Override
+    public Player updatePlayer(Player player) {
+        return playerRepository.save(player);
     }
 
 
