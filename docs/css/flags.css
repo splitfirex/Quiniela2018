@@ -1,0 +1,15 @@
+.korea{
+    background-image: url("../img/flags/f1.svg")
+}
+
+.smBel {
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/be.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.smCro{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/hr.svg);
+    background-size: cover;
+    background-position: center center;   
+}

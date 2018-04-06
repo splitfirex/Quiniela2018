@@ -6,73 +6,240 @@
     <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script crossorigin type="text/babel" src="js/component/component1.js"></script>
-    <script crossorigin type="text/babel" src="js/component/component2.js"></script>
-    <script crossorigin type="text/babel" src="js/main.js"></script>-->
+    <script crossorigin type="text/babel" src="js/component/component2.js"></script>-->
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" href="css/player.css" />
 <link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/flags.css" />
 </head>
 
 <body>
   <div class="container">
     <div id="menu">
       <div class="username">
-        USUARIO
-        
+        Quiniela
       </div>
-      <div class="menuIcon">
-          <i class="fas fa-bars fa-lg" style="color:white"></i>
+      <div id="menuBtn" class="menuIcon">
+        <i class="fas fa-bars fa-lg" style="color:white"></i>
       </div>
     </div>
 
     <div id="header">
-      AQUI VA EL TITULO
+      <img src="img/woldcup.svg" width="100%">
     </div>
 
     <div id="notification">
-      ultimo partido
+      <div></div>
+      <div class="last-result">
+        <div class="team-box">
+          <div>KOR</div>
+          <div class="flag smBel"></div>
+          <div>5</div>
+        </div>
+        <div class="team-separator">
+          <i class="fas fa-minus fa-lg" style="color:white"></i>
+        </div>
+        <div class="team-box">
+          <div>5</div>
+          <div class="flag smBel"></div>
+          <div>KOR</div>
+        </div>
+      </div>
+      <div></div>
     </div>
 
-    <div id="content">
-      <div class="player">Player1</div>
-      <div class="player">Player2</div>
-      <div class="player">Player3</div>
-      <div class="player">Player4</div>
-      <div class="player">Player5</div>
+    <div id="content-wrap">
+      <div class="section-title playerTitle">- Players -</div>
+      <div id="content">
+        <div class="player g-1g">
+          <div>Daniel</div>
+          <div>50</div>
+        </div>
+        <div class="player g-2g">
+          <div>Jose</div>
+          <div>50</div>
+        </div>
+        <div class="player g-2g">
+          <div>Jose</div>
+          <div>50</div>
+        </div>
+
+        <div class="player g-2g">
+          <div>Jose</div>
+          <div>50</div>
+        </div>
+
+        <div class="player g-2g">
+          <div>Jose</div>
+          <div>50</div>
+        </div>
+
+        <div class="player g-2g">
+          <div>Jose</div>
+          <div>50</div>
+        </div>
+
+        <div class="player g-2g">
+          <div>Jose</div>
+          <div>50</div>
+        </div>
+
+        <div class="player g-2g">
+          <div>Jose</div>
+          <div>50</div>
+        </div>
+
+
+      </div>
     </div>
 
-    <div id="groups">
-      <div class="group-box">A</div>
-      <div class="group-box">B</div>
-      <div class="group-box">C</div>
-      <div class="group-box">D</div>
-      <div class="group-box">E</div>
-      <div class="group-box">F</div>
-      <div class="group-box">G</div>
-      <div class="group-box">H</div>
+    <div id="groups-wrap">
+      <div class="section-title groupsTitle">- Groups -</div>
+      <div id="groups">
+        <div class="group-box">
+
+          <div class="group-box-content">
+            <div class="group-box-title"> Group A </div>
+            <div></div>
+            <div>TEAM NAME </div>
+            <div>GF</div>
+            <div>GC </div>
+            <div>P</div>
+
+            <div>
+              <div class="smflag smBel"></div>
+            </div>
+            <div>TEAM NAME </div>
+            <div>20 </div>
+            <div>-20 </div>
+            <div>9 </div>
+
+            <div>
+              <div class="smflag smCro"></div>
+            </div>
+            <div>TEAM NAME </div>
+            <div>20 </div>
+            <div>-20 </div>
+            <div>9 </div>
+
+            <div>FLAG </div>
+            <div>TEAM NAME </div>
+            <div>20 </div>
+            <div>-20 </div>
+            <div>9 </div>
+
+            <div>FLAG </div>
+            <div>TEAM NAME </div>
+            <div>20 </div>
+            <div>-20 </div>
+            <div>9 </div>
+
+          </div>
+        </div>
+        <div class="group-box">
+
+          <div class="group-box-content">
+            <div class="group-box-title">
+              <span>Group A</span>
+            </div>
+            <div></div>
+            <div>TEAM NAME </div>
+            <div>GF</div>
+            <div>GC </div>
+            <div>P</div>
+
+            <div>
+              <div class="smflag smbel"></div>
+            </div>
+            <div>TEAM NAME </div>
+            <div>20 </div>
+            <div>-20 </div>
+            <div>9 </div>
+
+            <div>
+              <div class="smflag smcro"></div>
+            </div>
+            <div>TEAM NAME </div>
+            <div>20 </div>
+            <div>-20 </div>
+            <div>9 </div>
+
+            <div>FLAG </div>
+            <div>TEAM NAME </div>
+            <div>20 </div>
+            <div>-20 </div>
+            <div>9 </div>
+
+            <div>FLAG </div>
+            <div>TEAM NAME </div>
+            <div>20 </div>
+            <div>-20 </div>
+            <div>9 </div>
+
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="matches">
-      <div class="match-box">A</div>
-      <div class="match-box">B</div>
-      <div class="match-box">C</div>
-      <div class="match-box">D</div>
-      <div class="match-box">E</div>
-      <div class="match-box">F</div>
-      <div class="match-box">G</div>
-      <div class="match-box">H</div>
+    <div id="matches-wrap">
+      <div class="section-title matchesTitle">- Matches -</div>
+      <div id="matches">
+        <div class="match-box">
+          <div class="fecha">30/07</div>
+          <div class="hora">15:10</div>
+          <div class="team-box-sm">
+            <div>KOR</div>
+            <div>
+              <div class="smflag smBel"></div>
+            </div>
+            <div>2</div>
+          </div>
+          <div>-</div>
+          <div class="team-box-sm">
+            <div>2</div>
+            <div>
+              <div class="smflag smBel"></div>
+            </div>
+            <div>KOR</div>
+          </div>
+        </div>
+        <div class="match-box">
+          <div class="fecha">30/07</div>
+          <div class="hora">15:10</div>
+          <div class="team-box-sm" style="justify-self: right;">
+            <div>KOR</div>
+            <div>
+              <div class="smflag smBel"></div>
+            </div>
+            <div>2</div>
+          </div>
+          <div>-</div>
+          <div class="team-box-sm">
+            <div>2</div>
+            <div>
+              <div class="smflag smBel"></div>
+            </div>
+            <div>KOR</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div id="footer">
       <!-- Footer content -->
     </div>
 
-    <div class="modal">
-        <div class="modal_header"></div>
-        <div class="modal_content"></div>
+    <div id="modalMenu" class="modal">
+      <div class="modal_header"></div>
+      <div class="modal_content"></div>
     </div>
 
   </div>
 </body>
+<script src="js/main.js"></script>
 
 </html>

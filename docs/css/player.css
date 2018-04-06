@@ -1,0 +1,26 @@
+.g-1g{
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0.4) 10px,
+        rgba(0, 0, 0, 0.6) 10px,
+        rgba(0, 0, 0, 0.6) 20px
+      ),
+      url("../img/flags/g-1g.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;    
+}
+
+
+.g-2g{
+    background:repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0.4) 10px,
+        rgba(0, 0, 0, 0.6) 10px,
+        rgba(0, 0, 0, 0.6) 20px
+      ),    
+      url("../img/flags/g-2g.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+}

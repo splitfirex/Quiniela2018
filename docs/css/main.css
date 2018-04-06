@@ -1,9 +1,18 @@
-/* ESTILOS NORMALES (para móviles en vertical)
+/* ESTILOS NORMALES (para mï¿½viles en vertical)
    ========================================================================= */
 @import url('https://fonts.googleapis.com/css?family=PT+Sans');
 
+@font-face {
+  font-family: "dusan";
+  src: url("../font/FIFA_World_Cup_2018.ttf");
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'dusan';
   padding: 0;
   margin: 0;
   height: 100%;
@@ -17,7 +26,8 @@ body {
 
   display: grid;
   grid-auto-columns: auto;
-  grid-auto-rows: 50px 100px 50px auto auto auto 300px;
+  grid-auto-rows: 50px 140px 60px auto auto auto 300px;
+  grid-row-gap: 10px;
   grid-template-areas: 
   "menu"
   "head"
@@ -31,9 +41,10 @@ body {
 #menu{
   grid-area: "menu";
   width: 100%;
-  background-color: rgba(0, 0, 100, 0.2);
+  background-color: rgba(51, 86, 151, 0.39);
   position: sticky;
   top:0;
+  
 
   display: grid;
   align-items: center;
@@ -41,61 +52,257 @@ body {
 }
 
 .username{
+  font-family: "dusan";
   margin-left:10px;
   color:white;
-  font-size: 1.2em;
+  font-size: 1.9em;
 }
 
 .menuIcon{
-  justify-self: end; margin-right:10px
+  justify-self: end; margin-right:17px;
 }
 
 
+.flag{
+  height: 36px;
+  width: 50px;
+  border-radius: 8px
+}
 
-
-
+.smflag{
+  border-radius: 3px;
+  width: 36px;
+  height: 20px;
+}
 
 
 #header{
   grid-area: "head";
+  align-self: center;
+  justify-self: center;
 }
+
+
+#notification{
+  background-color: rgba(19, 24, 49, 0.849);
+
+  grid-area: "notif";
+  font-family: "dusan";
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+.team-box div:nth-child(1), .team-box div:nth-child(3){
+  font-family: "dusan";
+  color: white;
+  font-size: 1.7em;
+  line-height: 36px;
+  text-align: center;
+  vertical-align: middle; 
+}
+
+.team-box div:nth-child(2){
+  line-height: 36px;
+  margin: 0 auto;
+}
+
+.team-box{
+  width: 150px;
+  grid-gap: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.team-box-sm{
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.tleft{
+  grid-template-columns: 1fr 1fr;
+}
+
+.team-box-sm div{
+  font-family: 'PT Sans', sans-serif;
+  color: white;
+  font-size: 1.1em;
+  margin: 0 auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.selAlignLeft div{
+  justify-self: right;
+}
+
+
+.last-result{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 2px;
+  align-self: center;
+  justify-self: center;
+}
+
+.team-separator{
+  vertical-align: middle;
+  text-align: center;
+}
+
+.team-separator svg{
+  height: 100%;
+}
+
+
+#content-wrap{
+  grid-area: "cont";
+}
+
+.section-title{
+ height: 36px;
+ text-align: center;
+ line-height: 36px;
+ font-size: 1.6em;
+ color: white;
+ text-shadow: 2px 2px #3b3b3b;
+ padding-bottom: 15px;
+}
+
+.groupsTitle{
+  background-color: rgba(54, 8, 8, 0.658);
+}
+
+.playerTitle{
+  background-color: rgba(24, 24, 29, 0.658);
+}
+
+.matchesTitle{
+  background-color: rgba(22, 22, 66, 0.658);
+}
+
 
 #content{
-  grid-area: "cont";
+  background-color: rgba(24, 24, 29, 0.658);
+  padding: 8px;
+  padding-top: 0;
 
   display: grid;
-  grid-template-columns: repeat( auto-fill, minmax(160px, 1fr));
-  grid-auto-flow: dense;
-  grid-gap: 2px;
-
+  grid-template-columns: repeat( auto-fill, minmax(190px, 1fr));
+  grid-template-rows: repeat( auto-fill, 1fr);
+  grid-gap: 8px;
+  padding-bottom: 15px;
 }
+
 
 .player{
-  background-color: wheat;
   height: 100px;
-}
-
-#groups{
-  grid-area: "grop";
+  opacity: 1;
+  border-radius: 5px;
 
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.player div{
+  align-self: center;
+  justify-self: center;
+  font-family: "dusan";
+  opacity: 1;
+  color: white;
+  font-size: 1.5em;
+}
+
+.player div:nth-child(2){
+  grid-column-start: 2; grid-row-start: 2; font-size: 2em;
+}
+
+
+
+#groups-wrap{
+  grid-area: "grop";
+}
+
+#groups{
+  background-color: rgba(54, 8, 8, 0.658);
+  display: grid;
+  grid-template-columns: 1fr;
   grid-auto-rows: auto;
   grid-gap: 10px;
 }
 
 .group-box{
-  background-color: gray;
-  height: 150px;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.4) 10px,
+    rgba(0, 0, 0, 0.6) 10px,
+    rgba(0, 0, 0, 0.6) 20px
+  );
+  height: 200px;
+  padding: 5px;
+  padding-bottom: 20px;
+}
+
+.group-box-title{
+  font-family: 'dusan';
+  font-size: 2em;
+  grid-column: 1 / -1;
+}
+
+.group-box-content{
+  color: white;
+  font-family: 'PT Sans', sans-serif;
+  padding-bottom: 20px;
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns:  0.1fr 4fr 1fr 1fr 1fr;
+  grid-auto-rows: 3fr;
+  height: 100%;
+  
+}
+
+.group-box-content div:nth-child(n+2){
+  border-bottom: white solid 1px;
+}
+
+#matches-wrap{
+  grid-area: "fixt";
 }
 
 #matches{
-  grid-area: "fixt";
-
+  font-family: 'PT Sans', sans-serif;
+  background-color: rgba(22, 22, 66, 0.658);
   display: grid;
   grid-auto-columns: auto;
   grid-auto-rows: 30px;
   grid-gap: 10px;
+  padding-bottom: 15px;
+}
+
+.match-box{
+  font-size: 1.2em;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: white;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.4) 10px,
+    rgba(0, 0, 0, 0.6) 10px,
+    rgba(0, 0, 0, 0.6) 20px
+  );
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 0.01fr 2fr;
+  grid-gap: 5px;
+}
+
+.match-box div{
+  margin: 0 auto;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 #footer{
@@ -104,15 +311,23 @@ body {
 }
 
 
+
+
 .modal {
-  display: none;
+  top:-100vh;
   height: 100%;
   left: 0;
   position: fixed;
-  top: 0;
   width: 100%;
-  background-color: bisque;
+  transition: top 0.5s;
+  transition-timing-function: ease;
+  background-color: rgba(51, 86, 151, 1);
 }
+
+.modalOn{
+  top:0;
+}
+
 .modal.open {
   display: grid;
   grid-template-rows: 100px auto 100px;
@@ -145,7 +360,7 @@ body {
 /* RESPONSIVE
    ========================================================================= */
 
-/* Móviles en horizontal o tablets en vertical
+/* Mï¿½viles en horizontal o tablets en vertical
    ------------------------------------------------------------------------- */
 
 @media (min-width: 768px) {}
