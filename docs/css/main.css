@@ -26,10 +26,9 @@ body {
 
   display: grid;
   grid-auto-columns: auto;
-  grid-auto-rows: 50px 140px 60px auto auto auto 300px;
+  grid-auto-rows: 170px 60px auto auto auto 300px;
   grid-row-gap: 10px;
   grid-template-areas: 
-  "menu"
   "head"
   "notf"
   "cont"
@@ -38,28 +37,10 @@ body {
   "foot"
 }
 
-#menu{
-  grid-area: "menu";
-  width: 100%;
-  background-color: rgba(51, 86, 151, 0.39);
-  position: sticky;
-  top:0;
-  
 
-  display: grid;
-  align-items: center;
-  grid-template-columns: 1fr 1fr;
-}
-
-.username{
-  font-family: "dusan";
-  margin-left:10px;
-  color:white;
-  font-size: 1.9em;
-}
 
 .menuIcon{
-  justify-self: end; margin-right:17px;
+  margin-left: 17px;
 }
 
 
@@ -231,6 +212,7 @@ body {
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
   grid-gap: 10px;
+  padding-bottom: 15px;
 }
 
 .group-box{
@@ -311,50 +293,183 @@ body {
 }
 
 
-
-
-.modal {
-  top:-100vh;
+.menu {
+  left: calc(100% - 50px);
   height: 100%;
-  left: 0;
   position: fixed;
-  width: 100%;
-  transition: top 0.5s;
+  width: 28vh;
+  transition: left 0.5s;
   transition-timing-function: ease;
-  background-color: rgba(51, 86, 151, 1);
-}
-
-.modalOn{
-  top:0;
-}
-
-.modal.open {
+  /* background-color: rgba(51, 86, 151, 1); */
   display: grid;
-  grid-template-rows: 100px auto 100px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 50px auto;
 }
 
-.modal__header,
-.modal__footer {
-    height: 100px;
+.menuOn{
+  left:calc(100% - 28vh);
 }
-.modal__content,
-.modal__footer {
-    position: absolute;
+
+
+.menuHeader {
+    color: white;
+    grid-column: 1/-1;
+    height: 50px;
     width: 100%;
-}
-.modal__content {
-    bottom: 100px;
-    top: 100px;
-    overflow-y: auto;
-}
-.modal__footer {
-    bottom: 0;
-}
-
-.modal__content {
-  overflow-y: auto;
+    background-color: rgb(41, 66, 112);
+    
+    display: grid;
+    align-items: center;
+    justify-self: right;
+    grid-template-columns: 50px 1fr;
+    transition: justify-self 0.5s;
+    transition-timing-function: ease;
 }
 
+.menuContent{
+  height: 100%;
+  grid-column: 2/-1;
+  background-color: rgb(41, 66, 112);
+
+  display: grid;
+
+}
+
+.menuContentItems{
+  display: grid;
+  grid-template-rows: repeat(auto-fit,50px);
+  grid-gap: 10px;
+}
+
+.menuItem{
+  color: white;
+  background-color: rgb(36, 56, 94);
+  font-size: 1.4em;
+  text-align: left;
+  line-height: 55px;
+  padding-left: 20px;
+}
+
+#modal{
+  visibility: hidden;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top:0;
+
+  background-image: url("../img/bg3.png");
+  transition: visibility 0s, opacity 1s linear;
+  opacity: 0;
+  color: white;
+}
+
+#modal.signIn{
+  background-color: rgb(36, 56, 94);
+}
+
+#modal.register{
+  color: black;
+  background-color: rgb(219, 219, 219);
+}
+
+#modal.register a{
+  color: black;
+}
+
+#modal.show{
+  opacity: 1;
+  visibility: visible;
+}
+
+#modal div.content{
+  display:grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 100px repeat(3, auto) 250px;
+}
+
+#modal div.content div{
+  grid-column: 2;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+#modal div.content div:nth-child(1){
+  font-family: "dusan";
+  font-size: 2em;
+  margin-top: 20px;
+}
+
+
+#modal div.content div input{
+  font-family: "dusan";
+  width: 100%;
+  text-align: center;
+  background-color: rgb(36, 56, 94);
+  border: none;
+  color: white;
+  font-size: 1em;
+  border-bottom: white solid 2px;
+  line-height: 2em;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+#modal.register div.content div input{
+  color: black;
+  border-bottom: black solid 2px;
+  background: none;
+}
+
+
+#modal .sign{
+  font-family: "dusan";
+  background-color: rgb(36, 56, 94);
+  color: white;
+  font-size: 1em;
+  line-height: 2em;
+  border: white solid 2px;
+  transition-duration: all 2s;
+}
+
+#modal.register .sign{
+  font-family: "dusan";
+  background: none;
+  color: black;
+  font-size: 1em;
+  line-height: 2em;
+  border: black solid 2px;
+  transition-duration: all 2s;
+}
+
+#modal.register .sign:active{
+  background-color: black;
+  color: white;
+}
+
+#modal .sign:active{
+  background-color: rgb(255, 255, 255);
+  color: rgb(36, 56, 94); 
+}
+
+#modal input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  font-family: "dusan";
+  opacity: 0.5; /* Firefox */
+}
+
+#modal.register input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgb(48, 48, 48);
+}
+
+
+a { color:white;text-decoration: none; } /* Globally */
+
+/* Each state */
+
+a:visited { text-decoration: none; color:white; }
+a:hover { text-decoration: none; color:lightblue; }
+a:focus { text-decoration: none; color:yellow; }
+a:hover, a:active { text-decoration: none; color:darkcyan }
 
 
 /* RESPONSIVE
