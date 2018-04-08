@@ -17,7 +17,9 @@ public interface PlayerService {
 
     Player getPlayerByUsername(String username);
 
-    Player createPlayer(String username, String password);
+    Player createPlayer(String username, String password, String tournament);
 
     Player updatePlayer(Player player);
+
+    Player activatePlayer(String username, String adminPassword);
 }

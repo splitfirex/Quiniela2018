@@ -6,7 +6,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import quiniela.model.Match;
 import quiniela.model.Player;
+import quiniela.model.Tournament;
 import quiniela.repository.PlayerRepository;
+import quiniela.repository.TournamentRepository;
 
 import javax.annotation.PostConstruct;
 import java.security.MessageDigest;
@@ -24,6 +26,9 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     PlayerRepository playerRepository;
+
+    @Autowired
+    TournamentService tournamentService;
 
     @Autowired
     MatchService matchService;
@@ -52,7 +57,6 @@ public class PlayerServiceImpl implements PlayerService {
         sha.update(genericPassword.getBytes());
         p.setPassword(Base64.getEncoder().encodeToString( sha.digest()));
         playerRepository.save(p);
-
     }
 
     public Player validateUsername(String userName, String password){
@@ -81,14 +85,24 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player createPlayer(String username, String password) {
+    public Player createPlayer(String username, String password, String tournament) {
 
         if(genericUsername.equals(username)) return null;
+        if(playerRepository.findByUsername(username) != null) return null;
 
         Player p =  new Player();
         p.setId(counter.incrementAndGet());
         p.addMatches(matchService.getAllMatches());
         p.setUsername(username);
+        p.setActive(false);
+        Tournament t = tournamentService.getTournamentByName(tournament);
+        if(t == null){
+            p.setActive(true);
+            p.setTournament(tournamentService.createTournament(tournament,username).getName());
+        }else{
+            tournamentService.addPlayer(t.getId(),p);
+            p.setTournament(tournament);
+        }
         sha.update(password.getBytes());
         p.setPassword(Base64.getEncoder().encodeToString( sha.digest()));
         return playerRepository.save(p);
@@ -97,6 +111,20 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Player updatePlayer(Player player) {
         return playerRepository.save(player);
+    }
+
+    @Override
+    public Player activatePlayer(String username, String adminPassword) {
+        Player player = playerRepository.findByUsername(username);
+        Player admin = playerRepository.findByUsername(tournamentService.getTournamentByUsername(username).getIdAdmin());
+
+        if(validateUsername(admin.getUsername(),adminPassword) != null ){
+            player.setActive(true);
+            playerRepository.save(player);
+        }
+
+        return player;
+
     }
 
 

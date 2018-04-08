@@ -1,6 +1,7 @@
 package quiniela.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,9 @@ public class UserController {
     @Autowired
     private ScoreMath scoreMath;
 
+    @Value("${player.username}")
+    String genericUsername;
+
     @RequestMapping(value = "/id/{username}")
     @ResponseBody
     public ViewPlayerInfo getPlayer(@PathVariable("username") String username) {
@@ -50,7 +54,7 @@ public class UserController {
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseBody
     public ViewPlayerInfo newPlayer(@RequestBody Player player) {
-        return new ViewPlayerInfo(playerService.createPlayer(player.getUsername(), player.getPassword()));
+        return new ViewPlayerInfo(playerService.createPlayer(player.getUsername(), player.getPassword(),player.getTournament()));
     }
 
 
@@ -78,7 +82,7 @@ public class UserController {
                 break;
             }
         }
-        scoreMath.processScores(playerService.getPlayerByUsername("_NOT_A_PLAYER_"), p);
+        scoreMath.processScores(playerService.getPlayerByUsername(genericUsername), p);
         playerService.updatePlayer(p);
         return new ViewPlayerMatchesGroups(p);
     }

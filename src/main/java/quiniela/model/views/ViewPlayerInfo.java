@@ -8,6 +8,7 @@ public class ViewPlayerInfo {
     private Integer points;
 
     public ViewPlayerInfo(Player player) {
+        if(player == null) return;
         this.username = player.getUsername();
         this.points = player.getPoints();
     }

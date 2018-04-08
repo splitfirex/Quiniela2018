@@ -7,16 +7,23 @@
   src: url("../font/FIFA_World_Cup_2018.ttf");
 }
 
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway');
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+
 html{
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'dusan';
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 2px;
   padding: 0;
   margin: 0;
   height: 100%;
-
+  color: white;
 }
 
 .container{
@@ -26,18 +33,40 @@ body {
 
   display: grid;
   grid-auto-columns: auto;
-  grid-auto-rows: 170px 60px auto auto auto 300px;
-  grid-row-gap: 10px;
+  grid-auto-rows: 170px 40px 40px auto auto auto 300px;
   grid-template-areas: 
   "head"
   "notf"
+  "quin"
   "cont"
   "grop"
   "fixt"
   "foot"
 }
 
+.quiniela{
+  text-align: center;
+  grid-area: quin;
+  background-color: rgba(19, 24, 49, 0.849);
 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+.section-title{
+  height: 36px;
+  padding-left: 15px;
+  padding-top: 15px;
+  line-height: 36px;
+  font-size: 1.6em;
+  color: white;
+ }
+ 
+ .groupsTitle{
+   color: black;
+ }
 
 .menuIcon{
   margin-left: 17px;
@@ -45,8 +74,8 @@ body {
 
 
 .flag{
-  height: 36px;
-  width: 50px;
+  height: 30px;
+  width: 40px;
   border-radius: 8px
 }
 
@@ -58,7 +87,7 @@ body {
 
 
 #header{
-  grid-area: "head";
+  grid-area: head;
   align-self: center;
   justify-self: center;
 }
@@ -67,25 +96,31 @@ body {
 #notification{
   background-color: rgba(19, 24, 49, 0.849);
 
-  grid-area: "notif";
-  font-family: "dusan";
+  grid-area: notf;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
 
 
-.team-box div:nth-child(1), .team-box div:nth-child(3){
-  font-family: "dusan";
-  color: white;
-  font-size: 1.7em;
+.team-box div.teamname{
+
   line-height: 36px;
   text-align: center;
   vertical-align: middle; 
 }
 
-.team-box div:nth-child(2){
+.team-box div.score{
+  line-height: 36px;
+  text-align: center;
+  font-size: 1.7em;
+  vertical-align: middle;
+}
+
+.team-box div.flag{
   line-height: 36px;
   margin: 0 auto;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .team-box{
@@ -106,7 +141,6 @@ body {
 }
 
 .team-box-sm div{
-  font-family: 'PT Sans', sans-serif;
   color: white;
   font-size: 1.1em;
   margin: 0 auto;
@@ -119,6 +153,8 @@ body {
 }
 
 .team-box-wcontrol{
+  align-items: center;
+  justify-items: center;
   text-align: center;
   grid-row-gap: 10px;
   color:white;
@@ -157,105 +193,94 @@ body {
 
 
 #content-wrap{
-  grid-area: "cont";
+  grid-area: cont;
 }
-
-.section-title{
- height: 36px;
- text-align: center;
- line-height: 36px;
- font-size: 1.6em;
- color: white;
- text-shadow: 2px 2px #3b3b3b;
- padding-bottom: 15px;
-}
-
-.groupsTitle{
-  background-color: rgba(54, 8, 8, 0.658);
-}
-
-.playerTitle{
-  background-color: rgba(24, 24, 29, 0.658);
-}
-
-.matchesTitle{
-  background-color: rgba(22, 22, 66, 0.658);
-}
-
 
 #content{
-  background-color: rgba(24, 24, 29, 0.658);
-  padding: 8px;
-  padding-top: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   display: grid;
-  grid-template-columns: repeat( auto-fill, minmax(190px, 1fr));
-  grid-template-rows: repeat( auto-fill, 1fr);
-  grid-gap: 8px;
-  padding-bottom: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
+  grid-auto-flow: row dense;
+  grid-auto-rows: 75px;
+  grid-row-gap: 5px;
 }
 
+#content  div{
+  font-size: 1.2em;
+  text-align: center;
+  vertical-align: middle;
+}
 
-.player{
-  height: 100px;
-  opacity: 1;
-  border-radius: 5px;
-
+#content > div{
+  padding-left: 10px;
+  padding-right: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  line-height: 75px;
+}
+
+#content div.p1{
+  background-color: brown;
+  grid-column:  span 1;  
+  line-height: 35px;
+  grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
 }
 
-.player div{
-  align-self: center;
-  justify-self: center;
-  font-family: "dusan";
-  opacity: 1;
-  color: white;
-  font-size: 1.5em;
+#content div.p2{
+  background-color: teal;
+  grid-column:  span 2;
 }
 
-.player div:nth-child(2){
-  grid-column-start: 2; grid-row-start: 2; font-size: 2em;
+#content div.p3{
+  background-color: steelblue;
+  grid-column:  span 3;
 }
+
+
+
+
+
+
+
+
 
 
 
 #groups-wrap{
-  grid-area: "grop";
+  grid-area: grop;
+  background-color:whitesmoke;
+  background-image: url("../img/bg3.png");
 }
 
 #groups{
-  background-color: rgba(54, 8, 8, 0.658);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  
   display: grid;
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
   grid-gap: 10px;
-  padding-bottom: 15px;
+
 }
 
 .group-box{
-  background: repeating-linear-gradient(
-    45deg,
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.4) 10px,
-    rgba(0, 0, 0, 0.6) 10px,
-    rgba(0, 0, 0, 0.6) 20px
-  );
+  background: rgba(100, 100, 100, 0.5);
   height: 200px;
   padding: 5px;
   padding-bottom: 20px;
 }
 
 .group-box-title{
-  font-family: 'dusan';
-  font-size: 2em;
+  font-size: 1.2em;
   grid-column: 1 / -1;
 }
 
 .group-box-content{
-  color: white;
-  font-family: 'PT Sans', sans-serif;
+  color: black;
   padding-bottom: 20px;
   display: grid;
   grid-gap: 5px;
@@ -269,13 +294,18 @@ body {
   border-bottom: white solid 1px;
 }
 
+
+
+
+
+
 #matches-wrap{
-  grid-area: "fixt";
+  grid-area: fixt;
 }
 
 #matches{
-  font-family: 'PT Sans', sans-serif;
-  background-color: rgba(22, 22, 66, 0.658);
+  padding-top: 10px;
+  padding-bottom: 10px;
   display: grid;
   grid-auto-columns: auto;
   grid-auto-rows: 30px;
@@ -284,17 +314,10 @@ body {
 }
 
 .match-box{
-  font-size: 1.2em;
   padding-left: 5px;
   padding-right: 5px;
   color: white;
-  background: repeating-linear-gradient(
-    45deg,
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.4) 10px,
-    rgba(0, 0, 0, 0.6) 10px,
-    rgba(0, 0, 0, 0.6) 20px
-  );
+  background-color: rgba(0, 0, 0, 0.5);
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 0.01fr 2fr;
   grid-gap: 5px;
@@ -307,7 +330,7 @@ body {
 }
 
 #footer{
-  grid-area: "foot";
+  grid-area: foot;
   background-color: rgba(100, 100, 100, 0.8);
 }
 
@@ -316,7 +339,7 @@ body {
   left: calc(100% - 50px);
   height: 100%;
   position: fixed;
-  width: 45vw;
+  width: 60vw;
   transition: left 0.5s;
   transition-timing-function: ease;
   /* background-color: rgba(51, 86, 151, 1); */
@@ -326,7 +349,7 @@ body {
 }
 
 .menuOn{
-  left:calc(100% - 45vw);
+  left:calc(100% - 60vw);
 }
 
 
@@ -370,6 +393,7 @@ body {
 }
 
 #modal{
+  font-family: "dusan";
   visibility: hidden;
   position: fixed;
   height: 100%;
@@ -383,6 +407,7 @@ body {
 }
 
 #modal.signIn{
+
   background-color: rgb(36, 56, 94);
 }
 
@@ -403,7 +428,7 @@ body {
 #modal div.content{
   display:grid;
   grid-template-columns: 1fr 2fr 1fr;
-  grid-template-rows: 100px repeat(3, auto) 250px;
+  grid-template-rows: 100px repeat(5, auto) 250px;
 }
 
 #modal div.content div{
@@ -413,7 +438,6 @@ body {
 }
 
 #modal div.content div:nth-child(1){
-  font-family: "dusan";
   font-size: 2em;
   margin-top: 20px;
 }
@@ -493,16 +517,16 @@ a:hover, a:active { text-decoration: none; color:darkcyan }
 
 
 #playerMatches-wrap{
-  grid-area: "fixt";
+  grid-area: fixt;
 }
 
 #playerMatches{
-  font-family: 'PT Sans', sans-serif;
-  background-color: rgba(22, 22, 66, 0.658);
+  padding-top: 10px;
+  padding-bottom: 10px;
+
   display: grid;
   grid-auto-columns: auto;
   grid-gap: 10px;
-  padding-bottom: 15px;
 }
 
 .playerMatchesItem{

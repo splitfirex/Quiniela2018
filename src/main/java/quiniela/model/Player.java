@@ -12,14 +12,22 @@ public class Player{
     @Id
     private long id;
     private String imageUrl;
+    private String tournament;
 
     @Indexed(unique = true)
     private String username;
     private String password;
 
     private Integer points;
+    private boolean isActive;
 
+    public String getTournament() {
+        return tournament;
+    }
 
+    public void setTournament(String tournament) {
+        this.tournament = tournament;
+    }
 
     private List<PlayerMatch> matchList = new ArrayList<>();
     private Map<String, Map<String,TeamGroup>> groupTeams = new HashMap<>();
@@ -87,5 +95,13 @@ public class Player{
             pm.setvTeam(m.getVisitorTeam());
             this.getMatchList().add(pm);
         }
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
