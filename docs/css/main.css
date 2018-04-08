@@ -118,6 +118,25 @@ body {
   justify-self: right;
 }
 
+.team-box-wcontrol{
+  text-align: center;
+  grid-row-gap: 10px;
+  color:white;
+  width: 150px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.control-team{
+  font-size: 1.2em;
+  line-height: 36px;
+}
+
+.control-points{
+  font-size: 2em;
+  line-height: 36px;
+}
 
 .last-result{
   display: grid;
@@ -488,7 +507,22 @@ a:hover, a:active { text-decoration: none; color:darkcyan }
 
 .playerMatchesItem{
   display: grid;
-  grid-template-rows: 1fr 1fr 2fr 1fr;
+  grid-template-rows: 30px 1fr;
+  background:repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.4) 10px,
+    rgba(0, 0, 0, 0.6) 10px,
+    rgba(0, 0, 0, 0.6) 20px
+  );
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.playerMatchesItem > div:nth-child(1){
+  color: white;
+  text-align: center;
+  font-size: 1.2em; 
 }
 
 .controls{
