@@ -19,9 +19,13 @@ html {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
+  max-width: 100%;
+  overflow-x: hidden;
   font-family: 'dusan', sans-serif;
   letter-spacing: 2px;
   padding: 0;
@@ -31,6 +35,8 @@ body {
 }
 
 .container {
+  position: relative;
+  left: 50vw;
   background-color: rgb(89, 152, 211);
   background-image: url("../img/bg3.png");
   background-position: center center;
