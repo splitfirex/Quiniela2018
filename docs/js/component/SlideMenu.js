@@ -1,7 +1,7 @@
 class SlideMenu extends React.Component {
 
     render() {
-        return <div id="slideMenu" className="menu">
+        return <div id="slideMenu" className="slideMenu">
             <div className="menuHeader">
                 <div id="menuBtnOpen" className="menuIcon">
                     <i className="fas fa-bars fa-lg" style={{ color: 'white' }}></i>

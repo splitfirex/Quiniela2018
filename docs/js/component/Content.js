@@ -7,7 +7,7 @@ class Content extends React.Component {
                     <div>5</div>
                     <div>|</div>
                     <div>SPLITFIRE</div>
-                    <div> <i class="fa-inverse fas fa-at"></i></div>
+                    <div> <i className="fa-inverse fas fa-at"></i></div>
                     <div>
                         <i className="fa-inverse fas fa-angle-double-down" style={{ color: "tomato" }}></i>
                     </div>

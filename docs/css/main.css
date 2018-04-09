@@ -43,8 +43,23 @@ body {
   background-size: cover;
   display: grid;
   grid-auto-columns: auto;
-  grid-auto-rows: 170px 30px 40px auto auto auto 300px;
-  grid-template-areas: "head" "notf" "quin" "cont" "grop" "fixt" "foot"
+  grid-auto-rows: 40px 170px 30px 40px auto auto auto 300px;
+  grid-template-areas: 
+  "menu" 
+  "head" 
+  "notf" 
+  "quin" 
+  "cont" 
+  "grop" 
+  "fixt" 
+  "foot";
+
+  transition: left 0.5s;
+  transition-timing-function: ease;
+}
+
+.container.showMenu {
+  left: -50vw;
 }
 
 .section-title {
