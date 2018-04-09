@@ -36,11 +36,11 @@ body {
 
 .container {
   position: relative;
-  left: 50vw;
+  z-index: 2;
   background-color: rgb(89, 152, 211);
   background-image: url("../img/bg3.png");
   background-position: center center;
-  background-repeat: repeat-y;
+  background-size: cover;
   display: grid;
   grid-auto-columns: auto;
   grid-auto-rows: 170px 30px 40px auto auto auto 300px;

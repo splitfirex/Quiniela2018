@@ -1,7 +1,8 @@
 .menu {
-    left: calc(100% - 50px);
+    z-index: 1;
     height: 100%;
-    position: fixed;
+    position: absolute;
+    top: 0px;
     width: 60vw;
     transition: left 0.5s;
     transition-timing-function: ease;
