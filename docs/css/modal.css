@@ -1,0 +1,110 @@
+#modal {
+    font-family: "dusan";
+    visibility: hidden;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    background-image: url("../img/bg3.png");
+    transition: visibility 0s, opacity 1s linear;
+    opacity: 0;
+    color: white;
+}
+
+#modal.signIn {
+    background-color: rgb(36, 56, 94);
+}
+
+#modal.register {
+    color: black;
+    background-color: rgb(219, 219, 219);
+}
+
+#modal.register a {
+    color: black;
+}
+
+#modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#modal div.content {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 100px repeat(5, auto) 250px;
+}
+
+#modal div.content div {
+    grid-column: 2;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+#modal div.content div:nth-child(1) {
+    font-size: 2em;
+    margin-top: 20px;
+}
+
+#modal div.content div input {
+    font-family: "dusan";
+    width: 100%;
+    text-align: center;
+    background-color: rgb(36, 56, 94);
+    border: none;
+    color: white;
+    font-size: 1em;
+    border-bottom: white solid 2px;
+    line-height: 2em;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+#modal.register div.content div input {
+    color: black;
+    border-bottom: black solid 2px;
+    background: none;
+}
+
+#modal .sign {
+    font-family: "dusan";
+    background-color: rgb(36, 56, 94);
+    color: white;
+    font-size: 1em;
+    line-height: 2em;
+    border: white solid 2px;
+    transition-duration: all 2s;
+}
+
+#modal.register .sign {
+    font-family: "dusan";
+    background: none;
+    color: black;
+    font-size: 1em;
+    line-height: 2em;
+    border: black solid 2px;
+    transition-duration: all 2s;
+}
+
+#modal.register .sign:active {
+    background-color: black;
+    color: white;
+}
+
+#modal .sign:active {
+    background-color: rgb(255, 255, 255);
+    color: rgb(36, 56, 94);
+}
+
+#modal input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    font-family: "dusan";
+    opacity: 0.5;
+    /* Firefox */
+}
+
+#modal.register input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgb(48, 48, 48);
+}

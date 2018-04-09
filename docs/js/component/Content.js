@@ -4,27 +4,22 @@ class Content extends React.Component {
             <div className="section-title playerTitle">PLAYERS</div>
             <div id="content">
                 <div className="p1 g-1g">
-                    <div>splitfire</div>
-                    <div>234</div>
+                    <div>5</div>
+                    <div>|</div>
+                    <div>SPLITFIRE</div>
+                    <div> <i class="fa-inverse fas fa-at"></i></div>
+                    <div>
+                        <i className="fa-inverse fas fa-angle-double-down" style={{ color: "tomato" }}></i>
+                    </div>
                 </div>
                 <div className="p1 g-2g">
-                    <div>splitfire</div>
-                    <div>234</div>
-                </div>
-                <div className="p1 g-1g">
-                    <div>splitfire</div>
-                    <div>234</div>
-                </div>
-                <div className="p2 g-2g">
-                    <div>splitfire</div>
+                    <div>5</div>
                     <div>|</div>
-                    <div>234</div>
-                </div>
-
-                <div className="p2 g-1g">
-                    <div>splitfire</div>
-                    <div>|</div>
-                    <div>234</div>
+                    <div>SPLITFIRE</div>
+                    <div><i className="fa-inverse fas fa-user" ></i></div>
+                    <div>
+                        <i className="fa-inverse fas fa-angle-double-up" style={{ color: "greenyellow" }}></i>
+                    </div>
                 </div>
             </div>
         </div>

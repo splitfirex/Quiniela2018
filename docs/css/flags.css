@@ -1,15 +1,204 @@
-.korea{
-    background-image: url("../img/flags/f1.svg")
-}
+/*AMERICA*/
 
-.smBel {
-    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/br.svg);
+.COL {
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/co.svg);
     background-size: cover;
     background-position: center center;
 }
 
-.smCro{
+.ARG {
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/ar.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.BRA{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/br.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.PER{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/pe.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.URU{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/uy.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.MEX{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/mx.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.CRC{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/cr.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.PNM{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/pa.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+
+/*EUROPA*/
+
+.POR{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/pt.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.SPA{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/es.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.FRA{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/fr.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.BEL {
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/be.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.ENG {
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/en.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.GER {
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/de.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.SWZ {
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/ch.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.CRO{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/hr.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.SRB{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/rs.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.POL{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/pl.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.SWE{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/se.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.DEN{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/dk.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.ICE{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/is.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.RUS{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/rs.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+/*AFRICA*/
+
+.TUN{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/tn.svg);
+    background-size: cover;
+    background-position: center center;
+}
+
+.MRC{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/ma.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.SEN{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/sn.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.NGA{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/ng.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.EGY{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/eg.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+
+/* ASIA */
+
+.JPN{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/hr.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.KOR{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/kr.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.SAR{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/sa.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+.IRA{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/ir.svg);
+    background-size: cover;
+    background-position: center center;   
+}
+
+
+/* */
+
+.AUS{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/au.svg);
     background-size: cover;
     background-position: center center;   
 }

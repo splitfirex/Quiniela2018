@@ -10,6 +10,6 @@ class Quiniela extends React.Component {
                 <i className="far fa-circle" style={{ color:'white'}}></i>
                 <i className="fa-inverse fas fa-angle-double-right" data-fa-transform="shrink-6"></i>
             </span></div>
-        </div >
+        </div>
     }
 }

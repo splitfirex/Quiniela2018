@@ -7,9 +7,9 @@ class Matches extends React.Component {
                     <div className="fecha">30/07</div>
                     <div className="hora">15:10</div>
                     <div className="team-box-sm">
-                        <div>KOR</div>
+                        <div>BEL</div>
                         <div>
-                            <div className="smflag smBel"></div>
+                            <div className="flag  BEL"></div>
                         </div>
                         <div>2</div>
                     </div>
@@ -17,7 +17,7 @@ class Matches extends React.Component {
                     <div className="team-box-sm">
                         <div>2</div>
                         <div>
-                            <div className="smflag smBel"></div>
+                            <div className="flag  KOR"></div>
                         </div>
                         <div>KOR</div>
                     </div>
@@ -25,10 +25,10 @@ class Matches extends React.Component {
                 <div className="match-box">
                     <div className="fecha">30/07</div>
                     <div className="hora">15:10</div>
-                    <div className="team-box-sm" style={{ justifySelf: 'right' }}>
-                        <div>KOR</div>
+                    <div className="team-box-sm">
+                        <div>BEL</div>
                         <div>
-                            <div className="smflag smBel"></div>
+                            <div className="flag  BEL"></div>
                         </div>
                         <div>2</div>
                     </div>
@@ -36,7 +36,7 @@ class Matches extends React.Component {
                     <div className="team-box-sm">
                         <div>2</div>
                         <div>
-                            <div className="smflag smBel"></div>
+                            <div className="flag  KOR"></div>
                         </div>
                         <div>KOR</div>
                     </div>

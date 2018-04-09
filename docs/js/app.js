@@ -1,10 +1,8 @@
 class App extends React.Component {
 
-
-
     render() {
         return [
-            <div  key="header" className="header">
+            <div  key="header" className="header" id="header">
                 <img src="img/woldcup.svg" width="100%" />
             </div>,
             <Notification key="notification"/>,
@@ -12,7 +10,7 @@ class App extends React.Component {
             <Content key="content"/>,
             <Groups key="groups"/>,
             <Matches key="matches"/>,
-            <PlayerMatches key="PlayerMatches"/>,
+            //<PlayerMatches key="PlayerMatches"/>,
             <SlideMenu key="SlideMenu"/>
         ]
     }
