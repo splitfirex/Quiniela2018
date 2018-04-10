@@ -55,7 +55,7 @@ class App extends React.Component {
                 <Content />
                 <Groups />
                 <Matches />
-                <PlayerMatches />
+               {/*<PlayerMatches />*/}
             </div>,
             <Modal key="modal" className={"modal " + this.state.showModal} fnCloseModal={this.closeModal.bind(this)} />
         ]

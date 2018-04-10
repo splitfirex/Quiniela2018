@@ -42,7 +42,6 @@
 #modal .content {
     background-color: white;
     color: black;
-    height: calc(100vh - 50px);
 }
 
 #modal .users {
