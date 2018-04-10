@@ -53,12 +53,11 @@
     grid-auto-rows: 48px;
     padding-top: 30px;
     padding-bottom: 30px;
-    grid-row-gap: 10px;
 }
 
 .slideMenuContent >div{
     display: grid;
-    grid-template-columns: 70px auto 50px;
+    grid-template-columns: 60px auto 50px;
 }
 
 .slideMenuContent >div:not(:empty):active{
@@ -67,7 +66,7 @@
 
 .slideMenuContent > div > div:nth-child(2) {
     padding-left: 20px;
-    font-size: 1.2em;
+    font-size: 1em;
     align-self: center;
     justify-self: left;
 }
