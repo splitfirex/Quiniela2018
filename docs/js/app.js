@@ -14,7 +14,7 @@ class App extends React.Component {
         });
     }
 
-    closeMenu(){
+    closeMenu() {
         this.setState({
             showMenu: ""
         });
@@ -26,15 +26,15 @@ class App extends React.Component {
         });
     }
 
-    closeModal(){
+    closeModal() {
         this.setState({
             showModal: ""
         });
     }
 
     render() {
-        return [
-            <SlideMenu key="SlideMenu" fnCloseMenu={this.closeMenu.bind(this)} fnShowModal={this.showModal.bind(this)}/>,
+        return <div>
+            <SlideMenu key="SlideMenu" fnCloseMenu={this.closeMenu.bind(this)} fnShowModal={this.showModal.bind(this)} />
             <div key="container" id="container" className={"container " + this.state.showMenu}>
                 <div className="menu">
                     <div onClick={this.showMenu.bind(this)} >
@@ -55,10 +55,10 @@ class App extends React.Component {
                 <Content />
                 <Groups />
                 <Matches />
-               {/*<PlayerMatches />*/}
-            </div>,
+                {/*<PlayerMatches />*/}
+            </div>
             <Modal key="modal" className={"modal " + this.state.showModal} fnCloseModal={this.closeModal.bind(this)} />
-        ]
+        </div>
 
     }
 }
