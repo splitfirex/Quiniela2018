@@ -1,7 +1,5 @@
 .menu{
     position: fixed;
-    background-color: rgba(255,255,255,0.2);
-
     display: grid;
     grid-template-columns: 50px 1fr;
     align-items: center;
@@ -11,58 +9,89 @@
     height: 50px;
 }
 
-
-
 .slideMenu {
-    z-index: 1;
-    height: 100%;
     position: absolute;
     top: 0px;
-    width: 60vw;
+
+    font-family: "Montserrat", sans-serif;
+    width: calc(100% - 50px);
+    overflow: hidden;
+    background-color: rgb(76, 125, 172);
+    z-index: 1;
+    height: 100%;
+
     transition: left 0.5s;
     transition-timing-function: ease;
-    /* background-color: rgba(51, 86, 151, 1); */
+    overflow: auto;
+
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 50px auto;
+    grid-template-rows: 130px auto;
 }
 
-.slideMenuOn {
-    left: calc(100% - 60vw);
-}
-
-.slideMenuHeader {
-    color: white;
+.slideMenuHeader{
+    text-align: center;
+    background-color: rgb(46, 94, 138);
     grid-column: 1/-1;
-    height: 50px;
-    width: 100%;
-    background-color: rgb(41, 66, 112);
+
     display: grid;
-    align-items: center;
-    justify-self: right;
-    grid-template-columns: 50px 1fr;
-    transition: justify-self 0.5s;
-    transition-timing-function: ease;
+    grid-template-rows: 100px auto;
 }
 
-.slideMenuContent {
-    height: 100%;
-    grid-column: 2/-1;
-    background-color: rgb(41, 66, 112);
-    display: grid;
+.slideMenuHeader div:nth-child(2){
+    line-height: 30px;
+    background-color: rgb(0,0, 0,.5);
 }
 
-.slideMenuContentItems {
+.slideMenuContent{
+    grid-column: 1/-1;
+    background-color: white;
+    color:black;
+
     display: grid;
-    grid-template-rows: repeat(auto-fit, 50px);
-    grid-gap: 10px;
+    grid-auto-columns: auto;
+    grid-auto-rows: 48px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    grid-row-gap: 10px;
 }
 
-.slideMenuItem {
-    color: white;
-    background-color: rgb(36, 56, 94);
-    font-size: 1.4em;
-    text-align: left;
-    line-height: 55px;
+.slideMenuContent >div{
+    display: grid;
+    grid-template-columns: 70px auto 50px;
+}
+
+.slideMenuContent >div:not(:empty):active{
+    background-color: lightgray;
+}
+
+.slideMenuContent > div > div:nth-child(2) {
     padding-left: 20px;
+    font-size: 1.2em;
+    align-self: center;
+    justify-self: left;
+}
+
+.slideMenuContent > div > div:nth-child(1), 
+.slideMenuContent > div > div:nth-child(3) {
+    font-size: 1.5em;
+    align-self: center;
+    justify-self: center;
+}
+
+.slideMenuContent > div > div:nth-child(3){
+    color: white;
+    font-weight: bold;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    background-color: tomato;
+    line-height: 48px;
+}
+
+.slideMenuSeparator{
+    display: block !important;
+    background-color: darkgray;
+    height: 10px;
+    align-self: center;
 }

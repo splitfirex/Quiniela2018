@@ -1,45 +1,63 @@
 class SlideMenu extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
+    moveTo(destination){
+        this.props.fnCloseMenu();
+        document.location = destination;
+    }
+
     render() {
         return <div id="slideMenu" className="slideMenu">
-            <div className="menuHeader">
-                <div id="menuBtnOpen" className="menuIcon">
-                    <i className="fas fa-bars fa-lg" style={{ color: 'white' }}></i>
+            <div className="slideMenuHeader">
+                <div>
+                    Splitfire
                 </div>
-                <div style={{ textAlign: 'center' }}>HOLAAA danielito</div>
+                <div>
+                    Select ladderboard
+                </div>
             </div>
-            <div className="menuContent">
-                <div className="menuContentItems">
-                    <div className="menuItem">
-                        <a href="#" className="itemClick">
-                            <i className="fas fa-home fa-sm"></i>
-                            <span>Home</span>
-                        </a>
-                    </div>
-                    <div className="menuItem">
-                        <a href="#content-wrap" className="itemClick">
-                            <i className="fas fa-users fa-sm"></i>
-                            <span>Players</span>
-                        </a>
-                    </div>
-                    <div className="menuItem">
-                        <a href="#groups-wrap" className="itemClick">
-                            <i className="fas fa-compress fa-sm"></i>
-                            <span>Groups</span>
-                        </a>
-                    </div>
-                    <div className="menuItem">
-                        <a href="#matches-wrap" className="itemClick">
-                            <i className="fas fa-futbol fa-sm"></i>
-                            <span>Matches</span>
-                        </a>
-                    </div>
-                    <div className="menuItem">
-                        <a href="javascript:void(0); displaySignIn();">
-                            <i className="fas fa-sign-in-alt fa-sm"></i>
-                            <span>Sign in</span>
-                        </a>
-                    </div>
+            <div className="slideMenuContent">
+                <div onClick={this.moveTo.bind(this, "#container")}>
+                    <div><i className="fas fa-home"></i></div>
+                    <div>Home</div>
+
+                </div>
+                <div onClick={this.moveTo.bind(this, "#groups")}>
+                    <div><i className="fas fa-list"></i></div>
+                    <div>Groups</div>
+                </div>
+                <div onClick={this.moveTo.bind(this, "#matches")}>
+                    <div><i className="fas fa-futbol"></i></div>
+                    <div>Matches</div>
+                </div>
+                <div className="slideMenuSeparator">
+                </div>
+                <div onClick={this.props.fnShowModal}>
+                    <div><i className="fas fa-plus"></i></div>
+                    <div>New Ladderboard</div>
+                </div>
+                <div onClick={this.props.fnShowModal}>
+                    <div><i className="fas fa-sort-amount-up"></i></div>
+                    <div>Join Ladderboard</div>
+                </div>
+                <div  onClick={this.props.fnShowModal}>
+                    <div><i className="fas fa-futbol"></i></div>
+                    <div>My Matches</div>
+                </div>
+                <div className="slideMenuSeparator">
+                </div>
+                <div onClick={this.props.fnShowModal}>
+                    <div><i className="fas fa-users"></i></div>
+                    <div>Manage players</div>
+                    <div>2</div>
+                </div>
+                <div> </div>
+                <div onClick={this.props.fnShowModal}>
+                    <div><i className="fas fa-sign-out-alt"></i></div>
+                    <div>Sign out</div>
                 </div>
             </div>
         </div>
