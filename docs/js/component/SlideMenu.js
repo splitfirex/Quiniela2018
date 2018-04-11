@@ -55,6 +55,13 @@ class SlideMenu extends React.Component {
                         <div>2</div>
                     </div>
                     <div> </div>
+                    <div> </div>
+                    <div> </div>
+                    <div> </div>
+                    <div> </div>
+                    <div> </div>
+                    <div> </div>
+                    <div> </div>
                     <div onClick={this.props.fnShowModal}>
                         <div><i className="fas fa-sign-out-alt"></i></div>
                         <div>Sign out</div>

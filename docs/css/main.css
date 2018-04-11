@@ -8,6 +8,7 @@
 }
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway');
 
+
 html {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -23,14 +24,13 @@ html {
 }
 
 body {
-  position: relative;
   max-width: 100%;
   width: 100%;
-  height: 100%;
   overflow-x: hidden;
   
-  font-family: 'dusan', sans-serif;
-  letter-spacing: 2px;
+  font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+  font-size: 0.876em;
+  letter-spacing: 1px;
   padding: 0;
   margin: 0;
  
@@ -38,32 +38,25 @@ body {
   scroll-behavior: smooth;
 }
 
-body.fixedSize {
-  height: 100vh;
-  overflow: hidden;
-}
+
 
 .container {
   position: relative;
   transition: left 0.5s;
   transition-timing-function: ease;
-  overflow-y: unset;
-  height:unset;
 
   left:0;
   z-index: 5;
   background-color: rgb(89, 152, 211);
   background-image: url("../img/bg3.png");
-  background-position: center center;
-  background-size: cover;
+ 
   display: grid;
   grid-auto-columns: auto;
-  grid-auto-rows: 40px 170px 30px 40px auto auto auto 300px;
+  grid-auto-rows: 40px 170px 30px auto auto auto 300px;
   grid-template-areas: 
   "menu" 
   "head" 
-  "notf" 
-  "quin" 
+  "notf"  
   "cont" 
   "grop" 
   "fixt" 
@@ -72,7 +65,7 @@ body.fixedSize {
 
 .container.showMenu {
   left: calc(100% - 50px);
-
+  overflow-y: hidden; 
 }
 
 .section-title {
@@ -82,17 +75,6 @@ body.fixedSize {
   line-height: 36px;
   color: white;
 }
-
-.quiniela {
-  text-align: center;
-  grid-area: quin;
-  background-color: rgba(0,0,0, 0.7);
-  display: grid;
-  grid-template-columns: 50px 1fr 50px;
-  justify-items: center;
-  align-items: center;
-}
-
 
 .menuIcon {
   margin-left: 17px;

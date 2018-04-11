@@ -53,7 +53,7 @@ class App extends React.Component {
                     <img src="img/woldcup.svg" width="100%" />
                 </div>
                 <Notification />
-                <Quiniela />
+
                 <Content />
                 <Groups />
                 <Matches />

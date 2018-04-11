@@ -12,10 +12,10 @@
 .slideMenu-wrap{
     position: fixed;
     top: 0px;
+    left:0px;
     z-index: 1;
     overflow-y: scroll;
-    height: 100vh;
-
+    height: calc(100vh);    ;
     font-family: "Montserrat", sans-serif;
     width: calc(100vw - 50px);    
     background-color: rgb(76, 125, 172);
@@ -23,6 +23,7 @@
 
 .slideMenu {
     display: grid;
+
    
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 130px auto;
@@ -47,6 +48,9 @@
     grid-column: 1/-1;
     background-color: white;
     color:black;
+    overflow-y: auto;
+    width: 100%;
+    height: calc(100% - 30px);
 
     display: grid;
     grid-auto-columns: auto;
