@@ -41,7 +41,10 @@ body {
 .container {
   transition: left 0.5s;
   transition-timing-function: ease;
+  overflow-y: unset;
+
   left:0;
+  height: unset;
   position: relative;
   z-index: 5;
   background-color: rgb(89, 152, 211);
@@ -63,6 +66,8 @@ body {
 }
 
 .container.showMenu {
+  overflow-y: auto;
+  height: 100vh;
   left: calc(100% - 50px);
 }
 
