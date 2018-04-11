@@ -1,15 +1,13 @@
 /* ESTILOS NORMALES (para m�viles en vertical)
    ========================================================================= */
 
-@import url('https://fonts.googleapis.com/css?family=PT+Sans');
+
 @font-face {
   font-family: "dusan";
   src: url("../font/FIFA_World_Cup_2018.ttf");
 }
-
-@import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+
 html {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -21,14 +19,16 @@ html {
   scroll-behavior: smooth;
   max-width: 100vw;
   overflow-x: hidden;
-  overflow-y: auto;
+  height: 100%;
 }
 
 body {
+  position: relative;
   max-width: 100%;
   width: 100%;
-  
+  height: 100%;
   overflow-x: hidden;
+  
   font-family: 'dusan', sans-serif;
   letter-spacing: 2px;
   padding: 0;
@@ -38,14 +38,19 @@ body {
   scroll-behavior: smooth;
 }
 
+body.fixedSize {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .container {
+  position: relative;
   transition: left 0.5s;
   transition-timing-function: ease;
   overflow-y: unset;
+  height:unset;
 
   left:0;
-  height: unset;
-  position: relative;
   z-index: 5;
   background-color: rgb(89, 152, 211);
   background-image: url("../img/bg3.png");
@@ -66,9 +71,8 @@ body {
 }
 
 .container.showMenu {
-  overflow-y: auto;
-  height: 100vh;
   left: calc(100% - 50px);
+
 }
 
 .section-title {
