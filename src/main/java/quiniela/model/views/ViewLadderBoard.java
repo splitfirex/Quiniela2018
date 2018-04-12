@@ -13,29 +13,33 @@ import java.util.Map;
 public class ViewLadderBoard extends TokenAbleView {
 
 
-    private long id;
+    private Long id;
     private String name;
     private Map<String, TypePlayerState> listPlayers;
+    private List<String> listAdmin;
 
-    public static List<ViewLadderBoard> fromList(List<LadderBoard> boards){
-        List<ViewLadderBoard>  result = new ArrayList<>();
-        for(LadderBoard board: boards){
+
+    public static List<ViewLadderBoard> fromList(List<LadderBoard> boards) {
+        List<ViewLadderBoard> result = new ArrayList<>();
+        for (LadderBoard board : boards) {
             result.add(new ViewLadderBoard(board));
         }
         return result;
     }
 
-    public ViewLadderBoard(LadderBoard board){
+    public ViewLadderBoard(LadderBoard board) {
+        if (board == null) return;
         this.id = board.getId();
         this.name = board.getName();
         this.listPlayers = board.getListPlayers();
+        this.listAdmin = board.getListAdmins();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,5 +57,13 @@ public class ViewLadderBoard extends TokenAbleView {
 
     public void setListPlayers(Map<String, TypePlayerState> listPlayers) {
         this.listPlayers = listPlayers;
+    }
+
+    public List<String> getListAdmin() {
+        return listAdmin;
+    }
+
+    public void setListAdmin(List<String> listAdmin) {
+        this.listAdmin = listAdmin;
     }
 }

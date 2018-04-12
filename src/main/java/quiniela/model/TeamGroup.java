@@ -1,32 +1,26 @@
 package quiniela.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TeamGroup {
 
-    private int p = 0;
-    private long pg = 0;
-    private long ng = 0;
+    private String name;
+    Map<Long,TeamGroupDetails> teamGroupsDetails = new HashMap<>();
 
-    public int getP() {
-        return p;
+    public String getName() {
+        return name;
     }
 
-    public void setP(int p) {
-        this.p = p;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public long getPg() {
-        return pg;
+    public Map<Long, TeamGroupDetails> getTeamGroupsDetails() {
+        return teamGroupsDetails;
     }
 
-    public void setPg(long pg) {
-        this.pg = pg;
-    }
-
-    public long getNg() {
-        return ng;
-    }
-
-    public void setNg(long ng) {
-        this.ng = ng;
+    public void setTeamGroupsDetails(Map<Long, TeamGroupDetails> teamGroupsDetails) {
+        this.teamGroupsDetails = teamGroupsDetails;
     }
 }

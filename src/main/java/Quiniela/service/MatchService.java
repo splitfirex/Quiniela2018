@@ -2,6 +2,7 @@ package quiniela.service;
 
 import org.springframework.stereotype.Service;
 import quiniela.model.Match;
+import quiniela.model.PlayerMatch;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface MatchService {
     List<Match> getMatchByGroup(String Group);
 
     List<Match> getMatchByTeam(String Team);
+
+    List<PlayerMatch> getPlayerMatches();
 }

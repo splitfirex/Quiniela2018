@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import quiniela.model.LadderBoard;
 import quiniela.model.Player;
 import quiniela.model.PlayerMatch;
+import quiniela.model.enums.TypePlayerState;
+import quiniela.model.form.JoinLadderForm;
 import quiniela.model.form.LoginForm;
 import quiniela.model.form.PlayerMatchForm;
 import quiniela.model.views.ViewLadderBoard;
@@ -45,8 +47,36 @@ public class UserController {
 
     @RequestMapping(value = "/ladders", method = RequestMethod.GET)
     @ResponseBody
-    public List<ViewLadderBoard> getLadders(@RequestBody LoginForm form) {
+    public List<ViewLadderBoard> getLadders() {
         return ViewLadderBoard.fromList(ladderBoardService.getAllTournaments());
+    }
+
+    @RequestMapping(value = "/joinladder", method = RequestMethod.POST)
+    @ResponseBody
+    public ViewLadderBoard joinLadder(@RequestBody JoinLadderForm form) {
+        Player p = loginService.getPlayerByToken(form.getToken());
+        if(p == null ) return null;
+        LadderBoard t= ladderBoardService.getTournamentById(form.getIdLadder());
+        if(loginService.encode(form.getPassword())
+                .equals(t.getPassword())){
+            t= ladderBoardService.addPlayer(t,p,TypePlayerState.INACTIVE);
+            if(t == null) return null;
+            return new ViewLadderBoard(t);
+        }
+
+        return null;
+    }
+
+
+    @RequestMapping(value = "/createladder", method = RequestMethod.POST)
+    @ResponseBody
+    public ViewLadderBoard createLadder(@RequestBody JoinLadderForm form) {
+        Player p = loginService.getPlayerByToken(form.getToken());
+        if(p == null ) return null;
+
+        LadderBoard l = ladderBoardService.createTournament(form.getNameladder(),form.getToken(),form.getPassword());
+
+        return l != null ? new ViewLadderBoard(l).setToken(form.getToken()) : null;
     }
     
 

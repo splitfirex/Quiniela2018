@@ -18,6 +18,14 @@ public class LadderBoardPlayer {
         this.id = id;
     }
 
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
     public HashMap<Long, PlayerMatch> getListMatches() {
         return listMatches;
     }
@@ -32,13 +40,5 @@ public class LadderBoardPlayer {
 
     public void setTeamGroup(HashMap<Long, quiniela.model.TeamGroup> teamGroup) {
         TeamGroup = teamGroup;
-    }
-
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
     }
 }

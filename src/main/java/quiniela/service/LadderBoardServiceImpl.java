@@ -26,9 +26,17 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private MatchService matchService;
+
     @PostConstruct
     private void init() {
         ladderBoardRepository.deleteAll();
+        LadderBoard l = new LadderBoard();
+        l.setId(counter.incrementAndGet());
+        l.setName("_NOT_A_LADDERBOARD_");
+
+        ladderBoardRepository.save(l);
     }
 
     @Override
@@ -63,21 +71,20 @@ public class LadderBoardServiceImpl implements LadderBoardService {
 
     @Override
     public LadderBoard createTournament(String name, String token, String password) {
+        if(ladderBoardRepository.findByName(name) != null) return null;
+
         LadderBoard t =  new LadderBoard();
         t.setName(name);
         t.setPassword(loginService.encode(password));
         t.setId(counter.incrementAndGet());
 
         Player p = loginService.getPlayerByToken(token);
-        ladderBoardRepository.save(t);
-        addPlayer(t.getId(),p, TypePlayerState.ACTIVE);
+        addPlayer(t,p, TypePlayerState.ACTIVE);
+        setAdmin(t,p,true);
+
         return t;
     }
 
-    @Override
-    public List<LadderBoard> getLadderBoardsByUsername(String username) {
-        return ladderBoardRepository.findByUsername(username);
-    }
 
     @Override
     public List<LadderBoard> getPublicLadderBoard() {
@@ -85,27 +92,27 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     }
 
     @Override
-    public LadderBoard addPlayer(long idTournament, Player player, TypePlayerState state) {
-        LadderBoard t =  ladderBoardRepository.findById(idTournament);
-        t.getListPlayers().put(player.getUsername(),state);
+    public LadderBoard addPlayer(LadderBoard t, Player player, TypePlayerState state) {
+        if(t.getListPlayers().keySet().contains(player.getUsername())) return null;
+        t.addPlayer(player,matchService.getPlayerMatches(),state);
         ladderBoardRepository.save(t);
         return t;
     }
 
     @Override
-    public LadderBoard removePlayer(long idTournament, Player player) {
-        LadderBoard t =  ladderBoardRepository.findById(idTournament);
-        t.getListPlayers().remove(player.getUsername());
+    public LadderBoard removePlayer(LadderBoard t, Player player) {
+        t.removePlayer(player);
         ladderBoardRepository.save(t);
-        return null;
+        return t;
     }
 
     @Override
-    public LadderBoard setAdmin(long idTournament, Player player, boolean set) {
-        LadderBoard t =  ladderBoardRepository.findById(idTournament);
+    public LadderBoard setAdmin(LadderBoard t, Player player, boolean set) {
         if(set){
+            if(t.getListAdmins().contains(player.getUsername())) return null;
             t.getListAdmins().add(player.getUsername());
         }else{
+            if(!t.getListAdmins().contains(player.getUsername())) return null;
             t.getListAdmins().remove(player.getUsername());
         }
         ladderBoardRepository.save(t);

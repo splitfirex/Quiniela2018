@@ -3,6 +3,7 @@ package quiniela.utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import quiniela.model.*;
+import quiniela.service.GroupService;
 import quiniela.service.MatchService;
 import quiniela.service.TeamService;
 
@@ -19,34 +20,41 @@ public class ScoreMath {
     @Autowired
     MatchService matchService;
 
+    @Autowired
+    GroupService groupService;
+
     public void processScores(LadderBoard l, Long playerId) {
         List<Match> matches = matchService.getAllMatches();
-        HashMap<Long,PlayerMatch> myMatches = l.getLadderBoardPlayers().get(playerId).getListMatches();
+        HashMap<Long, PlayerMatch> myMatches = l.getLadderBoardPlayers().get(playerId).getListMatches();
+        LadderBoardPlayer lbp = l.getLadderBoardPlayers().get(playerId);
 
         int points = 0;
-       for(Match match:  matches){
-           if(match.getScoreHomeTeam() == null || match.getScoreVisitorTeam() == null ) continue;
-           PlayerMatch myMatch = myMatches.get(match.getId());
-           if(myMatch == null) continue;
+        for (Match match : matches) {
+            if (match.getScoreHomeTeam() == null || match.getScoreVisitorTeam() == null) continue;
+            PlayerMatch myMatch = myMatches.get(match.getId());
+            if (myMatch == null) continue;
 
 
-           if (match.getScoreVisitorTeam() != null
-                   && myMatch.gethS() != null) {
-               // 3 points same score
-               if (sameTeam(match, myMatch) && sameScore(match, myMatch)) {
-                   points += 3;
-               }
-               //1 point same result
-               if (sameTeam(match, myMatch) && sameResult(match, myMatch)) {
-                   points += 1;
-               }
-           }
+            if (match.getScoreVisitorTeam() != null
+                    && myMatch.gethS() != null) {
+                // 3 points same score
+                if (sameTeam(match, myMatch) && sameScore(match, myMatch)) {
+                    points += 3;
+                }
+                //1 point same result
+                if (sameTeam(match, myMatch) && sameResult(match, myMatch)) {
+                    points += 1;
+                }
+            }
 
-           //Reasign team to matches
+            if (myMatch.gethS() != null && myMatch.getvS() != null) {
 
-       }
+            }
 
-       l.getLadderBoardPlayers().get(playerId).setPoints(points);
+        }
+
+        l.getLadderBoardPlayers().get(playerId).setPoints(points);
+
 
     }
 
@@ -65,7 +73,7 @@ public class ScoreMath {
                 || (m1.getScoreVisitorTeam() < m1.getScoreHomeTeam() && m2.getvS() < m2.gethS());
     }
 
-    private TeamGroup assignPoints(PlayerMatch m1, boolean visitor, TeamGroup tg) {
+    private TeamGroupDetails assignPoints(PlayerMatch m1, boolean visitor, TeamGroupDetails tg) {
         if (!visitor) {
             if (m1.gethS() > m1.getvS()) {
                 tg.setP(tg.getP() + 3);
@@ -92,8 +100,20 @@ public class ScoreMath {
         return tg;
     }
 
-    private String getTeamFromGroup(Map<String, Map<String,TeamGroup>> groupTeams, String group, int position){
+    private Long getResultOfMatch(List<PlayerMatch> matches, String winOrLose, Long idMatch) {
+        PlayerMatch match = matches.get(idMatch.intValue());
+        if (match.gethS() > match.getvT() && winOrLose.contains("WIN")) {
+            return match.gethT();
+        } else {
 
-        return null;
+            return match.getvT();
+        }
     }
+
+    private Long getPositionOfGroup(HashMap<Long, TeamGroup> teamGroup, String position) {
+        Long idGroup = groupService.getGroupByName(position.split("_")[0]).getId();
+
+       return null;
+    }
+
 }

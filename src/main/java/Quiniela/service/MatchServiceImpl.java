@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import quiniela.model.Match;
+import quiniela.model.PlayerMatch;
 import quiniela.model.enums.TypeMatch;
 import quiniela.repository.MatchRepository;
 import quiniela.utils.CVSParser;
@@ -78,6 +79,19 @@ public class MatchServiceImpl implements MatchService {
             }
         }
         result.sort(Comparator.comparing(Match::getDate));
+        return result;
+    }
+
+    @Override
+    public List<PlayerMatch> getPlayerMatches() {
+        List<PlayerMatch> result = new ArrayList<>();
+        for(Match match : getAllMatches()){
+            PlayerMatch pm = new PlayerMatch();
+            pm.setId(match.getId());
+            pm.sethT(teamService.getTeamIdByName(match.getHomeTeam()));
+            pm.setvT(teamService.getTeamIdByName(match.getVisitorTeam()));
+            result.add(pm);
+        }
         return result;
     }
 

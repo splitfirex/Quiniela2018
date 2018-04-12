@@ -21,15 +21,13 @@ public interface LadderBoardService {
 
     LadderBoard createTournament(String name, String token, String password);
 
-    List<LadderBoard> getLadderBoardsByUsername(String username);
-
     List<LadderBoard> getPublicLadderBoard();
 
-    LadderBoard addPlayer(long idTournament, Player player, TypePlayerState state);
+    LadderBoard addPlayer(LadderBoard t, Player player, TypePlayerState state);
 
-    LadderBoard removePlayer(long idTournament, Player player);
+    LadderBoard removePlayer(LadderBoard t, Player player);
 
-    LadderBoard setAdmin(long idTournament, Player player, boolean set);
+    LadderBoard setAdmin(LadderBoard t, Player player, boolean set);
 
     List<String> getAdminsByIdTournament(long idTournament);
 

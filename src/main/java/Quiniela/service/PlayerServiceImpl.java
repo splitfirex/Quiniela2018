@@ -47,6 +47,24 @@ public class PlayerServiceImpl implements PlayerService {
     private void init() {
         playerRepository.deleteAll();
 
+        Player p = new Player();
+
+        p.setId(counter.incrementAndGet());
+        p.setUsername("_NOT_A_PLAYER_");
+        p.setPassword(loginService.encode("_NOT_A_PLAYER_"));
+        playerRepository.save(p);
+
+        LadderBoard l = ladderBoardService.getTournamentByName("_NOT_A_LADDERBOARD_");
+        ladderBoardService.addPlayer(l,p,TypePlayerState.ACTIVE);
+        ladderBoardService.setAdmin(l,p, true);
+
+        p = new Player();
+        p.setId(counter.incrementAndGet());
+        p.setUsername("Daniel");
+        p.setPassword(loginService.encode("123456"));
+        playerRepository.save(p);
+
+
     }
 
     @Override
@@ -88,14 +106,13 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player activateDeactivatePlayer(String username, String token, long idLadder, boolean set ) {
-        LadderBoard l = ladderBoardService.getTournamentById(idLadder);
+    public Player activateDeactivatePlayer(String username, String token, LadderBoard t, boolean set ) {
         Player preAdmin = loginService.getPlayerByToken(token);
-        if(ladderBoardService.getAdminsByIdTournament(idLadder).contains(preAdmin.getUsername())){
+        if(ladderBoardService.getAdminsByIdTournament(t.getId()).contains(preAdmin.getUsername())){
             if(set) {
-                ladderBoardService.addPlayer(idLadder, playerRepository.findByUsername(username), TypePlayerState.ACTIVE);
+                ladderBoardService.addPlayer(t, playerRepository.findByUsername(username), TypePlayerState.ACTIVE);
             }else{
-                ladderBoardService.addPlayer(idLadder, playerRepository.findByUsername(username), TypePlayerState.INACTIVE);
+                ladderBoardService.addPlayer(t, playerRepository.findByUsername(username), TypePlayerState.INACTIVE);
             }
         }
         return  playerRepository.findByUsername(username);

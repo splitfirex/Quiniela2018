@@ -67,4 +67,18 @@ public class LadderBoard {
     public void setLadderBoardPlayers(HashMap<Long, LadderBoardPlayer> ladderBoardPlayers) {
         this.ladderBoardPlayers = ladderBoardPlayers;
     }
+
+    public void addPlayer(Player p, List<PlayerMatch> matches, TypePlayerState state){
+        getListPlayers().put(p.getUsername(),state);
+        this.ladderBoardPlayers.put(p.getId(), new LadderBoardPlayer());
+        for(PlayerMatch pm : matches) {
+            this.ladderBoardPlayers.get(p.getId()).getListMatches().put(pm.getId(),pm);
+        }
+    }
+
+    public void removePlayer(Player p){
+        getListPlayers().remove(p.getUsername());
+        getListAdmins().remove(p.getUsername());
+        this.ladderBoardPlayers.put(p.getId(), new LadderBoardPlayer());
+    }
 }

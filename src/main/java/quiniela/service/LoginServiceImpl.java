@@ -1,5 +1,6 @@
 package quiniela.service;
 
+import com.fasterxml.uuid.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import java.util.*;
 public class LoginServiceImpl implements LoginService {
 
     private static Map<UUID,Player> uuidPlayer = new HashMap<>();
-    private static Map<String, UUID> uuidToken = new HashMap<>();
     private static MessageDigest sha;
 
     private static final long EXPIDED_MINUTES = 10;
@@ -29,16 +29,6 @@ public class LoginServiceImpl implements LoginService {
     @Value("${encryption.algorithm}")
     String algorithmEncode;
 
-    @PostConstruct
-    private void init() {
-        playerRepository.deleteAll();
-        try {
-            sha = MessageDigest.getInstance(algorithmEncode);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Autowired
     PlayerRepository playerRepository;
 
@@ -47,19 +37,39 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String encode(String value){
+        if(sha == null){
+            try {
+                sha = MessageDigest.getInstance(algorithmEncode);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }
         sha.update(value.getBytes());
         return Base64.getEncoder().encodeToString( sha.digest());
+    }
+
+    static final long NUM_100NS_INTERVALS_SINCE_UUID_EPOCH = 0x01b21dd213814000L;
+    public static long getTimeFromUUID(UUID uuid) {
+        return (uuid.timestamp() - NUM_100NS_INTERVALS_SINCE_UUID_EPOCH) / 10000;
     }
 
     @Override
     public String login(String username, String password) {
         revalidateTokens();
 
+        if(uuidPlayer.values().contains(username)){
+            for(UUID uuid : uuidPlayer.keySet()) {
+                if (uuidPlayer.get(uuid).equals(username)) {
+                    uuidPlayer.remove(uuid);
+                    break;
+                }
+            }
+        }
+
         Player p = playerRepository.validateUser(username,encode(password));
         if( p != null){
-            UUID uuid = UUID.randomUUID();
+            UUID uuid = Generators.timeBasedGenerator().generate();
             uuidPlayer.put(uuid,p);
-            uuidToken.put(uuid.toString(), uuid);
             return uuid.toString();
         }
         return null;
@@ -74,8 +84,8 @@ public class LoginServiceImpl implements LoginService {
     public String validateLogin(String token) {
         revalidateTokens();
 
-        if(uuidToken.containsKey(token)){
-            return renovateToken(uuidToken.get(token));
+        if(uuidPlayer.containsKey(UUID.fromString(token))){
+            return renovateToken(UUID.fromString(token));
         }
 
         return null;
@@ -86,8 +96,8 @@ public class LoginServiceImpl implements LoginService {
 
         revalidateTokens();
 
-        if(uuidToken.containsKey(token)){
-            uuidToken.remove(token);
+       if(uuidPlayer.containsKey(UUID.fromString(token))){
+           uuidPlayer.remove(UUID.fromString(token));
             return true;
         }
 
@@ -96,27 +106,24 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Player getPlayerByToken(String token) {
-        return uuidPlayer.get(uuidToken.get(token));
+        return uuidPlayer.get(UUID.fromString(token));
     }
 
     private void  revalidateTokens(){
-        Iterator itTokens = uuidToken.values().iterator();
+        Iterator itTokens = uuidPlayer.keySet().iterator();
         while(itTokens.hasNext()){
             UUID uuid = (UUID) itTokens.next();
 
-            if(Instant.now().compareTo(Instant.ofEpochMilli(uuid.timestamp()).plus(EXPIDED_MINUTES,ChronoUnit.MINUTES)) > 1){
-                uuidToken.remove(uuid.toString());
+            if(Instant.now().compareTo(Instant.ofEpochMilli(getTimeFromUUID(uuid)).plus(EXPIDED_MINUTES,ChronoUnit.MINUTES)) > 1){
+                uuidPlayer.remove(uuid);
             }
         }
     }
 
     private String renovateToken(UUID token){
         if(Instant.now().compareTo(Instant.ofEpochMilli(token.timestamp()).plus(RENO_MINUTES,ChronoUnit.MINUTES)) > 1){
-            UUID uuid = UUID.randomUUID();
-            uuidToken.put(uuid.toString(),uuid);
+            UUID uuid = Generators.timeBasedGenerator().generate();
             uuidPlayer.put(uuid,uuidPlayer.get(token));
-
-            uuidToken.remove(token.toString());
             uuidPlayer.remove(token);
             return uuid.toString();
         }
