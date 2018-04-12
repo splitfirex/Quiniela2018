@@ -1,32 +1,11 @@
-package quiniela.model;
+package quiniela.model.form;
 
-import org.springframework.data.annotation.Id;
+public class PlayerMatchForm extends TokenAbleForm {
 
-public class PlayerMatch {
-
-    @Id
     private long id;
-
-    private Long hT;
-    private Long vT;
+    private long idLadder;
     private Integer hS;
     private Integer vS;
-
-    public Long gethT() {
-        return hT;
-    }
-
-    public void sethT(Long hT) {
-        this.hT = hT;
-    }
-
-    public Long getvT() {
-        return vT;
-    }
-
-    public void setvT(Long vT) {
-        this.vT = vT;
-    }
 
     public long getId() {
         return id;
@@ -34,6 +13,14 @@ public class PlayerMatch {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getIdLadder() {
+        return idLadder;
+    }
+
+    public void setIdLadder(long idLadder) {
+        this.idLadder = idLadder;
     }
 
     public Integer gethS() {

@@ -5,85 +5,68 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import quiniela.model.Match;
+import quiniela.model.LadderBoard;
 import quiniela.model.Player;
 import quiniela.model.PlayerMatch;
-import quiniela.model.PlayerMatchUpdate;
+import quiniela.model.form.LoginForm;
+import quiniela.model.form.PlayerMatchForm;
 import quiniela.model.views.ViewPlayerInfo;
 import quiniela.model.views.ViewPlayerMatchesGroups;
+import quiniela.service.LadderBoardService;
+import quiniela.service.LoginService;
+import quiniela.service.MatchService;
 import quiniela.service.PlayerService;
 import quiniela.utils.ScoreMath;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import static java.lang.Math.toIntExact;
 
 @Controller
 @RequestMapping("/user")
-@ComponentScan({"quiniela.service"})
 public class UserController {
-
-    private static final String REAL_WORLD_SCORES = "_NOT_A_PLAYER_";
 
     @Autowired
     private PlayerService playerService;
 
     @Autowired
+    private LadderBoardService ladderBoardService;
+
+    @Autowired
     private ScoreMath scoreMath;
 
-    @Value("${player.username}")
-    String genericUsername;
+    @Autowired
+    private LoginService loginService;
 
-    @RequestMapping(value = "/id/{username}")
+    @Autowired
+    private MatchService matchService;
+
+
+    @RequestMapping(value = "/ladders", method = RequestMethod.PUT)
     @ResponseBody
-    public ViewPlayerInfo getPlayer(@PathVariable("username") String username) {
-        return new ViewPlayerInfo(playerService.getPlayerByUsername(username));
+    public Boolean logout(@RequestBody LoginForm form) {
+
+
+        return loginService.logout(form.getToken());
     }
 
-    @RequestMapping(value = "/all")
-    @ResponseBody
-    public List<ViewPlayerInfo> getPlayers() {
-        List<ViewPlayerInfo> result = new ArrayList<>();
-        for (Player p : playerService.getAllPlayers()) {
-            result.add(new ViewPlayerInfo(p));
-        }
-        return result;
-    }
-
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
-    @ResponseBody
-    public ViewPlayerInfo newPlayer(@RequestBody Player player) {
-        return new ViewPlayerInfo(playerService.createPlayer(player.getUsername(), player.getPassword(),player.getTournament()));
-    }
-
-
-    @RequestMapping(value = "/matches/{username}")
-    @ResponseBody
-    public List<ViewPlayerMatchesGroups> getPlayerMatches(@PathVariable(name = "username") String username) {
-        List<ViewPlayerMatchesGroups> result = new ArrayList<>();
-        for (Player p : playerService.getAllPlayers()) {
-            if (username.isEmpty() || username.equals(p.getUsername())) {
-                result.add(new ViewPlayerMatchesGroups(p));
-            }
-        }
-        return result;
-    }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
-    public ViewPlayerMatchesGroups updateMatch(@RequestBody PlayerMatchUpdate playerMatch ) {
-        if (playerMatch.getUsername() == null || playerMatch.getPassword() == null) return null;
-        Player p = playerService.validateUsername(playerMatch.getUsername(), playerMatch.getPassword());
-        for(PlayerMatch pm : p.getMatchList()){
-            if(pm.getId() == playerMatch.getId()){
-                pm.sethScore(Long.valueOf(playerMatch.gethScore()));
-                pm.setvScore(Long.valueOf(playerMatch.getvScore()));
-                break;
-            }
+    public ViewPlayerMatchesGroups updateMatch(@RequestBody PlayerMatchForm playerMatch ) {
+
+        Player p = loginService.getPlayerByToken(playerMatch.getToken());
+        LadderBoard l =ladderBoardService.getTournamentById(playerMatch.getIdLadder());
+        if(l.getListPlayers().containsKey(p.getUsername())){
+
+            l.getLadderBoardPlayers().get(p.getId()).getListMatches().get(playerMatch.getId()).sethS(playerMatch.gethS());
+            l.getLadderBoardPlayers().get(p.getId()).getListMatches().get(playerMatch.getId()).sethS(playerMatch.getvS());
+
+            scoreMath.processScores(l, p.getId());
+
+            ladderBoardService.updateLadderBoard(l);
         }
-        scoreMath.processScores(playerService.getPlayerByUsername(genericUsername), p);
-        playerService.updatePlayer(p);
-        return new ViewPlayerMatchesGroups(p);
+
+        return new ViewPlayerMatchesGroups(l,p.getId()).setToken(playerMatch.getToken());
     }
 }

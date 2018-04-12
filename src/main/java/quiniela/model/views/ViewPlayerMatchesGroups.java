@@ -1,65 +1,10 @@
 package quiniela.model.views;
 
-import quiniela.model.Match;
-import quiniela.model.Player;
-import quiniela.model.PlayerMatch;
-import quiniela.model.TeamGroup;
+import quiniela.model.LadderBoard;
 
-import java.util.List;
-import java.util.Map;
+public class ViewPlayerMatchesGroups extends TokenAbleView {
 
-public class ViewPlayerMatchesGroups {
-
-    private String username;
-    private String url;
-    private Integer points;
-    private List<PlayerMatch> listMatch;
-    private Map<String, Map<String,TeamGroup>> groupTeams;
-
-    public ViewPlayerMatchesGroups(Player player) {
-        this.username = player.getUsername();
-        this.points = player.getPoints();
-        this.listMatch = player.getMatchList();
-        this.groupTeams = player.getGroupTeams();
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
-
-    public List<PlayerMatch> getListMatch() {
-        return listMatch;
-    }
-
-    public void setListMatch(List<PlayerMatch> listMatch) {
-        this.listMatch = listMatch;
-    }
-
-    public Map<String, Map<String, TeamGroup>> getGroupTeams() {
-        return groupTeams;
-    }
-
-    public void setGroupTeams(Map<String, Map<String, TeamGroup>> groupTeams) {
-        this.groupTeams = groupTeams;
+    public ViewPlayerMatchesGroups(LadderBoard l, long id) {
+        super();
     }
 }

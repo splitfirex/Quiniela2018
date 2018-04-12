@@ -5,8 +5,10 @@ class SlideMenu extends React.Component {
     }
 
     moveTo(destination) {
-        this.props.fnCloseMenu(destination);
+        document.location = destination;
+        this.props.fnCloseMenu();
     }
+
 
     render() {
         return <div id="slideMenu-wrap" className="slideMenu-wrap">

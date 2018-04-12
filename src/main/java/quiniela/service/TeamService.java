@@ -16,4 +16,8 @@ public interface TeamService {
 
     List<String> getTeamsByGroup(String idGroup);
 
+    Long getTeamIdByName(String name);
+
+    String getTeamNameById(Long name);
+
 }

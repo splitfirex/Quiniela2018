@@ -2,31 +2,31 @@ package quiniela.model;
 
 public class TeamGroup {
 
-    private int points = 0;
-    private long positiveGoals = 0;
-    private long negativeGoals = 0;
+    private int p = 0;
+    private long pg = 0;
+    private long ng = 0;
 
-    public int getPoints() {
-        return points;
+    public int getP() {
+        return p;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setP(int p) {
+        this.p = p;
     }
 
-    public long getPositiveGoals() {
-        return positiveGoals;
+    public long getPg() {
+        return pg;
     }
 
-    public void setPositiveGoals(long positiveGoals) {
-        this.positiveGoals = positiveGoals;
+    public void setPg(long pg) {
+        this.pg = pg;
     }
 
-    public long getNegativeGoals() {
-        return negativeGoals;
+    public long getNg() {
+        return ng;
     }
 
-    public void setNegativeGoals(long negativeGoals) {
-        this.negativeGoals = negativeGoals;
+    public void setNg(long ng) {
+        this.ng = ng;
     }
 }

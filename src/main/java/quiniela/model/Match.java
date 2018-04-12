@@ -12,10 +12,6 @@ public class Match{
 
     @Id
     private long id;
-
-    @Indexed(unique = false)
-    private Long idPlayer;
-
     private String homeTeam;
     private String visitorTeam;
     private Integer scoreHomeTeam;
@@ -29,14 +25,6 @@ public class Match{
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getIdPlayer() {
-        return idPlayer;
-    }
-
-    public void setIdPlayer(long idPlayer) {
-        this.idPlayer = idPlayer;
     }
 
     public String getHomeTeam() {

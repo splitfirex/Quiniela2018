@@ -30,6 +30,10 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     private GroupRepository groupRepository;
 
+    private static HashMap<String,Long> idTeamName = new HashMap<>();
+
+    private static HashMap<Long,String> nameTeamId = new HashMap<>();
+
     @PostConstruct
     private void init(){
         List<String> values = CVSParser.ParseMatches("teams.cvs");
@@ -49,6 +53,9 @@ public class TeamServiceImpl implements TeamService {
             t.setGroup(values.get(i + 3));
             t.setFlagUrl("URL");
             inserTeam.add(t);
+
+            idTeamName.put(t.getName(), t.getId());
+            nameTeamId.put(t.getId(), t.getName());
 
             if(values.get(i + 3).equals("-")) continue;
             if (!inserGroup.keySet().contains(values.get(i + 3))) {
@@ -85,4 +92,15 @@ public class TeamServiceImpl implements TeamService {
     public List<String> getTeamsByGroup(String idGroup) {
         return groupRepository.findByName(idGroup).getTeams();
     }
+
+    @Override
+    public Long getTeamIdByName(String name) {
+        return idTeamName.get(name);
+    }
+
+    @Override
+    public String getTeamNameById(Long name) {
+        return nameTeamId.get(name);
+    }
+
 }

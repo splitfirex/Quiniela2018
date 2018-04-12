@@ -14,12 +14,10 @@ class App extends React.Component {
         });
     }
 
-    closeMenu(destination) {
-        document.location = destination;
+    closeMenu() {
         this.setState({
             showMenu: ""
         });
-        
     }
 
     showModal() {
