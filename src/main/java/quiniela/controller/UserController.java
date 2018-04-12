@@ -10,6 +10,7 @@ import quiniela.model.Player;
 import quiniela.model.PlayerMatch;
 import quiniela.model.form.LoginForm;
 import quiniela.model.form.PlayerMatchForm;
+import quiniela.model.views.ViewLadderBoard;
 import quiniela.model.views.ViewPlayerInfo;
 import quiniela.model.views.ViewPlayerMatchesGroups;
 import quiniela.service.LadderBoardService;
@@ -42,14 +43,12 @@ public class UserController {
     private MatchService matchService;
 
 
-    @RequestMapping(value = "/ladders", method = RequestMethod.PUT)
+    @RequestMapping(value = "/ladders", method = RequestMethod.GET)
     @ResponseBody
-    public Boolean logout(@RequestBody LoginForm form) {
-
-
-        return loginService.logout(form.getToken());
+    public List<ViewLadderBoard> getLadders(@RequestBody LoginForm form) {
+        return ViewLadderBoard.fromList(ladderBoardService.getAllTournaments());
     }
-
+    
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody

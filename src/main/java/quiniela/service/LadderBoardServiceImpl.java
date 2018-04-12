@@ -80,6 +80,11 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     }
 
     @Override
+    public List<LadderBoard> getPublicLadderBoard() {
+        return ladderBoardRepository.findPublic();
+    }
+
+    @Override
     public LadderBoard addPlayer(long idTournament, Player player, TypePlayerState state) {
         LadderBoard t =  ladderBoardRepository.findById(idTournament);
         t.getListPlayers().put(player.getUsername(),state);

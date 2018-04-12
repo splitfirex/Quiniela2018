@@ -23,6 +23,8 @@ public interface LadderBoardService {
 
     List<LadderBoard> getLadderBoardsByUsername(String username);
 
+    List<LadderBoard> getPublicLadderBoard();
+
     LadderBoard addPlayer(long idTournament, Player player, TypePlayerState state);
 
     LadderBoard removePlayer(long idTournament, Player player);

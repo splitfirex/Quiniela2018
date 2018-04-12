@@ -17,4 +17,7 @@ public interface LadderBoardRepository extends MongoRepository<LadderBoard, Long
 
     @Query("{ 'listPlayers' : ?0 }")
     List<LadderBoard> findByUsername(String username);
+
+    @Query("{ 'password' : { '$exists' : false } }")
+    List<LadderBoard> findPublic();
 }
