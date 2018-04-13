@@ -4,33 +4,10 @@ public class PlayerGroupDetail {
 
     private Long id;
 
-    private int p = 0;
-    private long pg = 0;
-    private long ng = 0;
+    private Integer p = 0;
+    private Integer pg = 0;
+    private Integer ng = 0;
 
-    public int getP() {
-        return p;
-    }
-
-    public void setP(int p) {
-        this.p = p;
-    }
-
-    public long getPg() {
-        return pg;
-    }
-
-    public void setPg(long pg) {
-        this.pg = pg;
-    }
-
-    public long getNg() {
-        return ng;
-    }
-
-    public void setNg(long ng) {
-        this.ng = ng;
-    }
 
     public Long getId() {
         return id;
@@ -38,5 +15,29 @@ public class PlayerGroupDetail {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getP() {
+        return p;
+    }
+
+    public void setP(Integer p) {
+        this.p = p;
+    }
+
+    public Integer getPg() {
+        return pg;
+    }
+
+    public void setPg(Integer pg) {
+        this.pg = pg;
+    }
+
+    public Integer getNg() {
+        return ng;
+    }
+
+    public void setNg(Integer ng) {
+        this.ng = ng;
     }
 }

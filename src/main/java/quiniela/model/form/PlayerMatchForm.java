@@ -2,40 +2,22 @@ package quiniela.model.form;
 
 public class PlayerMatchForm extends TokenAbleForm {
 
-    private long id;
-    private long idLadder;
-    private Integer hS;
-    private Integer vS;
+    private String ladder;
+    private String username;
 
-    public long getId() {
-        return id;
+    public String getLadder() {
+        return ladder;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setLadder(String ladder) {
+        this.ladder = ladder;
     }
 
-    public long getIdLadder() {
-        return idLadder;
+    public String getUsername() {
+        return username;
     }
 
-    public void setIdLadder(long idLadder) {
-        this.idLadder = idLadder;
-    }
-
-    public Integer gethS() {
-        return hS;
-    }
-
-    public void sethS(Integer hS) {
-        this.hS = hS;
-    }
-
-    public Integer getvS() {
-        return vS;
-    }
-
-    public void setvS(Integer vS) {
-        this.vS = vS;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

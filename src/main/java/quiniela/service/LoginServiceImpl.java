@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import quiniela.model.Player;
 import quiniela.repository.PlayerRepository;
 
-import javax.annotation.PostConstruct;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -101,6 +100,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Player getPlayerByToken(String token) {
+        if (token == null) return null;
         return uuidPlayer.get(UUID.fromString(token));
     }
 

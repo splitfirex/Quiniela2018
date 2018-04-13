@@ -1,12 +1,9 @@
 package quiniela.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import quiniela.model.enums.TypePlayerState;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Document(collection = "ladderBoard")
 public class LadderBoard {
@@ -14,7 +11,7 @@ public class LadderBoard {
     private long id;
     private String name;
 
-    private HashMap<String,LadderBoardPlayer> listPlayers = new HashMap<>();
+    private List<LadderBoardPlayer> listPlayers = new ArrayList<>();
 
     private String password;
 
@@ -42,11 +39,20 @@ public class LadderBoard {
         this.password = password;
     }
 
-    public HashMap<String, LadderBoardPlayer> getListPlayers() {
+    public List<LadderBoardPlayer> getListPlayers() {
         return listPlayers;
     }
 
-    public void setListPlayers(HashMap<String, LadderBoardPlayer> listPlayers) {
+    public void setListPlayers(List<LadderBoardPlayer> listPlayers) {
         this.listPlayers = listPlayers;
+    }
+
+    public LadderBoardPlayer getPlayerByName(String username) {
+        for (LadderBoardPlayer lbp : listPlayers) {
+            if (lbp.getUsername().equals(username)) {
+                return lbp;
+            }
+        }
+        return null;
     }
 }

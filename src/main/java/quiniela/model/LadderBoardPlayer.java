@@ -1,60 +1,62 @@
 package quiniela.model;
 
-import quiniela.model.enums.TypePlayerState;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LadderBoardPlayer {
 
-    private Long id;
-    private boolean isAdmin;
-    private boolean isActive;
+    private String username;
+    private Boolean isAdmin;
+    private Boolean isActive;
     private Long points;
 
     public LadderBoardPlayer(){
 
     }
 
-    public LadderBoardPlayer(Long id, boolean isAdmin,  boolean state) {
-        this.id = id;
+    public LadderBoardPlayer(String username, boolean isAdmin, boolean state) {
+        this.username = username;
         this.isAdmin = isAdmin;
         this.isActive = state;
         this.points = new Long(0);
     }
 
-    public LadderBoardPlayer(Long id,  boolean state) {
-        this.id = id;
+    public LadderBoardPlayer(String username, boolean state) {
+        this.username = username;
         this.isAdmin = false;
         this.isActive = state;
         this.points = new Long(0);
     }
 
-    public LadderBoardPlayer(Long id) {
-        this.id = id;
+    public LadderBoardPlayer(String username) {
+        this.username = username;
         this.isAdmin = false;
         this.isActive = false;
         this.points = new Long(0);
     }
 
-    public Long getId() {
-        return id;
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public boolean isAdmin() {
+    public Boolean getAdmin() {
         return isAdmin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
 
-    public boolean isActive() {
+    public Boolean getActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         isActive = active;
     }
 
@@ -65,5 +67,4 @@ public class LadderBoardPlayer {
     public void setPoints(Long points) {
         this.points = points;
     }
-
 }

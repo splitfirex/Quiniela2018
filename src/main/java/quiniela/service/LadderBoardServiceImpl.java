@@ -5,16 +5,11 @@ import org.springframework.stereotype.Service;
 import quiniela.model.LadderBoard;
 import quiniela.model.LadderBoardPlayer;
 import quiniela.model.Player;
-import quiniela.model.enums.TypePlayerState;
 import quiniela.repository.LadderBoardRepository;
 import quiniela.repository.PlayerMatchRepositoty;
 
 import javax.annotation.PostConstruct;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -44,11 +39,13 @@ public class LadderBoardServiceImpl implements LadderBoardService {
 
 
     @Override
-    public LadderBoard createLadderBoard(String name, Player p) {
-        if(ladderBoardRepository.findByName(name)!= null) return null;
+    public LadderBoard createLadderBoard(String name, String password, Player p) {
+        if (ladderBoardRepository.findByName(name) != null) return null;
         LadderBoard l = new LadderBoard();
+        l.setName(name);
+        l.setPassword(password != null ? loginService.encode(password) : null);
         l.setId(counter.incrementAndGet());
-        l.getListPlayers().put(p.getUsername(),new LadderBoardPlayer(p.getId(), true,true));
+        l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true, true));
 
         matchService.createPlayerMatches(l,p);
         groupService.createPlayerGroup(l,p);
@@ -57,10 +54,12 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     }
 
     @Override
-    public LadderBoard joinLadderBoard(String name, Player p) {
+    public LadderBoard joinLadderBoard(String name, String password, Player p) {
         LadderBoard l = ladderBoardRepository.findByName(name);
-        if(l == null || l.getListPlayers().containsKey(p.getUsername())) return null;
-        l.getListPlayers().put(p.getUsername(),new LadderBoardPlayer(p.getId(), false));
+        if (l == null || l.getPlayerByName(p.getUsername()) != null) return null;
+        if (l.getPassword() != null && (password == null || !l.getPassword().equals(loginService.encode(password))))
+            return null;
+        l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), false));
 
         matchService.createPlayerMatches(l,p);
         groupService.createPlayerGroup(l,p);
@@ -71,25 +70,22 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     @Override
     public LadderBoard leaveLadderBoard(LadderBoard ladderBoard, Player p) {
         LadderBoard l = ladderBoardRepository.findByName(ladderBoard.getName());
-        if(l == null || !l.getListPlayers().containsKey(p.getUsername())) return null;
+        if (l == null || l.getPlayerByName(p.getUsername()) == null) return null;
 
-        if(l.getListPlayers().keySet().contains(p.getUsername())){
+        if (l.getPlayerByName(p.getUsername()) != null) {
             int countAdmin = 0;
             boolean isAdmin = false;
 
-            for(LadderBoardPlayer user: l.getListPlayers().values()){
-                if(user.isAdmin() == true)countAdmin +=1;
-                if(user.getId().equals(p.getId()))isAdmin = true;
+            for (LadderBoardPlayer user : l.getListPlayers()) {
+                if (user.getAdmin() == true) countAdmin += 1;
+                if (user.getUsername().equals(p.getUsername())) isAdmin = true;
             }
-            l.getListPlayers().remove(p.getUsername());
+            l.getListPlayers().remove(l.getPlayerByName(p.getUsername()));
             if(isAdmin && countAdmin == 1){
-                if(l.getListPlayers().keySet().size() > 1){
-                    String newAdmin = l.getListPlayers().keySet().toArray(new String[l.getListPlayers().keySet().size()])[0];
-                    l.getListPlayers().get(newAdmin).setAdmin(true);
+                if (l.getListPlayers().size() > 1) {
+                    l.getListPlayers().get(0).setAdmin(true);
                 }
             }
-
-
             matchService.deletePlayerMatches(l,p);
             groupService.deletePlayerGroup(l,p);
         }
@@ -104,11 +100,22 @@ public class LadderBoardServiceImpl implements LadderBoardService {
 
     @Override
     public List<LadderBoard> listLadderBoard() {
-        return ladderBoardRepository.findAll();
+        return ladderBoardRepository.findAllShort();
     }
 
     @Override
     public List<LadderBoard> listLadderBoard(Player p) {
-        return ladderBoardRepository.findByUserId(p.getId());
+        if (p == null) return null;
+        return ladderBoardRepository.findByUsername(p.getUsername(), false);
+    }
+
+    @Override
+    public LadderBoard getLadderBoardByName(String name, Player p) {
+        return ladderBoardRepository.findByIdOrIfActive(name, p == null ? null : p.getUsername());
+    }
+
+    @Override
+    public LadderBoard getLadderBoard(String name) {
+        return ladderBoardRepository.findByName(name);
     }
 }

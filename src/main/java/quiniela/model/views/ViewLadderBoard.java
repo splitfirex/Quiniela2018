@@ -2,21 +2,20 @@ package quiniela.model.views;
 
 import quiniela.model.LadderBoard;
 import quiniela.model.LadderBoardPlayer;
-import quiniela.model.enums.TypePlayerState;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ViewLadderBoard extends TokenAbleView {
 
 
     private Long id;
     private String name;
-    private Map<String, LadderBoardPlayer> listPlayers;
+    private List<LadderBoardPlayer> listPlayers;
 
 
     public static List<ViewLadderBoard> fromList(List<LadderBoard> boards) {
+        if (boards == null) return null;
         List<ViewLadderBoard> result = new ArrayList<>();
         for (LadderBoard board : boards) {
             result.add(new ViewLadderBoard(board));
@@ -47,11 +46,11 @@ public class ViewLadderBoard extends TokenAbleView {
         this.name = name;
     }
 
-    public Map<String, LadderBoardPlayer> getListPlayers() {
+    public List<LadderBoardPlayer> getListPlayers() {
         return listPlayers;
     }
 
-    public void setListPlayers(Map<String, LadderBoardPlayer> listPlayers) {
+    public void setListPlayers(List<LadderBoardPlayer> listPlayers) {
         this.listPlayers = listPlayers;
     }
 }

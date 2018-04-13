@@ -4,16 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-import quiniela.model.LadderBoard;
-import quiniela.model.Match;
 import quiniela.model.Player;
-import quiniela.model.enums.TypePlayerState;
 import quiniela.repository.PlayerRepository;
 
 import javax.annotation.PostConstruct;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:application.properties")
@@ -52,8 +46,10 @@ public class PlayerServiceImpl implements PlayerService {
 
         Player p2 = createPlayer("Daniel", "Daniel");
 
-        ladderBoardService.createLadderBoard("_NOT_A_LADDERBOARD_",p);
-        ladderBoardService.joinLadderBoard("_NOT_A_LADDERBOARD_",p2);
+        ladderBoardService.createLadderBoard("_NOT_A_LADDERBOARD_", null, p);
+        ladderBoardService.createLadderBoard("_NOT_A_LADDERBOARD2_", "1234", p);
+
+        ladderBoardService.joinLadderBoard("_NOT_A_LADDERBOARD_", "1234", p2);
     }
 
     @Override
@@ -67,5 +63,10 @@ public class PlayerServiceImpl implements PlayerService {
         playerRepository.save(p);
 
         return  p;
+    }
+
+    @Override
+    public Player getPlayerByUsername(String username) {
+        return playerRepository.findByUsername(username);
     }
 }
