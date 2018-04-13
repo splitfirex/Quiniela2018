@@ -1,6 +1,8 @@
 package quiniela.model;
 
-public class TeamGroupDetails {
+public class PlayerGroupDetail {
+
+    private Long id;
 
     private int p = 0;
     private long pg = 0;
@@ -28,5 +30,13 @@ public class TeamGroupDetails {
 
     public void setNg(long ng) {
         this.ng = ng;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

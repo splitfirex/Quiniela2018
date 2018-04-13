@@ -12,6 +12,7 @@ import quiniela.model.enums.TypePlayerState;
 import quiniela.model.form.JoinLadderForm;
 import quiniela.model.form.LoginForm;
 import quiniela.model.form.PlayerMatchForm;
+import quiniela.model.form.TokenForm;
 import quiniela.model.views.ViewLadderBoard;
 import quiniela.model.views.ViewPlayerInfo;
 import quiniela.model.views.ViewPlayerMatchesGroups;
@@ -48,22 +49,19 @@ public class UserController {
     @RequestMapping(value = "/ladders", method = RequestMethod.GET)
     @ResponseBody
     public List<ViewLadderBoard> getLadders() {
-        return ViewLadderBoard.fromList(ladderBoardService.getAllTournaments());
+        return ViewLadderBoard.fromList(ladderBoardService.listLadderBoard());
+    }
+
+    @RequestMapping(value = "/ladders", method = RequestMethod.POST)
+    @ResponseBody
+    public List<ViewLadderBoard> getLadders(@RequestBody TokenForm p) {
+        Player player = loginService.getPlayerByToken(p.getToken());
+        return ViewLadderBoard.fromList(ladderBoardService.listLadderBoard(player));
     }
 
     @RequestMapping(value = "/joinladder", method = RequestMethod.POST)
     @ResponseBody
     public ViewLadderBoard joinLadder(@RequestBody JoinLadderForm form) {
-        Player p = loginService.getPlayerByToken(form.getToken());
-        if(p == null ) return null;
-        LadderBoard t= ladderBoardService.getTournamentById(form.getIdLadder());
-        if(loginService.encode(form.getPassword())
-                .equals(t.getPassword())){
-            t= ladderBoardService.addPlayer(t,p,TypePlayerState.INACTIVE);
-            if(t == null) return null;
-            return new ViewLadderBoard(t);
-        }
-
         return null;
     }
 
@@ -71,31 +69,14 @@ public class UserController {
     @RequestMapping(value = "/createladder", method = RequestMethod.POST)
     @ResponseBody
     public ViewLadderBoard createLadder(@RequestBody JoinLadderForm form) {
-        Player p = loginService.getPlayerByToken(form.getToken());
-        if(p == null ) return null;
-
-        LadderBoard l = ladderBoardService.createTournament(form.getNameladder(),form.getToken(),form.getPassword());
-
-        return l != null ? new ViewLadderBoard(l).setToken(form.getToken()) : null;
+        return null;
     }
-    
+
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
     public ViewPlayerMatchesGroups updateMatch(@RequestBody PlayerMatchForm playerMatch ) {
 
-        Player p = loginService.getPlayerByToken(playerMatch.getToken());
-        LadderBoard l =ladderBoardService.getTournamentById(playerMatch.getIdLadder());
-        if(l.getListPlayers().containsKey(p.getUsername())){
-
-            l.getLadderBoardPlayers().get(p.getId()).getListMatches().get(playerMatch.getId()).sethS(playerMatch.gethS());
-            l.getLadderBoardPlayers().get(p.getId()).getListMatches().get(playerMatch.getId()).sethS(playerMatch.getvS());
-
-            scoreMath.processScores(l, p.getId());
-
-            ladderBoardService.updateLadderBoard(l);
-        }
-
-        return new ViewPlayerMatchesGroups(l,p.getId()).setToken(playerMatch.getToken());
+        return null;
     }
 }

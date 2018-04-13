@@ -1,14 +1,38 @@
 package quiniela.model;
 
-import java.util.HashMap;
+import quiniela.model.enums.TypePlayerState;
 
 public class LadderBoardPlayer {
 
     private Long id;
-    private Integer points;
+    private boolean isAdmin;
+    private boolean isActive;
+    private Long points;
 
-    private HashMap<Long,PlayerMatch> listMatches = new HashMap<>();
-    private HashMap<Long,TeamGroup> TeamGroup = new HashMap<>();
+    public LadderBoardPlayer(){
+
+    }
+
+    public LadderBoardPlayer(Long id, boolean isAdmin,  boolean state) {
+        this.id = id;
+        this.isAdmin = isAdmin;
+        this.isActive = state;
+        this.points = new Long(0);
+    }
+
+    public LadderBoardPlayer(Long id,  boolean state) {
+        this.id = id;
+        this.isAdmin = false;
+        this.isActive = state;
+        this.points = new Long(0);
+    }
+
+    public LadderBoardPlayer(Long id) {
+        this.id = id;
+        this.isAdmin = false;
+        this.isActive = false;
+        this.points = new Long(0);
+    }
 
     public Long getId() {
         return id;
@@ -18,27 +42,28 @@ public class LadderBoardPlayer {
         this.id = id;
     }
 
-    public Integer getPoints() {
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public Long getPoints() {
         return points;
     }
 
-    public void setPoints(Integer points) {
+    public void setPoints(Long points) {
         this.points = points;
     }
 
-    public HashMap<Long, PlayerMatch> getListMatches() {
-        return listMatches;
-    }
-
-    public void setListMatches(HashMap<Long, PlayerMatch> listMatches) {
-        this.listMatches = listMatches;
-    }
-
-    public HashMap<Long, quiniela.model.TeamGroup> getTeamGroup() {
-        return TeamGroup;
-    }
-
-    public void setTeamGroup(HashMap<Long, quiniela.model.TeamGroup> teamGroup) {
-        TeamGroup = teamGroup;
-    }
 }

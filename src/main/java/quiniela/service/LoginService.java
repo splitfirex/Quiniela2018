@@ -8,8 +8,6 @@ public interface LoginService {
 
     String login(String username, String password);
 
-    Player createPlayer(String username, String password);
-
     String validateLogin(String token);
 
     Boolean logout(String token);

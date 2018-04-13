@@ -2,17 +2,29 @@ package quiniela.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import quiniela.model.Group;
+import quiniela.model.*;
 import quiniela.repository.GroupRepository;
+import quiniela.repository.PlayerGroupRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class GroupServiceImpl implements GroupService {
 
+    private AtomicLong counter = new AtomicLong();
+
     @Autowired
     GroupRepository groupRepository;
+
+    @Autowired
+    PlayerGroupRepository playerGroupRepository;
+
+    @Autowired
+    TeamService teamService;
 
     @Override
     public List<Group> getAllGroups() {
@@ -27,6 +39,39 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Group getGroupById(Integer idGroup) {
         return groupRepository.findById(idGroup);
+    }
+
+    @Override
+    public void createPlayerGroup(LadderBoard l, Player player) {
+        List<Group> groups = getAllGroups();
+        List<PlayerGroup> saveList = new ArrayList<>();
+        for(Group group : groups){
+            PlayerGroup playerGroup = new PlayerGroup();
+            playerGroup.setId(counter.incrementAndGet());
+            playerGroup.setIdLadder(l.getId());
+            playerGroup.setIdPlayer(player.getId());
+            playerGroup.setIdGroup(group.getId());
+
+            Map<Long, PlayerGroupDetail> mapDetails = new HashMap<>();
+            for(String team : group.getTeams()){
+                PlayerGroupDetail pgd = new PlayerGroupDetail();
+                pgd.setId(teamService.getTeamIdByName(team));
+                pgd.setNg(0);
+                pgd.setP(0);
+                pgd.setPg(0);
+
+                mapDetails.put(pgd.getId(),pgd);
+            }
+            playerGroup.setDetails(mapDetails);
+            saveList.add(playerGroup);
+        }
+        playerGroupRepository.saveAll(saveList);
+
+    }
+
+    @Override
+    public void deletePlayerGroup(LadderBoard l, Player player) {
+        playerGroupRepository.deleteAll(playerGroupRepository.findAllByUserIdAndLadderboardID(player.getId(),l.getId()));
     }
 
 }

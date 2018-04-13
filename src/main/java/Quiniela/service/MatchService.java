@@ -1,7 +1,9 @@
 package quiniela.service;
 
 import org.springframework.stereotype.Service;
+import quiniela.model.LadderBoard;
 import quiniela.model.Match;
+import quiniela.model.Player;
 import quiniela.model.PlayerMatch;
 
 import java.util.List;
@@ -9,13 +11,13 @@ import java.util.List;
 @Service
 public interface MatchService {
 
-    static MatchService instance = new MatchServiceImpl();
-
     List<Match> getAllMatches();
 
     List<Match> getMatchByGroup(String Group);
 
     List<Match> getMatchByTeam(String Team);
 
-    List<PlayerMatch> getPlayerMatches();
+    void deletePlayerMatches(LadderBoard l, Player player);
+
+    void createPlayerMatches(LadderBoard l, Player player);
 }

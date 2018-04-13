@@ -11,26 +11,14 @@ import java.util.Map;
 @Service
 public interface LadderBoardService {
 
-    List<LadderBoard> getAllTournaments();
+    LadderBoard createLadderBoard(String name, Player p);
 
-    Map<String, TypePlayerState> getPlayersByIdTournament(long idTournament);
+    LadderBoard joinLadderBoard(String name, Player p);
 
-    LadderBoard getTournamentByName(String name);
+    LadderBoard leaveLadderBoard(LadderBoard ladderBoard, Player p);
 
-    LadderBoard getTournamentById(Long id);
+    List<LadderBoard> listLadderBoard();
 
-    LadderBoard createTournament(String name, String token, String password);
-
-    List<LadderBoard> getPublicLadderBoard();
-
-    LadderBoard addPlayer(LadderBoard t, Player player, TypePlayerState state);
-
-    LadderBoard removePlayer(LadderBoard t, Player player);
-
-    LadderBoard setAdmin(LadderBoard t, Player player, boolean set);
-
-    List<String> getAdminsByIdTournament(long idTournament);
-
-    LadderBoard updateLadderBoard(LadderBoard l);
+    List<LadderBoard> listLadderBoard(Player p);
 
 }

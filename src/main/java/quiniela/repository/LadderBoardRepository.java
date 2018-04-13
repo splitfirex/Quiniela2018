@@ -18,4 +18,10 @@ public interface LadderBoardRepository extends MongoRepository<LadderBoard, Long
 
     @Query("{ 'password' : { '$exists' : false } }")
     List<LadderBoard> findPublic();
+
+    @Query("{ 'listPlayers' : { 'id' : ?0, 'isActive': true } }")
+    List<LadderBoard> findByUserId(Long username);
+
+
+
 }

@@ -8,6 +8,7 @@ import quiniela.model.Team;
 import quiniela.model.form.LoginForm;
 import quiniela.model.views.ViewPlayerInfo;
 import quiniela.service.LoginService;
+import quiniela.service.PlayerService;
 
 import java.util.List;
 
@@ -17,6 +18,10 @@ public class LoginController {
 
     @Autowired
     LoginService loginService;
+
+    @Autowired
+    PlayerService playerService;
+
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
     @ResponseBody
@@ -33,7 +38,8 @@ public class LoginController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
     public ViewPlayerInfo signup(@RequestBody LoginForm form) {
-        return new ViewPlayerInfo(loginService.createPlayer(form.getUsername(),form.getPassword()));
+        Player p = playerService.createPlayer(form.getUsername(),form.getPassword());
+        return new ViewPlayerInfo(p).setToken(loginService.login(form.getUsername(), form.getPassword()));
     }
 
 }

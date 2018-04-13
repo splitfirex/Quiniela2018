@@ -9,7 +9,6 @@ import quiniela.service.TeamService;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ScoreMath {
@@ -24,7 +23,7 @@ public class ScoreMath {
     GroupService groupService;
 
     public void processScores(LadderBoard l, Long playerId) {
-        List<Match> matches = matchService.getAllMatches();
+     /*   List<Match> matches = matchService.getAllMatches();
         HashMap<Long, PlayerMatch> myMatches = l.getLadderBoardPlayers().get(playerId).getListMatches();
         LadderBoardPlayer lbp = l.getLadderBoardPlayers().get(playerId);
 
@@ -54,7 +53,7 @@ public class ScoreMath {
         }
 
         l.getLadderBoardPlayers().get(playerId).setPoints(points);
-
+*/
 
     }
 
@@ -73,7 +72,7 @@ public class ScoreMath {
                 || (m1.getScoreVisitorTeam() < m1.getScoreHomeTeam() && m2.getvS() < m2.gethS());
     }
 
-    private TeamGroupDetails assignPoints(PlayerMatch m1, boolean visitor, TeamGroupDetails tg) {
+  /*  private TeamGroupDetails assignPoints(PlayerMatch m1, boolean visitor, TeamGroupDetails tg) {
         if (!visitor) {
             if (m1.gethS() > m1.getvS()) {
                 tg.setP(tg.getP() + 3);
@@ -99,7 +98,7 @@ public class ScoreMath {
 
         return tg;
     }
-
+*/
     private Long getResultOfMatch(List<PlayerMatch> matches, String winOrLose, Long idMatch) {
         PlayerMatch match = matches.get(idMatch.intValue());
         if (match.gethS() > match.getvT() && winOrLose.contains("WIN")) {
@@ -110,7 +109,7 @@ public class ScoreMath {
         }
     }
 
-    private Long getPositionOfGroup(HashMap<Long, TeamGroup> teamGroup, String position) {
+    private Long getPositionOfGroup(HashMap<Long, PlayerGroup> teamGroup, String position) {
         Long idGroup = groupService.getGroupByName(position.split("_")[0]).getId();
 
        return null;

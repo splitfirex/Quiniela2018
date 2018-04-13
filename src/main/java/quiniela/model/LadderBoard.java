@@ -14,19 +14,9 @@ public class LadderBoard {
     private long id;
     private String name;
 
-    private Map<String, TypePlayerState> listPlayers = new HashMap<String,TypePlayerState>();
-    private List<String> listAdmins = new ArrayList<String>();
-    private HashMap<Long, LadderBoardPlayer> ladderBoardPlayers = new HashMap<>();
+    private HashMap<String,LadderBoardPlayer> listPlayers = new HashMap<>();
 
     private String password;
-
-    public Map<String, TypePlayerState> getListPlayers() {
-        return listPlayers;
-    }
-
-    public void setListPlayers(Map<String, TypePlayerState> listPlayers) {
-        this.listPlayers = listPlayers;
-    }
 
     public long getId() {
         return id;
@@ -44,14 +34,6 @@ public class LadderBoard {
         this.name = name;
     }
 
-    public List<String> getListAdmins() {
-        return listAdmins;
-    }
-
-    public void setListAdmins(List<String> listAdmins) {
-        this.listAdmins = listAdmins;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -60,25 +42,11 @@ public class LadderBoard {
         this.password = password;
     }
 
-    public HashMap<Long, LadderBoardPlayer> getLadderBoardPlayers() {
-        return ladderBoardPlayers;
+    public HashMap<String, LadderBoardPlayer> getListPlayers() {
+        return listPlayers;
     }
 
-    public void setLadderBoardPlayers(HashMap<Long, LadderBoardPlayer> ladderBoardPlayers) {
-        this.ladderBoardPlayers = ladderBoardPlayers;
-    }
-
-    public void addPlayer(Player p, List<PlayerMatch> matches, TypePlayerState state){
-        getListPlayers().put(p.getUsername(),state);
-        this.ladderBoardPlayers.put(p.getId(), new LadderBoardPlayer());
-        for(PlayerMatch pm : matches) {
-            this.ladderBoardPlayers.get(p.getId()).getListMatches().put(pm.getId(),pm);
-        }
-    }
-
-    public void removePlayer(Player p){
-        getListPlayers().remove(p.getUsername());
-        getListAdmins().remove(p.getUsername());
-        this.ladderBoardPlayers.put(p.getId(), new LadderBoardPlayer());
+    public void setListPlayers(HashMap<String, LadderBoardPlayer> listPlayers) {
+        this.listPlayers = listPlayers;
     }
 }

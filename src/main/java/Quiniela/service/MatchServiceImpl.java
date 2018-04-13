@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
+import quiniela.model.LadderBoard;
 import quiniela.model.Match;
+import quiniela.model.Player;
 import quiniela.model.PlayerMatch;
 import quiniela.model.enums.TypeMatch;
 import quiniela.repository.MatchRepository;
+import quiniela.repository.PlayerMatchRepositoty;
 import quiniela.utils.CVSParser;
 
 import javax.annotation.PostConstruct;
@@ -17,15 +20,21 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class MatchServiceImpl implements MatchService {
 
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+    private AtomicLong counter = new AtomicLong();
+
 
     @Autowired
     MatchRepository matchRepository;
+
+    @Autowired
+    PlayerMatchRepositoty playerMatchRepositoty;
 
     @Autowired
     TeamService teamService;
@@ -83,17 +92,26 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<PlayerMatch> getPlayerMatches() {
+    public void createPlayerMatches(LadderBoard l, Player player) {
         List<PlayerMatch> result = new ArrayList<>();
         for(Match match : getAllMatches()){
             PlayerMatch pm = new PlayerMatch();
-            pm.setId(match.getId());
+            pm.setId(counter.incrementAndGet());
+            pm.setIdMatch(match.getId());
             pm.sethT(teamService.getTeamIdByName(match.getHomeTeam()));
             pm.setvT(teamService.getTeamIdByName(match.getVisitorTeam()));
+            pm.setIdLadder(l.getId());
+            pm.setIdPlayer(player.getId());
             result.add(pm);
         }
-        return result;
+        playerMatchRepositoty.saveAll(result);
     }
+
+    @Override
+    public void deletePlayerMatches(LadderBoard l, Player player) {
+        playerMatchRepositoty.deleteAll(playerMatchRepositoty.findAllByUserIdAndLadderboardID(player.getId(),l.getId()));
+    }
+
 
 
 }

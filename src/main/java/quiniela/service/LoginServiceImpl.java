@@ -76,11 +76,6 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Player createPlayer(String username, String password) {
-        return playerService.createPlayer(username,password);
-    }
-
-    @Override
     public String validateLogin(String token) {
         revalidateTokens();
 
