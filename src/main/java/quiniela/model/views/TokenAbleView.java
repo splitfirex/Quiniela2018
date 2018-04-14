@@ -3,7 +3,7 @@ package quiniela.model.views;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class  TokenAbleView  {
+public class  TokenAbleView  {
 
     private String token;
 

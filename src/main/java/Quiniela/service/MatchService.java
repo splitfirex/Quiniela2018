@@ -20,4 +20,6 @@ public interface MatchService {
     void deletePlayerMatches(LadderBoard l, Player player);
 
     void createPlayerMatches(LadderBoard l, Player player);
+
+    List<PlayerMatch> getMatchesByPlayerLadder(LadderBoard l, Player p);
 }

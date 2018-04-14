@@ -64,6 +64,7 @@
     grid-auto-rows: 48px;
     align-items: center;
     justify-items: center;
+    border-bottom: gray 1px solid;
 }
 
 #modal .users>div>div {
@@ -89,7 +90,6 @@
     margin: 0 auto;
 }
 
-#modal .login {}
 
 #modal .newLadderBoard {}
 
@@ -113,6 +113,7 @@
     grid-auto-rows: 48px;
     align-items: center;
     justify-items: center;
+    border-bottom: gray 1px solid;
 }
 
 #modal .joinLadderBoard>div:active{
@@ -134,4 +135,125 @@
 #modal .joinLadderBoard>div>div>svg {
     display: block;
     margin: 0 auto;
+}
+
+
+
+
+
+
+
+#modal .signin {
+    color: white;
+    font-family: "dusan";
+    background-color: rgb(89, 152, 211);
+    background-image: url("../img/bg3.png");
+    height: 100%    ;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 80px 50px 50px 100px;
+    align-items: center;
+    text-align: center;
+
+}
+
+#modal .signin> div{
+    font-size: 1em;
+}
+
+#modal .signin> div:nth-child(1){
+    font-size: 2em;
+}
+
+#modal .signin>div>input{
+    text-align: center;
+    color: white;
+    font-size: 1.4em;
+    font-family: "dusan";
+    border: unset;  
+    background-color: unset;
+    border-bottom: white 2px solid;
+}
+
+#modal .signin>div>input::placeholder{
+    color: rgb(255, 255, 255,0.5);
+}
+
+#modal .signin>div>button{
+    color: white;
+    font-size: 1.4em;
+    font-family: "dusan";
+    border: unset;  
+    background-color: unset;
+    border: white 2px solid;
+    padding: 10px;
+}
+
+#modal .signin>div>button:active{
+    color: rgb(89, 152, 211);;
+    background-color: white ;
+    border: rgb(89, 152, 211) 2px solid;
+}
+
+
+
+
+
+
+
+
+
+#modal .register {
+    color: black;
+    font-family: "dusan";
+    background-image: url("../img/bg3.png");
+    height: 100%    ;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 80px 50px 50px 50px 100px;
+    align-items: center;
+    text-align: center;
+
+}
+
+#modal .register> div{
+    font-size: 1em;
+}
+
+#modal .register> div:nth-child(1){
+    font-size: 2em;
+}
+
+#modal .register>div>input{
+    text-align: center;
+    color: black;
+    font-size: 1.4em;
+    font-family: "dusan";
+    border: unset;  
+    background-color: unset;
+    border-bottom: black 2px solid;
+}
+
+#modal .register>div>input::placeholder{
+    color: rgb(0, 0, 0,0.5);
+}
+
+#modal .register>div>button{
+    color: black;
+    font-size: 1.4em;
+    font-family: "dusan";
+    border: unset;  
+    background-color: unset;
+    border: black 2px solid;
+    padding: 10px;
+}
+
+#modal .register>div>a{
+    color: black;
+}
+
+#modal .register>div>button:active{
+    color: rgb(89, 152, 211);
+    background-color: black ;
+    border: rgb(89, 152, 211) 2px solid;
 }

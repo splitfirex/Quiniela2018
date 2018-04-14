@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import quiniela.model.Player;
 import quiniela.model.Team;
 import quiniela.model.form.LoginForm;
+import quiniela.model.views.TokenAbleView;
 import quiniela.model.views.ViewPlayerInfo;
 import quiniela.service.LoginService;
 import quiniela.service.PlayerService;
@@ -25,8 +26,8 @@ public class LoginController {
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
     @ResponseBody
-    public String login(@RequestBody LoginForm form) {
-        return loginService.login(form.getUsername(),form.getPassword());
+    public TokenAbleView login(@RequestBody LoginForm form) {
+        return new TokenAbleView().setToken(loginService.login(form.getUsername(),form.getPassword()));
     }
 
     @RequestMapping(value = "/logout")

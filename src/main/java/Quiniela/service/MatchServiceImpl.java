@@ -108,6 +108,11 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
+    public List<PlayerMatch> getMatchesByPlayerLadder(LadderBoard l, Player p) {
+        return playerMatchRepositoty.findAllByUserIdAndLadderboardID(p.getId(),l.getId());
+    }
+
+    @Override
     public void deletePlayerMatches(LadderBoard l, Player player) {
         playerMatchRepositoty.deleteAll(playerMatchRepositoty.findAllByUserIdAndLadderboardID(player.getId(),l.getId()));
     }

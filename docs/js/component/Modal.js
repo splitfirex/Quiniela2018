@@ -18,7 +18,8 @@ class Modal extends React.Component {
             </div>
             <div className="content">
             {/*<PlayerManager/>*/}
-            <LadderBoardManager/>
+            {/*<LadderBoardManager/>*/}
+            <LoginManager/>
             </div>
         </div>
     }

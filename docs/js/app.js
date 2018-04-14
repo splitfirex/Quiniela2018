@@ -1,3 +1,5 @@
+var token ="";
+var server = "http://localhost:9000"
 class App extends React.Component {
 
     constructor(props) {
