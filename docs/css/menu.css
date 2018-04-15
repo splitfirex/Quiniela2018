@@ -19,7 +19,6 @@
 
     font-family: "Montserrat", sans-serif;
     width: calc(100vw - 50px);    
-    background-color: rgb(76, 125, 172);
 }
 
 .slideMenu {
@@ -38,6 +37,16 @@
     grid-template-rows: 100px auto;
 }
 
+.slideMenuHeader .signin{
+    font-size: 1.5em;
+}
+
+.slideMenuHeader .signin span{
+    font-family: "dusan";
+    margin-left: 30px;
+}
+
+
 .slideMenuHeader div:nth-child(2){
     line-height: 30px;
     background-color: rgb(0,0, 0,.5);
@@ -55,7 +64,7 @@
     grid-auto-columns: auto;
     grid-auto-rows: 48px;
     padding-top: 30px;
-    padding-bottom: 80px;
+    padding-bottom: 30px;
 }
 
 .slideMenuContent >div{

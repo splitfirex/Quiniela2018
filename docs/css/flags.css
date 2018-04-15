@@ -1,3 +1,9 @@
+.Flag{
+    background-image: url(https://vignette.wikia.nocookie.net/vexillology/images/3/34/Question_mark_flag.svg/revision/latest?cb=20150906121038);
+    background-size: cover;
+    background-position: center center;   
+}
+
 /*AMERICA*/
 
 .COL {
@@ -36,13 +42,13 @@
     background-position: center center;   
 }
 
-.CRC{
+.COS{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/cr.svg);
     background-size: cover;
     background-position: center center;   
 }
 
-.PNM{
+.PAN{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/pa.svg);
     background-size: cover;
     background-position: center center;   
@@ -76,7 +82,7 @@
 }
 
 .ENG {
-    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/en.svg);
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Flag_of_England.svg);
     background-size: cover;
     background-position: center center;
 }
@@ -99,7 +105,7 @@
     background-position: center center;
 }
 
-.SRB{
+.SER{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/rs.svg);
     background-size: cover;
     background-position: center center;
@@ -111,7 +117,7 @@
     background-position: center center;
 }
 
-.SWE{
+.SWD{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/se.svg);
     background-size: cover;
     background-position: center center;
@@ -170,8 +176,8 @@
 
 /* ASIA */
 
-.JPN{
-    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/hr.svg);
+.JAP{
+    background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/jp.svg);
     background-size: cover;
     background-position: center center;   
 }
@@ -182,13 +188,13 @@
     background-position: center center;   
 }
 
-.SAR{
+.SAB{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/sa.svg);
     background-size: cover;
     background-position: center center;   
 }
 
-.IRA{
+.IRN{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/ir.svg);
     background-size: cover;
     background-position: center center;   
@@ -202,3 +208,5 @@
     background-size: cover;
     background-position: center center;   
 }
+
+

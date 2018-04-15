@@ -74,4 +74,9 @@ public class GroupServiceImpl implements GroupService {
         playerGroupRepository.deleteAll(playerGroupRepository.findAllByUserIdAndLadderboardID(player.getId(),l.getId()));
     }
 
+    @Override
+    public List<PlayerGroup> getGroupsByPlayerLadder(LadderBoard l, Player p) {
+        return playerGroupRepository.findAllByUserIdAndLadderboardID(p.getId(),l.getId());
+    }
+
 }

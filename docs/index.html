@@ -1,449 +1,55 @@
 <html>
 </head>
-<!--   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script crossorigin src="js/lib/create-react-class.js"></script>
-    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-    <script crossorigin type="text/babel" src="js/component/component1.js"></script>
-    <script crossorigin type="text/babel" src="js/component/component2.js"></script>-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#5998d3" />
+<meta name="mobile-web-app-capable" content="yes">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script crossorigin type="text/javascript" src="js/utils.js"></script>
+<script crossorigin type="text/javascript" src="js/serverConnection.js"></script>
+<script crossorigin type="text/babel" src="js/component/Notification.js"></script>
+<script crossorigin type="text/babel" src="js/component/Content.js"></script>
+<script crossorigin type="text/babel" src="js/component/Groups.js"></script>
+<script crossorigin type="text/babel" src="js/component/Matches.js"></script>
+<script crossorigin type="text/babel" src="js/component/PlayerMatches.js"></script>
+<script crossorigin type="text/babel" src="js/component/SlideMenu.js"></script>
+<script crossorigin type="text/babel" src="js/component/Modal.js"></script>
+<script crossorigin type="text/babel" src="js/component/modals/PlayerManager.js"></script>
+<script crossorigin type="text/babel" src="js/component/modals/LadderBoardManager.js"></script>
+<script crossorigin type="text/babel" src="js/component/modals/LoginManager.js"></script>
+<script crossorigin type="text/babel" src="js/component/modals/SelectLadderBoardManager.js"></script>
+<script crossorigin type="text/babel" src="js/component/Question.js"></script>
+<script crossorigin type="text/babel" src="js/app.js"></script>
+<script>
+window.addEventListener("load",function() {
+    setTimeout(function(){
+        // This hides the address bar:
+        window.scrollTo(0, 1);
+    }, 0);
+});
+
+</script>
+
 <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
   crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/player.css" />
 <link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/content.css" />
+<link rel="stylesheet" href="css/groups.css" />
+<link rel="stylesheet" href="css/matches.css" />
+<link rel="stylesheet" href="css/notification.css" />
 <link rel="stylesheet" href="css/flags.css" />
+<link rel="stylesheet" href="css/menu.css" />
+<link rel="stylesheet" href="css/modal.css" />
+<link rel="stylesheet" href="css/playerMatches.css" />
+<link rel="stylesheet" href="css/question.css" />
+
 </head>
-
 <body id="body">
-  <div id="container" class="container">
-
-    <div id="header">
-      <img src="img/woldcup.svg" width="100%">
-    </div>
-
-    <div id="notification">
-      <div></div>
-      <div class="last-result">
-        <div class="team-box">
-          <div class="teamname">BRA</div>
-          <div class="flag smBel"></div>
-          <div class="score">5</div>
-        </div>
-        <div class="team-separator">
-          <i class="fas fa-minus fa-lg" style="color:white"></i>
-        </div>
-        <div class="team-box">
-          <div class="score">5</div>
-          <div class="flag smBel"></div>
-          <div class="teamname">KOR</div>
-        </div>
-      </div>
-      <div></div>
-    </div>
-
-    <div class="quiniela">
-      <div> <span style="font-size:1.5em;" class="fa-layers fa-fw">
-          <i class="far fa-circle" style="color:white"></i>
-          <i class="fa-inverse fas fa-angle-double-left" data-fa-transform="shrink-6"></i>
-        </span></div>
-      <div>NOMBRE</div>
-      <div> <span style="font-size:1.5em;" class="fa-layers fa-fw">
-          <i class="far fa-circle" style="color:white"></i>
-          <i class="fa-inverse fas fa-angle-double-right" data-fa-transform="shrink-6"></i>
-        </span></div>
-    </div>
-
-    <div id="content-wrap">
-      <div class="section-title playerTitle">PLAYERS</div>
-      <div id="content">
-        <div class="p1 g-1g">
-          <div>splitfire</div>
-          <div>234</div>
-        </div>
-        <div class="p1 g-2g">
-          <div>splitfire</div>
-          <div>234</div>
-        </div>
-        <div class="p1 g-1g">
-          <div>splitfire</div>
-          <div>234</div>
-        </div>
-        <div class="p2 g-2g">
-          <div>splitfire</div>
-          <div>|</div>
-          <div>234</div>
-        </div>
-
-        <div class="p2 g-1g">
-          <div>splitfire</div>
-          <div>|</div>
-          <div>234</div>
-        </div>
-      </div>
-    </div>
-
-    <div id="groups-wrap">
-      <div class="section-title groupsTitle">GROUPS</div>
-      <div id="groups">
-        <div class="group-box">
-
-          <div class="group-box-content">
-            <div class="group-box-title"> GROUP A </div>
-            <div></div>
-            <div>TEAM NAME </div>
-            <div>GF</div>
-            <div>GC </div>
-            <div>P</div>
-
-            <div>
-              <div class="smflag smBel"></div>
-            </div>
-            <div>TEAM NAME </div>
-            <div>20 </div>
-            <div>-20 </div>
-            <div>9 </div>
-
-            <div>
-              <div class="smflag smCro"></div>
-            </div>
-            <div>TEAM NAME </div>
-            <div>20 </div>
-            <div>-20 </div>
-            <div>9 </div>
-
-            <div>FLAG </div>
-            <div>TEAM NAME </div>
-            <div>20 </div>
-            <div>-20 </div>
-            <div>9 </div>
-
-            <div>FLAG </div>
-            <div>TEAM NAME </div>
-            <div>20 </div>
-            <div>-20 </div>
-            <div>9 </div>
-
-          </div>
-        </div>
-        <div class="group-box">
-
-          <div class="group-box-content">
-            <div class="group-box-title">
-              <span>Group A</span>
-            </div>
-            <div></div>
-            <div>TEAM NAME </div>
-            <div>GF</div>
-            <div>GC </div>
-            <div>P</div>
-
-            <div>
-              <div class="smflag smbel"></div>
-            </div>
-            <div>TEAM NAME </div>
-            <div>20 </div>
-            <div>-20 </div>
-            <div>9 </div>
-
-            <div>
-              <div class="smflag smcro"></div>
-            </div>
-            <div>TEAM NAME </div>
-            <div>20 </div>
-            <div>-20 </div>
-            <div>9 </div>
-
-            <div>FLAG </div>
-            <div>TEAM NAME </div>
-            <div>20 </div>
-            <div>-20 </div>
-            <div>9 </div>
-
-            <div>FLAG </div>
-            <div>TEAM NAME </div>
-            <div>20 </div>
-            <div>-20 </div>
-            <div>9 </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="matches-wrap">
-      <div class="section-title matchesTitle">MATCHES</div>
-      <div id="matches">
-        <div class="match-box">
-          <div class="fecha">30/07</div>
-          <div class="hora">15:10</div>
-          <div class="team-box-sm">
-            <div>KOR</div>
-            <div>
-              <div class="smflag smBel"></div>
-            </div>
-            <div>2</div>
-          </div>
-          <div>-</div>
-          <div class="team-box-sm">
-            <div>2</div>
-            <div>
-              <div class="smflag smBel"></div>
-            </div>
-            <div>KOR</div>
-          </div>
-        </div>
-        <div class="match-box">
-          <div class="fecha">30/07</div>
-          <div class="hora">15:10</div>
-          <div class="team-box-sm" style="justify-self: right;">
-            <div>KOR</div>
-            <div>
-              <div class="smflag smBel"></div>
-            </div>
-            <div>2</div>
-          </div>
-          <div>-</div>
-          <div class="team-box-sm">
-            <div>2</div>
-            <div>
-              <div class="smflag smBel"></div>
-            </div>
-            <div>KOR</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div id="playerMatches-wrap">
-      <div class="section-title matchesTitle">PLAYER MATCHES</div>
-      <div id="playerMatches">
-        <div class="playerMatchesItem">
-          <div>05/18 15:00</div>
-          <div class="playerMatchesItem-result">
-            <div></div>
-            <div class="team-box-wcontrol">
-              <div style="grid-column: span 2"></div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-up" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div class="control-team">KOR</div>
-              <div class="flag smBel"></div>
-              <div class="control-points">5</div>
-              <div style="grid-column: span 2"></div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-down" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-            </div>
-            <div class="team-separator">
-              <i class="fas fa-minus fa-lg" style="color:white"></i>
-            </div>
-            <div class="team-box-wcontrol">
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-up" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div style="grid-column: span 2"></div>
-              <div class="control-points">5</div>
-              <div class="flag smBel"></div>
-              <div class="control-team">KOR</div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-down" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div style="grid-column: span 2"></div>
-            </div>
-            <div></div>
-          </div>
-
-        </div>
-        <div class="playerMatchesItem">
-          <div>05/18 15:00</div>
-          <div class="playerMatchesItem-result">
-            <div></div>
-            <div class="team-box-wcontrol">
-              <div style="grid-column: span 2"></div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-up" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div class="control-team">KOR</div>
-              <div class="flag smBel"></div>
-              <div class="control-points">5</div>
-              <div style="grid-column: span 2"></div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-down" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-            </div>
-            <div class="team-separator">
-              <i class="fas fa-minus fa-lg" style="color:white"></i>
-            </div>
-            <div class="team-box-wcontrol">
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-up" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div style="grid-column: span 2"></div>
-              <div class="control-points">5</div>
-              <div class="flag smBel"></div>
-              <div class="control-team">KOR</div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-down" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div style="grid-column: span 2"></div>
-            </div>
-            <div></div>
-          </div>
-
-        </div>
-        <div class="playerMatchesItem">
-          <div>05/18 15:00</div>
-          <div class="playerMatchesItem-result">
-            <div></div>
-            <div class="team-box-wcontrol">
-              <div style="grid-column: span 2"></div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-up" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div class="control-team">KOR</div>
-              <div class="flag smBel"></div>
-              <div class="control-points">5</div>
-              <div style="grid-column: span 2"></div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-down" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-            </div>
-            <div class="team-separator">
-              <i class="fas fa-minus fa-lg" style="color:white"></i>
-            </div>
-            <div class="team-box-wcontrol">
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-up" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div style="grid-column: span 2"></div>
-              <div class="control-points">5</div>
-              <div class="flag smBel"></div>
-              <div class="control-team">KOR</div>
-              <div>
-                <span style="font-size:2em;" class="fa-layers fa-fw">
-                  <i class="far fa-circle" style="color:white"></i>
-                  <i class="fa-inverse fas fa-angle-down" data-fa-transform="shrink-6"></i>
-                </span>
-              </div>
-              <div style="grid-column: span 2"></div>
-            </div>
-            <div></div>
-          </div>
-
-        </div>
-      </div>
-
-
-    </div>
-
-    <div id="footer">
-      <!-- Footer content -->
-    </div>
-
-    <div id="slideMenu" class="menu">
-      <div class="menuHeader">
-        <div id="menuBtnOpen" class="menuIcon">
-          <i class="fas fa-bars fa-lg" style="color:white"></i>
-        </div>
-        <div style="text-align: center;">HOLAAA danielito</div>
-      </div>
-      <div class="menuContent">
-        <div class="menuContentItems">
-          <div class="menuItem">
-            <a href="#" class="itemClick">
-              <i class="fas fa-home fa-sm"></i>
-              <span>Home</span>
-            </a>
-          </div>
-          <div class="menuItem">
-            <a href="#content-wrap" class="itemClick">
-              <i class="fas fa-users fa-sm"></i>
-              <span>Players</span>
-            </a>
-          </div>
-          <div class="menuItem">
-            <a href="#groups-wrap" class="itemClick">
-              <i class="fas fa-compress fa-sm"></i>
-              <span>Groups</span>
-            </a>
-          </div>
-          <div class="menuItem">
-            <a href="#matches-wrap" class="itemClick">
-              <i class="fas fa-futbol fa-sm"></i>
-              <span>Matches</span>
-            </a>
-          </div>
-          <div class="menuItem">
-            <a href="javascript:void(0); displaySignIn();">
-              <i class="fas fa-sign-in-alt fa-sm"></i>
-              <span>Sign in</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="modal" class="register">
-    <div class="content ">
-      <div>Sign in</div>
-      <div>
-        <input tabindex="1" type="text" name="publicname" placeholder="Public name" />
-      </div>
-      <div>
-          <input tabindex="2" type="text" name="quiniela" placeholder="Quiniela name" />
-      </div>
-      <div>
-        <input tabindex="3" type="text" name="username" placeholder="Username" />
-      </div>
-      <div>
-        <input tabindex="4" type="password" name="password" placeholder="Password" />
-      </div>
-      <div>
-        <button tabindex="5" class="sign">Sign in</button>
-      </div>
-      <div style="align-self: center">
-        <a href="#">Have not user yet? Click here to register</a>
-      </div>
-    </div>
-  </div>
+<div  id="root" class="root"></div>
 </body>
-<script src="js/main.js"></script>
-
 </html>

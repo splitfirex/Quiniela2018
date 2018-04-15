@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import quiniela.model.Group;
 import quiniela.model.LadderBoard;
 import quiniela.model.Player;
+import quiniela.model.PlayerGroup;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface GroupService {
     void createPlayerGroup(LadderBoard l, Player player);
 
     void deletePlayerGroup(LadderBoard l, Player player);
+
+    List<PlayerGroup> getGroupsByPlayerLadder(LadderBoard l, Player p);
 
 }

@@ -97,10 +97,6 @@
 
 
 
-
-
-
-
 #modal .joinLadderBoard {
     display: grid;
     grid-template-columns: 1fr;
@@ -113,7 +109,7 @@
     grid-auto-rows: 48px;
     align-items: center;
     justify-items: center;
-    border-bottom: gray 1px solid;
+    border-bottom: rgba(0, 0, 0,0.05) 1px solid;
 }
 
 #modal .joinLadderBoard>div:active{
@@ -151,7 +147,7 @@
     height: 100%    ;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 80px 50px 50px 100px;
+    grid-template-rows: 80px 50px 50px 80px 20px 100px;
     align-items: center;
     text-align: center;
 
@@ -163,6 +159,10 @@
 
 #modal .signin> div:nth-child(1){
     font-size: 2em;
+}
+
+#modal .signin> div:nth-child(5){
+    color: crimson;
 }
 
 #modal .signin>div>input{
@@ -210,7 +210,7 @@
     height: 100%    ;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 80px 50px 50px 50px 100px;
+    grid-template-rows: 80px 50px 50px 50px 80px 20px 100px;
     align-items: center;
     text-align: center;
 
@@ -222,6 +222,10 @@
 
 #modal .register> div:nth-child(1){
     font-size: 2em;
+}
+
+#modal .register> div:nth-child(6){
+    color: crimson;
 }
 
 #modal .register>div>input{

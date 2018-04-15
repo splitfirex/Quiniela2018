@@ -1,314 +1,61 @@
 class Matches extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    getMatches() {
+        return getPlayerMatches(this.props.username, this.props.ladderBoad).map(function (currentValue, index, array) {
+            var d = new Date(matches[index].date);
+            return <Match key={"match" + index} date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2)}
+                hour={zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
+                homeTeamShort={teams[currentValue.hT - 1] == undefined ?
+                    matches[index].homeTeam : teams[currentValue.hT - 1].shortName}
+
+                visitorTeamShort={teams[currentValue.vT - 1] == undefined ?
+                    matches[index].visitorTeam : teams[currentValue.vT - 1].shortName}
+
+                homeTeamScore={currentValue.hS == null ? "*" : currentValue.hs}
+                visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vs} />
+        })
+    }
+
     render() {
         return <div id="matches-wrap">
             <div className="section-title matchesTitle">MATCHES</div>
             <div id="matches">
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
-                <div className="match-box">
-                    <div className="fecha">30/07</div>
-                    <div className="hora">15:10</div>
-                    <div className="team-box-sm">
-                        <div>BEL</div>
-                        <div>
-                            <div className="flag  BEL"></div>
-                        </div>
-                        <div>2</div>
-                    </div>
-                    <div>-</div>
-                    <div className="team-box-sm">
-                        <div>2</div>
-                        <div>
-                            <div className="flag  KOR"></div>
-                        </div>
-                        <div>KOR</div>
-                    </div>
-                </div>
+                {this.getMatches()}
             </div>
-
         </div>
     }
+}
+
+function Match(props) {
+    return (
+        <div className="match-box">
+            <div className="fecha">{props.date}</div>
+            <div className="hora">{props.hour}</div>
+            <div className="team-box-sm">
+                <div>{props.homeTeamShort}</div>
+                <div>
+                    <div className={"flag " + props.homeTeamShort}></div>
+                </div>
+                <div>{props.homeTeamScore}</div>
+            </div>
+            <div>-</div>
+            <div className="team-box-sm">
+                <div>{props.visitorTeamScore}</div>
+                <div>
+                    <div className={"flag " + props.visitorTeamShort}></div>
+                </div>
+                <div>{props.visitorTeamShort}</div>
+            </div>
+        </div>
+    )
+}
+
+
+Matches.defaultProps = {
+    username: "_NOT_A_PLAYER",
+    ladderBoad: "_NOT_A_LADDERBOARD_",
 }

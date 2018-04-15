@@ -4,19 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import quiniela.model.LadderBoard;
-import quiniela.model.LadderBoardPlayer;
-import quiniela.model.Player;
-import quiniela.model.PlayerMatch;
+import quiniela.model.*;
 import quiniela.model.form.GetLadderForm;
 import quiniela.model.form.JoinLadderForm;
 import quiniela.model.form.PlayerMatchForm;
 import quiniela.model.form.TokenForm;
 import quiniela.model.views.ViewLadderBoard;
-import quiniela.service.LadderBoardService;
-import quiniela.service.LoginService;
-import quiniela.service.MatchService;
-import quiniela.service.PlayerService;
+import quiniela.service.*;
 import quiniela.utils.ScoreMath;
 
 import java.util.List;
@@ -41,6 +35,9 @@ public class UserController {
 
     @Autowired
     private MatchService matchService;
+
+    @Autowired
+    private GroupService groupService;
 
 
     @RequestMapping(value = "/ladders", method = RequestMethod.GET)
@@ -100,6 +97,32 @@ public class UserController {
             if (l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;
 
             return matchService.getMatchesByPlayerLadder(l, p);
+
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/playergroups", method = RequestMethod.GET)
+    @ResponseBody
+    public List<PlayerGroup> getGroups(@RequestParam("username") String username, @RequestParam("laddername") String laddername) {
+        LadderBoard l = ladderBoardService.getLadderBoard(laddername);
+        Player p = playerService.getPlayerByUsername(username);
+        if (l == null || (l != null && l.getPassword() != null)) return null;
+
+        return groupService.getGroupsByPlayerLadder(l, p);
+    }
+
+    @RequestMapping(value = "/playergroups", method = RequestMethod.POST)
+    @ResponseBody
+    public List<PlayerGroup> getGroups(@RequestBody PlayerMatchForm form) {
+        Player player = loginService.getPlayerByToken(form.getToken());
+        Player p = playerService.getPlayerByUsername(form.getUsername());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLadder());
+        if (l != null) {
+            LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
+            if (l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;
+
+            return groupService.getGroupsByPlayerLadder(l, p);
 
         }
         return null;

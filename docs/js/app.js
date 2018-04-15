@@ -1,12 +1,12 @@
-var token ="";
-var server = "http://localhost:9000"
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             showMenu: "",
-            showModal: ""
+            showModal: "",
+            username: "",
+            showModalName: ""
         };
     }
 
@@ -22,9 +22,11 @@ class App extends React.Component {
         });
     }
 
-    showModal() {
+    showModal(element) {
+        var modalname = element.currentTarget.getAttribute("data-modal");
         this.setState({
-            showModal: this.state.showModal == "" ? "showModal" : ""
+            showModal: this.state.showModal == "" ? "showModal" : "",
+            showModalName: modalname
         });
     }
 
@@ -34,9 +36,28 @@ class App extends React.Component {
         });
     }
 
+    loginSuccess(user) {
+        this.setState({
+            username: user,
+            showModal: ""
+        })
+    }
+
+    logoutSuccess(){
+        token = "";
+        this.setState({
+            username: "",
+            showModal: ""
+        })
+    }
+
     render() {
         return <div>
-            <SlideMenu key="SlideMenu" fnCloseMenu={this.closeMenu.bind(this)} fnShowModal={this.showModal.bind(this)} />
+            <SlideMenu key="SlideMenu" 
+            username={this.state.username}
+            fnCloseMenu={this.closeMenu.bind(this)} 
+            fnShowModal={this.showModal.bind(this)}
+            fnSignOut={this.logoutSuccess.bind(this)} />
             <div key="container" id="container" className={"container " + this.state.showMenu}>
                 <div className="menu">
                     <div onClick={this.showMenu.bind(this)} >
@@ -59,7 +80,11 @@ class App extends React.Component {
                 <Matches />
                 {/*<PlayerMatches />*/}
             </div>
-            <Modal key="modal" className={"modal " + this.state.showModal} fnCloseModal={this.closeModal.bind(this)} />
+            <Modal key="modal"
+                className={"modal " + this.state.showModal}
+                showModal={this.state.showModalName}
+                fnCloseModal={this.closeModal.bind(this)}
+                fnLoginSuccess={this.loginSuccess.bind(this)} />
         </div>
 
     }
