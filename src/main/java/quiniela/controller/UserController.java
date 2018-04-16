@@ -60,6 +60,16 @@ public class UserController {
         return new ViewLadderBoard(ladderBoardService.getLadderBoardByName(p.getLadderName(), player));
     }
 
+    @RequestMapping(value = "/ladders/detail", method = RequestMethod.GET)
+    @ResponseBody
+    public ViewLadderBoard getLaddersCompleteNoPassword(@RequestParam("laddername") String laddername) {
+        LadderBoard l = ladderBoardService.getLadderBoard(laddername);
+        if(l.getPassword() == null){
+            return new ViewLadderBoard(l);
+        }
+        return null;
+    }
+
     @RequestMapping(value = "/joinladder", method = RequestMethod.POST)
     @ResponseBody
     public ViewLadderBoard joinLadder(@RequestBody JoinLadderForm form) {

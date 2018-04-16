@@ -12,7 +12,9 @@ class Groups extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        getPlayerGroups(nextProps.username, nextProps.ladderBoad, this.processGroups.bind(this));
+        if (this.props.username != nextProps.username || nextProps.ladderBoad != this.props.ladderBoad) {
+            getPlayerGroups(nextProps.username, nextProps.ladderBoad, this.processGroups.bind(this));
+        }
     }
 
     processGroups(responseGroups) {
@@ -23,13 +25,13 @@ class Groups extends React.Component {
 
     getGroups() {
         if (this.state.groups == null) {
-            return <Loading/>
+            return <Loading />
         } else {
             return this.state.groups.map(function (currentValue, index, array) {
-                return <GroupBox idGroup={currentValue.idGroup}>
+                return <GroupBox key={"groupbox" + index} idGroup={currentValue.idGroup}>
                     {Object.keys(currentValue.details).map(function (key, index) {
                         var ele = currentValue.details[key];
-                        return <GroupRow idTeam={ele.id} ng={ele.ng} p={ele.p} pg={ele.pg} />
+                        return <GroupRow key={"GroupRow" + index} idTeam={ele.id} ng={ele.ng} p={ele.p} pg={ele.pg} />
                     })}
                 </GroupBox>
             });

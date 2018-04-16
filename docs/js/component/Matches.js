@@ -4,7 +4,7 @@ class Matches extends React.Component {
         super(props);
 
         this.state = {
-            "matches" : null
+            "matches": null
         }
     }
 
@@ -13,19 +13,21 @@ class Matches extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        getPlayerMatches(nextProps.username, nextProps.ladderBoad, this.processMatches.bind(this));
+        if (this.props.username != nextProps.username ||  nextProps.ladderBoad != this.props.ladderBoad  ) {
+            getPlayerMatches(nextProps.username, nextProps.ladderBoad, this.processMatches.bind(this));
+        }
     }
 
     processMatches(reponseMatches) {
         this.setState({
-            "matches" : reponseMatches
+            "matches": reponseMatches
         });
     }
 
     getMatches() {
 
         if (this.state.matches == null) {
-            return <Loading/>
+            return <Loading />
         } else {
             return this.state.matches.map(function (currentValue, index, array) {
                 var d = new Date(matches[index].date);

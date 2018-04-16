@@ -76,21 +76,40 @@ function getPlayerGroups(username, ladder, callback) {
 
 function getPlayerLadders(callback) {
     fetch(server + '/user/ladders', getData)
-    .then(function (response) {
-        return response.json();
-    }).then(function (res) { 
-        callback(res) 
-    });
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            callback(res)
+        });
 }
 
 function postPlayerLadders(callback) {
-    postData.body = JSON.stringify({ "token":token });
+    postData.body = JSON.stringify({ "token": token });
     fetch(server + '/user/ladders', postData)
-    .then(function (response) {
-        return response.json();
-    }).then(function (res) { 
-        callback(res) 
-    });
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            callback(res)
+        });
+}
+
+function postPlayerLaddersDetail(laddername, callback) {
+    if (token != "") {
+        postData.body = JSON.stringify({ "token": token, "ladderName": laddername });
+        fetch(server + '/user/ladders/detail', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            callback(res)
+        });
+    }else{
+        fetch(server + '/user/ladders/detail?laddername='+laddername, getData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            callback(res)
+        });
+    }
 }
 
 
@@ -99,9 +118,10 @@ function getPlayerLogin(username, password, callback) {
     fetch(server + '/login/signin', postData)
         .then(function (response) {
             return response.json();
-        }).then(function (res) { 
-            if(res.token != null) token = res.token;
-            callback(res) });
+        }).then(function (res) {
+            if (res.token != null) token = res.token;
+            callback(res)
+        });
 }
 
 function getPlayerRegister(username, password, callback) {
@@ -109,9 +129,10 @@ function getPlayerRegister(username, password, callback) {
     fetch(server + '/login/signup', postData)
         .then(function (response) {
             return response.json();
-        }).then(function (res) { 
-            if(res.token != null) token = res.token;
-            callback(res) });
+        }).then(function (res) {
+            if (res.token != null) token = res.token;
+            callback(res)
+        });
 }
 
 

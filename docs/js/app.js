@@ -7,7 +7,9 @@ class App extends React.Component {
             showModal: "",
             username: "",
             showModalName: "",
-            selectedLadder: ""
+            selectedLadder: null,
+            currentLadder:null,
+            currentPlayer:null
         };
     }
 
@@ -59,6 +61,27 @@ class App extends React.Component {
         })
     }
 
+    loadPlayers(ladder){
+        this.setState({
+            currentLadder : ladder,
+        })
+    }
+
+    goBack(){
+        if(this.state.currentPlayer != null){
+            this.setState({
+                currentPlayer : null
+            });
+            return;
+        }
+        if(this.state.currentLadder != null){
+            this.setState({
+                currentLadder : null
+            });
+            return;
+        }
+    }
+
     render() {
         return <div>
             <SlideMenu key="SlideMenu" 
@@ -78,15 +101,20 @@ class App extends React.Component {
                         </div>
                     </div>
                     <div></div>
+                    <div onClick={this.goBack.bind(this)} >
+                        <div style={{ display: this.state.currentLadder != null  || this.state.currentPlayer != null ? "block" : "none" }}>
+                            <i key="bars" className="fas fa-undo-alt" style={{ color: 'white' }}></i>
+                        </div>
+                    </div>
                 </div>
                 <div className="header" id="header">
                     <img src="img/woldcup.svg" width="100%" />
                 </div>
                 <Notification />
 
-                <Content />
-                <Groups />
-                <Matches />
+                <Content loadPlayers={this.loadPlayers.bind(this)} currentLadder={this.state.currentLadder} />
+                <Groups currentLadder={this.state.currentLadder} currentPlayer={this.state.currentPlayer} />
+                <Matches currentLadder={this.state.currentLadder} currentPlayer={this.state.currentPlayer} />
                 {/*<PlayerMatches />*/}
             </div>
             <Modal key="modal"

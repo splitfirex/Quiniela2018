@@ -32,7 +32,7 @@ class SlideMenu extends React.Component {
             return <div></div>
         }
         return <div data-modal="SelectLadderBoardManager" onClick={(e) => this.props.fnShowModal(e)}>
-            {this.props.selectedLadder == "" ? "Select ladderboard" : this.props.selectedLadder}
+            {this.props.selectedLadder == null ? "Select ladderboard" : this.props.selectedLadder}
         </div>
     }
 

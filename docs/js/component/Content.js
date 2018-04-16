@@ -2,19 +2,30 @@ class Content extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state= {
-            showLadders: true,
-            title: "LADDERBOARDS"
+        this.state ={
+            title : "LADDERBOARDS"
         }
+    }
 
+    componentDidMount() {
+        if(this.props.currentLadder == null){
+            this.setState({title: "LADDERBOARDS"})
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.currentLadder == null){
+            this.setState({title: "LADDERBOARDS"})
+        }else{
+            this.setState({title: "PLAYERS"})
+        }
     }
 
     renderContent(){
-        if(this.state.showLadders){
-            return <ShowLadders />
+        if(this.props.currentLadder == null){
+            return <ShowLadders loadPlayers={this.props.loadPlayers} />
         }else{
-            return <ShowPlayers />
+            return <ShowPlayers ladderName={this.props.currentLadder} />
         }
     }
 
@@ -24,4 +35,8 @@ class Content extends React.Component {
            {this.renderContent()}
         </div>
     }
+}
+
+Content.defaultProps={
+    currentLadder : null
 }

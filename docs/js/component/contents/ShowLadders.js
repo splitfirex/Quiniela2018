@@ -28,7 +28,7 @@ class ShowLadders extends React.Component {
             return <Loading />
         }
         var colors = getGradient(this.state.ladders.length);
-
+        var that = this;
         return this.state.ladders.map(function (currentValue, index, array) {
             return <Ladder
                 key={"Ladder" + index}
@@ -36,6 +36,7 @@ class ShowLadders extends React.Component {
                 name={currentValue.name}
                 protected={currentValue.protected}
                 bgColor={colors.next()}
+                showPlayers={that.props.loadPlayers}
             />
         })
 
@@ -57,7 +58,7 @@ function Ladder(props) {
     }
 
     return (
-        <div className="ladderboard" style={{ "backgroundColor": props.bgColor }}>
+        <div onClick={props.showPlayers.bind(null,props.name)} className="ladderboard" style={{ "backgroundColor": props.bgColor }}>
             <div>{props.usersCount}</div>
             <div>|</div>
             <div>{props.name}</div>
