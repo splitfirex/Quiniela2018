@@ -1,7 +1,10 @@
-.Flag{
+.flag{
     background-image: url(https://vignette.wikia.nocookie.net/vexillology/images/3/34/Question_mark_flag.svg/revision/latest?cb=20150906121038);
     background-size: cover;
-    background-position: center center;   
+    background-position: center center; 
+    height: 20px;
+    width: 30px;  
+    border-radius: 3px;
 }
 
 /*AMERICA*/

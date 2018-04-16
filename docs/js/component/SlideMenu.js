@@ -13,7 +13,7 @@ class SlideMenu extends React.Component {
         if (this.props.username == "") {
             return <NotLoggedUser fnShowModal={this.props.fnShowModal} moveTo={this.moveTo.bind(this)} />
         } else {
-            return <LoggedUser fnSignOut={this.props.fnSignOut} fnShowModal={this.props.fnShowModal} moveTo={this.moveTo.bind(this)} />
+            return <LoggedUser showMatches={this.props.selectedLadder!=""} fnSignOut={this.props.fnSignOut} fnShowModal={this.props.fnShowModal} moveTo={this.moveTo.bind(this)} />
         }
     }
 
@@ -32,7 +32,7 @@ class SlideMenu extends React.Component {
             return <div></div>
         }
         return <div data-modal="SelectLadderBoardManager" onClick={(e) => this.props.fnShowModal(e)}>
-            Select ladderboard
+            {this.props.selectedLadder == "" ? "Select ladderboard" : this.props.selectedLadder}
         </div>
     }
 
@@ -50,6 +50,16 @@ class SlideMenu extends React.Component {
 }
 
 function LoggedUser(props) {
+
+    var showMyMatches = <div data-modal="LoginManager" onClick={(e) => props.fnShowModal(e)}>
+        <div><i className="fas fa-futbol"></i></div>
+        <div>My Matches</div>
+    </div>
+    if(props.showMatches == ""){
+        showMyMatches = <div></div>
+    }
+    
+
     return (
         <div className="slideMenuContent">
             <div data-destination="#container" onClick={(e) => props.moveTo(e)}>
@@ -75,10 +85,7 @@ function LoggedUser(props) {
                 <div><i className="fas fa-sort-amount-up"></i></div>
                 <div>Join Ladderboard</div>
             </div>
-            <div data-modal="LoginManager" onClick={(e) => props.fnShowModal(e)}>
-                <div><i className="fas fa-futbol"></i></div>
-                <div>My Matches</div>
-            </div>
+            {showMyMatches}
             <div className="slideMenuSeparator">
             </div>
             <div> </div>

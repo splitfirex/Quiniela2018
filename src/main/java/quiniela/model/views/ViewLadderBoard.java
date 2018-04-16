@@ -12,6 +12,7 @@ public class ViewLadderBoard extends TokenAbleView {
     private Long id;
     private String name;
     private List<LadderBoardPlayer> listPlayers;
+    private Boolean isProtected;
 
 
     public static List<ViewLadderBoard> fromList(List<LadderBoard> boards) {
@@ -28,6 +29,7 @@ public class ViewLadderBoard extends TokenAbleView {
         this.id = board.getId();
         this.name = board.getName();
         this.listPlayers = board.getListPlayers();
+        this.isProtected = board.getPassword() != null;
     }
 
     public Long getId() {
@@ -52,5 +54,13 @@ public class ViewLadderBoard extends TokenAbleView {
 
     public void setListPlayers(List<LadderBoardPlayer> listPlayers) {
         this.listPlayers = listPlayers;
+    }
+
+    public Boolean getProtected() {
+        return isProtected;
+    }
+
+    public void setProtected(Boolean aProtected) {
+        isProtected = aProtected;
     }
 }

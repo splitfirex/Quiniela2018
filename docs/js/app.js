@@ -6,7 +6,8 @@ class App extends React.Component {
             showMenu: "",
             showModal: "",
             username: "",
-            showModalName: ""
+            showModalName: "",
+            selectedLadder: ""
         };
     }
 
@@ -51,9 +52,17 @@ class App extends React.Component {
         })
     }
 
+    selectLadder(ladder){
+        this.setState({
+            selectedLadder : ladder,
+            showModal: ""
+        })
+    }
+
     render() {
         return <div>
             <SlideMenu key="SlideMenu" 
+            selectedLadder={this.state.selectedLadder}
             username={this.state.username}
             fnCloseMenu={this.closeMenu.bind(this)} 
             fnShowModal={this.showModal.bind(this)}
@@ -81,6 +90,7 @@ class App extends React.Component {
                 {/*<PlayerMatches />*/}
             </div>
             <Modal key="modal"
+                fnChangeLadder={this.selectLadder.bind(this)}
                 className={"modal " + this.state.showModal}
                 showModal={this.state.showModalName}
                 fnCloseModal={this.closeModal.bind(this)}
@@ -88,6 +98,14 @@ class App extends React.Component {
         </div>
 
     }
+}
+
+function Loading(){
+    return(
+        <div className="loading">
+         <div><i className="fas fa-cog fa-spin"></i> Loading...</div>
+        </div>
+    )
 }
 
 

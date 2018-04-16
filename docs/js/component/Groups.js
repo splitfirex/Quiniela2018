@@ -2,17 +2,38 @@ class Groups extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            groups: null
+        }
+    }
+
+    componentDidMount() {
+        getPlayerGroups(this.props.username, this.props.ladderBoad, this.processGroups.bind(this));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        getPlayerGroups(nextProps.username, nextProps.ladderBoad, this.processGroups.bind(this));
+    }
+
+    processGroups(responseGroups) {
+        this.setState({
+            "groups": responseGroups
+        });
     }
 
     getGroups() {
-        return getPlayerGroups(this.props.username, this.props.ladderBoad).map(function (currentValue, index, array) {
-            return <GroupBox idGroup={currentValue.idGroup}>
-                {Object.keys(currentValue.details).map(function (key, index) {
-                    var ele = currentValue.details[key];
-                    return <GroupRow idTeam={ele.id} ng={ele.ng} p={ele.p} pg={ele.pg} />
-                })}
-            </GroupBox>
-        });
+        if (this.state.groups == null) {
+            return <Loading/>
+        } else {
+            return this.state.groups.map(function (currentValue, index, array) {
+                return <GroupBox idGroup={currentValue.idGroup}>
+                    {Object.keys(currentValue.details).map(function (key, index) {
+                        var ele = currentValue.details[key];
+                        return <GroupRow idTeam={ele.id} ng={ele.ng} p={ele.p} pg={ele.pg} />
+                    })}
+                </GroupBox>
+            });
+        }
     }
 
     render() {

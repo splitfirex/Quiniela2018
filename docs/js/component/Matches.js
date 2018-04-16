@@ -2,22 +2,46 @@ class Matches extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            "matches" : null
+        }
+    }
+
+    componentDidMount() {
+        getPlayerMatches(this.props.username, this.props.ladderBoad, this.processMatches.bind(this));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        getPlayerMatches(nextProps.username, nextProps.ladderBoad, this.processMatches.bind(this));
+    }
+
+    processMatches(reponseMatches) {
+        this.setState({
+            "matches" : reponseMatches
+        });
     }
 
     getMatches() {
-        return getPlayerMatches(this.props.username, this.props.ladderBoad).map(function (currentValue, index, array) {
-            var d = new Date(matches[index].date);
-            return <Match key={"match" + index} date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2)}
-                hour={zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
-                homeTeamShort={teams[currentValue.hT - 1] == undefined ?
-                    matches[index].homeTeam : teams[currentValue.hT - 1].shortName}
 
-                visitorTeamShort={teams[currentValue.vT - 1] == undefined ?
-                    matches[index].visitorTeam : teams[currentValue.vT - 1].shortName}
+        if (this.state.matches == null) {
+            return <Loading/>
+        } else {
+            return this.state.matches.map(function (currentValue, index, array) {
+                var d = new Date(matches[index].date);
+                return <Match key={"match" + index} date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2)}
+                    hour={zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
+                    homeTeamShort={teams[currentValue.hT - 1] == undefined ?
+                        matches[index].homeTeam : teams[currentValue.hT - 1].shortName}
 
-                homeTeamScore={currentValue.hS == null ? "*" : currentValue.hs}
-                visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vs} />
-        })
+                    visitorTeamShort={teams[currentValue.vT - 1] == undefined ?
+                        matches[index].visitorTeam : teams[currentValue.vT - 1].shortName}
+
+                    homeTeamScore={currentValue.hS == null ? "*" : currentValue.hs}
+                    visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vs} />
+            })
+        }
+
     }
 
     render() {

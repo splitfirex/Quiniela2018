@@ -1,8 +1,8 @@
 var token = "";
 var server = "http://localhost:9000";
-var teams = {};
-var matches = {};
-var groups = {};
+var teams = getTeams();
+var matches = getMatches();
+var groups = getGroups();
 
 var postData = {
     method: 'POST',
@@ -12,7 +12,7 @@ var postData = {
 };
 
 var getData = {
-    method: 'POST',
+    method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     mode: 'cors',
     cache: 'default'
@@ -28,8 +28,9 @@ function getTeams() {
     request.send(null);
 
     if (request.status === 200) {
-        teams = JSON.parse(request.responseText);
+        return JSON.parse(request.responseText);
     }
+    return null;
 }
 
 function getGroups() {
@@ -38,8 +39,9 @@ function getGroups() {
     request.send(null);
 
     if (request.status === 200) {
-        groups = JSON.parse(request.responseText);
+        return JSON.parse(request.responseText);
     }
+    return null;
 }
 
 function getMatches() {
@@ -48,47 +50,69 @@ function getMatches() {
     request.send(null);
 
     if (request.status === 200) {
-        matches = JSON.parse(request.responseText);
-    }
-}
-
-function getPlayerMatches(username,ladder) {
-    var request = new XMLHttpRequest();
-    request.open('GET', server + '/user/playermatches?username='+username+'&laddername='+ladder, false);
-    request.send(null);
-
-    if (request.status === 200) {
         return JSON.parse(request.responseText);
     }
     return null;
 }
 
-function getPlayerGroups(username,ladder) {
-    var request = new XMLHttpRequest();
-    request.open('GET', server + '/user/playergroups?username='+username+'&laddername='+ladder, false);
-    request.send(null);
+function getPlayerMatches(username, ladder, callback) {
 
-    if (request.status === 200) {
-        return JSON.parse(request.responseText);
-    }
-    return null;
+    fetch(server + '/user/playermatches?username=' + username + '&laddername=' + ladder, getData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) { callback(res) });
+
+}
+
+function getPlayerGroups(username, ladder, callback) {
+
+    fetch(server + '/user/playergroups?username=' + username + '&laddername=' + ladder, getData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) { callback(res) });
+
 }
 
 
-function getPlayerLadderBoards() {
-    var request = new XMLHttpRequest();
-    request.open('POST', server + '/user/playergroups?username='+username+'&laddername='+ladder, false);
-    request.send(null);
-
-    if (request.status === 200) {
-        return JSON.parse(request.responseText);
-    }
-    return null;
+function getPlayerLadders(callback) {
+    fetch(server + '/user/ladders', getData)
+    .then(function (response) {
+        return response.json();
+    }).then(function (res) { 
+        callback(res) 
+    });
 }
 
-getTeams();
-getGroups();
-getMatches();
+function postPlayerLadders(callback) {
+    postData.body = JSON.stringify({ "token":token });
+    fetch(server + '/user/ladders', postData)
+    .then(function (response) {
+        return response.json();
+    }).then(function (res) { 
+        callback(res) 
+    });
+}
+
+
+function getPlayerLogin(username, password, callback) {
+    postData.body = JSON.stringify({ "username": username, "password": password });
+    fetch(server + '/login/signin', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) { 
+            if(res.token != null) token = res.token;
+            callback(res) });
+}
+
+function getPlayerRegister(username, password, callback) {
+    postData.body = JSON.stringify({ "username": username, "password": password });
+    fetch(server + '/login/signup', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) { 
+            if(res.token != null) token = res.token;
+            callback(res) });
+}
 
 
 function tryFetch(request, inputData, reactjs, postRequest) {

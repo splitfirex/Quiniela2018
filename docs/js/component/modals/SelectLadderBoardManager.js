@@ -2,22 +2,47 @@ class SelectLadderBoardManager extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            ladders : null
+        }
     }
 
-    onClickLadder(){
-        
+    componentDidMount() {
+        postPlayerLadders(this.processLadders.bind(this));
     }
+
+    componentWillReceiveProps(nextProps) {
+        postPlayerLadders(this.processLadders.bind(this));
+    }
+
+    processLadders(responseLadders) {
+        this.setState({
+            "ladders": responseLadders
+        });
+    }
+
+    selectLadder(ladderName){
+        this.props.fnChangeLadder(ladderName);
+    }
+
+    getLadders() {
+        if (this.state.ladders == null) {
+            return <Loading />
+        }
+        var that = this;
+        return this.state.ladders.map(function (currentValue, index, array) {
+            return  <div onClick={that.selectLadder.bind(that, currentValue.name)}>
+            <div><i className="fas fa-check-circle"></i></div>
+            <div>{currentValue.name}</div>
+        </div>
+        });
+
+    }
+
 
     render() {
         return <div key="joinLadderBoard" className="joinLadderBoard">
-            <div onClick={this.onClickLadder.bind(this)}>
-                <div><i className="fas fa-lock"></i></div>
-                <div>Splitfire</div>
-            </div>
-            <div>
-                <div><i className="fas fa-unlock"></i></div>
-                <div>Splitfire</div>
-            </div>
+           {this.getLadders()} 
         </div>
     }
 }

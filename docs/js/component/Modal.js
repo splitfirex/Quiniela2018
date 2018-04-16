@@ -21,9 +21,9 @@ class Modal extends React.Component {
         } else if (this.state.modalName == "LadderBoardManager") {
             return <LadderBoardManager />
         } else if (this.state.modalName == "SelectLadderBoardManager") {
-            return <SelectLadderBoardManager />
+            return <SelectLadderBoardManager fnChangeLadder={this.props.fnChangeLadder} />
         } else if (this.state.modalName == "LoginManager") {
-            return <LoginManager fnLoginSuccess={this.state.fnLoginSuccess} />
+            return <LoginManager fnLoginSuccess={this.props.fnLoginSuccess} />
         }
         return <div></div>;
     }

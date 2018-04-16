@@ -1,0 +1,35 @@
+class ShowPlayers extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            players : null
+        }
+
+    }
+
+    render() {
+        return <div id="content">
+            <div className="p1 g-1g">
+                <div>5</div>
+                <div>|</div>
+                <div>SPLITFIRE</div>
+                <div> <i className="fa-inverse fas fa-at"></i></div>
+                <div>
+                    <i className="fa-inverse fas fa-angle-double-down" style={{ color: "tomato" }}></i>
+                </div>
+            </div>
+            <div className="p1 g-2g">
+                <div>5</div>
+                <div>|</div>
+                <div>SPLITFIRE</div>
+                <div><i className="fa-inverse fas fa-user" ></i></div>
+                <div>
+                    <i className="fa-inverse fas fa-angle-double-up" style={{ color: "greenyellow" }}></i>
+                </div>
+            </div>
+        </div>
+    }
+
+}

@@ -8,7 +8,7 @@ class LoginManager extends React.Component {
         };
 
         this.baseState = this.state;
-        
+
         this.state.signInState = true;
     }
 
@@ -64,29 +64,29 @@ class LoginManager extends React.Component {
         });
     }
 
-    getResponseError(response) {
-        this.setState({ 
-            credentials: { "username": "", "password": "", "passwordr": "" },
-            errorMessage: "Error in credentials" });
-    }
-
-    getResponse(response) {
-        if (response.token != null) token = response.token;
-        this.props.fnLoginSuccess(this.state.credentials.username);
-        this.state.credentials = { "username": "", "password": "", "passwordr": "" };
+    getLoginResponse(response) {
+        if (response.token == null) {
+            if (this.state.signInState) {
+                this.setState({ errorMessage: "Bad credentials" });
+            } else {
+                this.setState({ errorMessage: "Username already exists" });
+            }
+        } else {
+            this.props.fnLoginSuccess(this.state.credentials.username);
+            this.state.credentials = { "username": "", "password": "", "passwordr": "" };
+        }
     }
 
     sendRequest() {
         if (this.state.signInState) {
-            tryFetch(loginRequest, this.state.credentials, this, true);
+            getPlayerLogin(this.state.credentials.username, this.state.credentials.password, this.getLoginResponse.bind(this));
         } else {
             if (this.state.credentials.password == this.state.credentials.passwordr) {
-                tryFetch(registerRequest, this.state.credentials, this, true);
+                getPlayerRegister(this.state.credentials.username, this.state.credentials.password, this.getLoginResponse.bind(this));
             } else {
-                this.setState({ errorMessage: "Password d" });
+                this.setState({ errorMessage: "Password must match" });
             }
         }
-        this.setState(this.baseState);
     }
 
     render() {
