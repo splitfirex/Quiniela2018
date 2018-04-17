@@ -9,12 +9,18 @@ class Matches extends React.Component {
     }
 
     componentDidMount() {
-        getPlayerMatches(this.props.username, this.props.ladderBoad, this.processMatches.bind(this));
+        getPlayerMatches(
+            this.props.username == null ? "_NOT_A_PLAYER" : this.props.username,
+            this.props.ladderBoad == null ? "_NOT_A_LADDERBOARD_" : this.props.ladderBoad,
+            this.processMatches.bind(this));
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.username != nextProps.username ||  nextProps.ladderBoad != this.props.ladderBoad  ) {
-            getPlayerMatches(nextProps.username, nextProps.ladderBoad, this.processMatches.bind(this));
+        if (this.props.username != nextProps.username || nextProps.ladderBoad != this.props.ladderBoad) {
+            getPlayerMatches(
+                this.props.username == null ? "_NOT_A_PLAYER" : this.props.username,
+                this.props.ladderBoad == null ? "_NOT_A_LADDERBOARD_" : this.props.ladderBoad,
+                this.processMatches.bind(this));
         }
     }
 
@@ -47,12 +53,17 @@ class Matches extends React.Component {
     }
 
     render() {
-        return <div id="matches-wrap">
-            <div className="section-title matchesTitle">MATCHES</div>
-            <div id="matches">
-                {this.getMatches()}
+        if ((this.props.username == null && this.props.ladderBoad == null) || (this.props.username != null)) {
+            return <div id="matches-wrap">
+                <div className="section-title matchesTitle">MATCHES</div>
+                <div id="matches">
+                    {this.getMatches()}
+                </div>
             </div>
-        </div>
+        } else {
+            return <div></div>
+        }
+
     }
 }
 
@@ -64,7 +75,7 @@ function Match(props) {
             <div className="team-box-sm">
                 <div>{props.homeTeamShort}</div>
                 <div>
-                    <div className={"flag " + props.homeTeamShort}></div>
+                    <div className={"flag " + (props.homeTeamShort.indexOf("_") != -1 ? "UNKOW" : props.homeTeamShort)}></div>
                 </div>
                 <div>{props.homeTeamScore}</div>
             </div>
@@ -72,7 +83,7 @@ function Match(props) {
             <div className="team-box-sm">
                 <div>{props.visitorTeamScore}</div>
                 <div>
-                    <div className={"flag " + props.visitorTeamShort}></div>
+                    <div className={"flag " + (props.visitorTeamShort.indexOf("_") != -1 ? "UNKOW" : props.visitorTeamShort)}></div>
                 </div>
                 <div>{props.visitorTeamShort}</div>
             </div>

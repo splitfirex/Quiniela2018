@@ -8,12 +8,18 @@ class Groups extends React.Component {
     }
 
     componentDidMount() {
-        getPlayerGroups(this.props.username, this.props.ladderBoad, this.processGroups.bind(this));
+        getPlayerGroups(
+            this.props.username == null ? "_NOT_A_PLAYER" : this.props.username,
+            this.props.ladderBoad == null ? "_NOT_A_LADDERBOARD_" : this.props.ladderBoad,
+            this.processGroups.bind(this));
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.username != nextProps.username || nextProps.ladderBoad != this.props.ladderBoad) {
-            getPlayerGroups(nextProps.username, nextProps.ladderBoad, this.processGroups.bind(this));
+            getPlayerGroups(
+                this.props.username == null ? "_NOT_A_PLAYER" : this.props.username,
+                this.props.ladderBoad == null ? "_NOT_A_LADDERBOARD_" : this.props.ladderBoad,
+                this.processGroups.bind(this));
         }
     }
 
@@ -39,18 +45,17 @@ class Groups extends React.Component {
     }
 
     render() {
-        return <div id="groups-wrap">
-            <div className="section-title groupsTitle">GROUPS</div>
-            <div id="groups">
-                {this.getGroups()}
+        if ((this.props.ladderBoad == null && this.props.username == null) || ( this.props.username != null)) {
+            return <div id="groups-wrap">
+                <div className="section-title groupsTitle">GROUPS</div>
+                <div id="groups">
+                    {this.getGroups()}
+                </div>
             </div>
-        </div>
+        } else {
+            return <div></div>
+        }
     }
-}
-
-Groups.defaultProps = {
-    username: "_NOT_A_PLAYER",
-    ladderBoad: "_NOT_A_LADDERBOARD_",
 }
 
 

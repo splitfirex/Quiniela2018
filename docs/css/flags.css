@@ -1,3 +1,152 @@
+/*!
+ * Generated with CSS Flag Sprite generator (https://www.flag-sprites.com/)
+ */
+
+.flag {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: url('../img/flags/flags.png') no-repeat;
+    border-radius: 4px;
+}
+
+.flag.UNKOW{
+    background-image: url(https://vignette.wikia.nocookie.net/vexillology/images/3/34/Question_mark_flag.svg/revision/latest?cb=20150906121038);
+    background-size: cover;
+    background-position: center center; 
+    height: 18px;
+    width: 24px;  
+}
+
+.flag.PER {
+    background-position: -96px -72px;
+}
+
+.flag.GER {
+    background-position: -24px -24px;
+}
+
+.flag.NGA {
+    background-position: -48px -72px;
+}
+
+.flag.POL {
+    background-position: -120px -72px;
+}
+
+.flag.PAN {
+    background-position: -72px -72px;
+}
+
+.flag.RUS {
+    background-position: -48px -96px;
+}
+
+.flag.JAP {
+    background-position: -96px -48px;
+}
+
+.flag.IRN {
+    background-position: -48px -48px;
+}
+
+.flag.BEL {
+    background-position: -48px 0;
+}
+
+.flag.TUN {
+    background-position: 0 -120px;
+}
+
+.flag.FRA {
+    background-position: -120px -24px;
+}
+
+.flag.AUS {
+    background-position: -24px 0;
+}
+
+.flag.URU {
+    background-position: -24px -120px;
+}
+
+.flag.SER {
+    background-position: -24px -48px;
+}
+
+.flag.SEN {
+    background-position: -120px -96px;
+}
+
+.flag.SWD {
+    background-position: -96px -96px;
+}
+
+.flag.BRA {
+    background-position: -72px 0;
+}
+
+.flag.ICE {
+    background-position: -72px -48px;
+}
+
+.flag.POR {
+    background-position: 0 -96px;
+}
+
+.flag.COL {
+    background-position: -120px 0;
+}
+
+.flag.SPA {
+    background-position: -96px -24px;
+}
+
+.flag.DEN {
+    background-position: -48px -24px;
+}
+
+.flag.EGY {
+    background-position: -72px -24px;
+}
+
+.flag.SAB {
+    background-position: -72px -96px;
+}
+
+.flag.COS {
+    background-position: 0 -24px;
+}
+
+.flag.ENG {
+    background-position: 0 -48px;
+}
+
+.flag.CRO {
+    background-position: -24px -96px;
+}
+
+.flag.KOR {
+    background-position: -120px -48px;
+}
+
+.flag.ARG {
+    background-position: 0 0;
+}
+
+.flag.MRC {
+    background-position: 0 -72px;
+}
+
+.flag.SWZ {
+    background-position: -96px 0;
+}
+
+.flag.MEX {
+    background-position: -24px -72px;
+}
+
+/*
 .flag{
     background-image: url(https://vignette.wikia.nocookie.net/vexillology/images/3/34/Question_mark_flag.svg/revision/latest?cb=20150906121038);
     background-size: cover;
@@ -7,7 +156,7 @@
     border-radius: 3px;
 }
 
-/*AMERICA*/
+
 
 .COL {
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/co.svg);
@@ -58,7 +207,6 @@
 }
 
 
-/*EUROPA*/
 
 .POR{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/pt.svg);
@@ -144,7 +292,7 @@
     background-position: center center;
 }
 
-/*AFRICA*/
+
 
 .TUN{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/tn.svg);
@@ -177,7 +325,6 @@
 }
 
 
-/* ASIA */
 
 .JAP{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/jp.svg);
@@ -203,13 +350,8 @@
     background-position: center center;   
 }
 
-
-/* */
-
 .AUS{
     background-image: url(https://lipis.github.io/flag-icon-css/flags/4x3/au.svg);
     background-size: cover;
     background-position: center center;   
 }
-
-

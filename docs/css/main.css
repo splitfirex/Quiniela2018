@@ -29,6 +29,9 @@ html {
   scroll-behavior: smooth;
   max-width: 100vw;
   overflow-x: hidden;
+
+  background-color: rgb(89, 152, 211);
+  background-image: url("../img/bg3.png");
 }
 
 body {
@@ -56,9 +59,10 @@ body {
 
   left:0;
   z-index: 5;
+ 
   background-color: rgb(89, 152, 211);
   background-image: url("../img/bg3.png");
- 
+
   display: grid;
   grid-auto-columns: auto;
   grid-auto-rows: 40px 170px 30px auto auto auto 300px;
