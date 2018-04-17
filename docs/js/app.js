@@ -21,7 +21,9 @@ class App extends React.Component {
 
     closeMenu() {
         this.setState({
-            showMenu: ""
+            showMenu: "",
+            currentPlayer: null,
+            currentLadder:null
         });
     }
 
@@ -64,6 +66,12 @@ class App extends React.Component {
     loadPlayers(ladder){
         this.setState({
             currentLadder : ladder,
+        })
+    }
+
+    showMatches(playerUsername){
+        this.setState({
+            currentPlayer : playerUsername
         })
     }
 
@@ -112,9 +120,9 @@ class App extends React.Component {
                 </div>
                 <Notification />
 
-                <Content loadPlayers={this.loadPlayers.bind(this)} currentLadder={this.state.currentLadder} />
-                <Groups currentLadder={this.state.currentLadder} currentPlayer={this.state.currentPlayer} />
-                <Matches currentLadder={this.state.currentLadder} currentPlayer={this.state.currentPlayer} />
+                <Content fnShowMatches={this.showMatches.bind(this)} loadPlayers={this.loadPlayers.bind(this)} currentLadder={this.state.currentLadder} currentPlayer={this.state.currentPlayer}/>
+                <Groups ladderBoad={this.state.currentLadder} username={this.state.currentPlayer} />
+                <Matches ladderBoad={this.state.currentLadder} username={this.state.currentPlayer} />
                 {/*<PlayerMatches />*/}
             </div>
             <Modal key="modal"
