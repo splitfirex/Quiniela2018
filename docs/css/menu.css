@@ -1,13 +1,33 @@
 .menu{
-    position: fixed;
+    position: sticky;
+    background-color: white;
     display: grid;
     grid-template-columns: 50px auto 50px;
+    box-shadow: 0 1px 8px rgba(0,0,0,.3);
+    font-family: 'Hi Melody', cursive;
     align-items: center;
     justify-items: center;
     font-size: 1.4em;
     width: 100%;
     height: 50px;
 }
+
+.menu>div:nth-child(2){
+    font-size: 1.5em; 
+    margin-right: auto;
+    margin-left: 20px;
+}
+
+.loading{
+    font-size: 4em;
+    color: white;
+    height: 100%;
+    width: 100%;
+    padding-top:50%;
+    background-color: rgb(0,0, 0,.5);
+}
+
+
 
 .slideMenu-wrap{
     position: fixed;
