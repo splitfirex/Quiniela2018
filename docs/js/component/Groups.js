@@ -17,8 +17,8 @@ class Groups extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.username != nextProps.username || nextProps.ladderBoad != this.props.ladderBoad) {
             getPlayerGroups(
-                this.props.username == null ? "_NOT_A_PLAYER" : this.props.username,
-                this.props.ladderBoad == null ? "_NOT_A_LADDERBOARD_" : this.props.ladderBoad,
+                nextProps.username == null ? "_NOT_A_PLAYER" : nextProps.username,
+                nextProps.ladderBoad == null ? "_NOT_A_LADDERBOARD_" : nextProps.ladderBoad,
                 this.processGroups.bind(this));
         }
     }

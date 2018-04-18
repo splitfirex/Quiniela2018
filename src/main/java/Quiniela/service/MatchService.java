@@ -22,4 +22,6 @@ public interface MatchService {
     void createPlayerMatches(LadderBoard l, Player player);
 
     List<PlayerMatch> getMatchesByPlayerLadder(LadderBoard l, Player p);
+
+    List<PlayerMatch> updatePlayerMatches(Player p, LadderBoard l, Long idMatch, Integer homeScore, Integer visitScore);
 }

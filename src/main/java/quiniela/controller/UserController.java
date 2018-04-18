@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import quiniela.model.*;
-import quiniela.model.form.GetLadderForm;
-import quiniela.model.form.JoinLadderForm;
-import quiniela.model.form.PlayerMatchForm;
-import quiniela.model.form.TokenForm;
+import quiniela.model.form.*;
 import quiniela.model.views.ViewLadderBoard;
 import quiniela.service.*;
 import quiniela.utils.ScoreMath;
@@ -136,6 +133,15 @@ public class UserController {
 
         }
         return null;
+    }
+
+
+    @RequestMapping(value = "/updatematch", method = RequestMethod.POST)
+    @ResponseBody
+    public List<PlayerMatch> updateMatch(@RequestBody UpdateMatchForm form) {
+        Player player = loginService.getPlayerByToken(form.getToken());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLadderName());
+        return matchService.updatePlayerMatches(player,l,form.getIdMatch(),form.getHomeScore(),form.getVisitScore());
     }
 
 }

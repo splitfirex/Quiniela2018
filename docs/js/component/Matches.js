@@ -18,8 +18,8 @@ class Matches extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.username != nextProps.username || nextProps.ladderBoad != this.props.ladderBoad) {
             getPlayerMatches(
-                this.props.username == null ? "_NOT_A_PLAYER" : this.props.username,
-                this.props.ladderBoad == null ? "_NOT_A_LADDERBOARD_" : this.props.ladderBoad,
+                nextProps.username == null ? "_NOT_A_PLAYER" : nextProps.username,
+                nextProps.ladderBoad == null ? "_NOT_A_LADDERBOARD_" : nextProps.ladderBoad,
                 this.processMatches.bind(this));
         }
     }
@@ -45,8 +45,8 @@ class Matches extends React.Component {
                     visitorTeamShort={teams[currentValue.vT - 1] == undefined ?
                         matches[index].visitorTeam : teams[currentValue.vT - 1].shortName}
 
-                    homeTeamScore={currentValue.hS == null ? "*" : currentValue.hs}
-                    visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vs} />
+                    homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
+                    visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS} />
             })
         }
 
