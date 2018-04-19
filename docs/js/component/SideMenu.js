@@ -1,19 +1,18 @@
 class SideMenu extends React.Component {
 
-
     render(){
-
         return <div className={"sideMenu-wrap "+ (this.props.renderSideMenu ? "show" : "")}>
-            <div className="sideMenu-content">HOLA</div>
-        
+            <div className="sideMenu-content">
+                <div></div>
+                <div onClick={this.props.fnOnClickGoTo.bind(null,"Inicio")}>Inicio</div>
+                <div onClick={this.props.fnOnClickGoTo.bind(null,"Grupos")}>Grupos</div>
+                <div onClick={this.props.fnOnClickGoTo.bind(null,"Partidos")}>Partidos</div>
+            </div>
         </div>
     }
 }
 
-function SideMenuModal(props){
-        return (<div onClick={props.fnToggleMenu} className={"sideMenu-modal "+ (props.renderSideMenu ? "show" : "")}/>)
-}
-
-SlideMenu.defaultProps = {
-    renderSideMenu: false
+SideMenu.defaultProps = {
+    renderSideMenu: false,
+    fnOnClickGoTo:function(){}
 }
