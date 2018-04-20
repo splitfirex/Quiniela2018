@@ -8,7 +8,7 @@ class App extends React.Component {
             showLoading: false,
             showBreadcrumbs: true,
             breads: ["Inicio"],
-            currentWindow: "Inicio"
+            currentWindow: "Grupos"
         }
     }
 
@@ -32,27 +32,32 @@ class App extends React.Component {
 
     changeWindow(newWindow) {
         if (newWindow == "Inicio") {
-            this.setState({ breads: ["Inicio"] });
+            this.setState({ breads: ["Inicio"], currentWindow: newWindow  });
     
         } else if (newWindow == "Grupos") {
-            this.setState({ breads: ["Inicio", "Grupos"] });
+            this.setState({ breads: ["Inicio", "Grupos"], currentWindow: newWindow  });
 
         } else if (newWindow == "Partidos") {
-            this.setState({ breads: ["Inicio", "Partidos"] });
+            this.setState({ breads: ["Inicio", "Partidos"], currentWindow: newWindow  });
         }
     }
 
     render() {
+
+        if(this.state.showLoading){
+            var loading = <Loading />;
+        }
 
         if (this.state.showBreadcrumbs) {
             var breadcrumbs = <BreadCrumbs listRender={this.state.breads} />;
         }
 
         return <div>
+            {loading}
             <Menu fnToggleMenu={this.toggleMenu.bind(this)} renderBack={this.state.showBackButton} />
             {breadcrumbs}
             <SideMenu fnOnClickGoTo={this.fnOnClickGoTo.bind(this)} renderSideMenu={this.state.showSideMenu} />
-            <GlobalContent renderBreadcrumbs={this.state.showBreadcrumbs} />
+            <GlobalContent currentWindow={this.state.currentWindow} renderBreadcrumbs={this.state.showBreadcrumbs} />
         </div>
 
     }

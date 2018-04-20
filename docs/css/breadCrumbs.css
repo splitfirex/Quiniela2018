@@ -17,10 +17,12 @@
     padding-left: 10px;
 }
 
-.breadCrumbs>div:nth-child(-n+2):after{
+.breadCrumbs>div:not(:last-child){
     content: " > ";
     padding-left: 10px;
 }
+
+
 
 .breadCrumbs>div.backButton{
     padding-left: 0;
