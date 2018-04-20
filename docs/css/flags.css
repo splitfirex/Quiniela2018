@@ -5,7 +5,7 @@
 .flag {
     display: inline-block;
     width: 24px;
-    height: 26px;
+    height: 24px;
     background: url('../img/flags/flags.png') no-repeat;
     border-radius: 4px;
 }

@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fb9086fe-e20c-4783-97b4-107008fc8884" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/css/breadCrumbs.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/css/breadCrumbs.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/css/content.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/css/content.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index2.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/app2.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/app2.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/GlobalContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/GlobalContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/css/flags.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/css/flags.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/js/component/ContentGroup.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ContentGroup.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="C:\Users\danie\Desktop\Quiniela2018\.idea\shelf/" />
@@ -425,6 +419,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />

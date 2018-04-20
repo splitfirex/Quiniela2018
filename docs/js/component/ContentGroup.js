@@ -21,57 +21,34 @@ function Group(props) {
                 <div> Grupo A</div>
             </div>
             <div className="row">
-                <div className="iconCenter">
+                <div>
                 </div>
-
-                <div>Team</div>
+                <div>Equipo</div>
                 <div>GF</div>
                 <div>GC</div>
                 <div>Dif</div>
                 <div>P</div>
             </div>
-            <div className="row" >
-                <div className="iconCenter">
-                    <div className="flag BRA"></div>
-                </div>
-                <div>Brazil</div>
-                <div>2</div>
-                <div>3</div>
-                <div>-5</div>
-                <div>4</div>
-            </div>
-            <div className="row" >
-                <div className="iconCenter">
-                    <div className="flag BRA"></div>
-                </div>
-                <div>Brazil</div>
-                <div>2</div>
-                <div>3</div>
-                <div>-5</div>
-                <div>4</div>
-            </div>
-            <div className="row" >
-                <div className="iconCenter">
-                    <div className="flag BRA"></div>
-                </div>
-                <div>Brazil</div>
-                <div>2</div>
-                <div>3</div>
-                <div>-5</div>
-                <div>4</div>
-            </div>
-            <div className="row" >
-                <div className="iconCenter">
-                    <div className="flag BRA"></div>
-                </div>
-                <div>Brazil</div>
-                <div>2</div>
-                <div>3</div>
-                <div>-5</div>
-                <div>4</div>
-            </div>
+            <GroupRow/>
+            <GroupRow/>
+            <GroupRow/>
+            <GroupRow/>
+        </div>
+    )
+}
 
 
-        </div >
+function GroupRow(props) {
+    return (
+        <div className="row" >
+            <div>
+                <div className="flag BRA"></div>
+            </div>
+            <div>Brazil</div>
+            <div>2</div>
+            <div>3</div>
+            <div>-5</div>
+            <div>4</div>
+        </div>
     )
 }
