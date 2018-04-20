@@ -1,7 +1,7 @@
 .content-warp{
     padding-top: 65px;
-    background: url("../img/bg3.png");
-    font-family: 'Roboto', sans-serif;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .content-warp.showBreadcrumbs{
@@ -148,6 +148,7 @@ div.teamMatch{
 }
 
 div.teambox{
+    margin-top:-10px;
     text-align: center;
     justify-items: center;
     align-items: center;
@@ -236,6 +237,7 @@ div.match.edit div.teambox.left{
 }
 
 .teamboxSeparator{
+    margin-top: -10px;
     text-align: center;
     line-height: 50px
 }
@@ -245,7 +247,7 @@ div.match.edit div.teambox.left{
     background-color: white;
     box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
     display: grid;
-    grid-template-rows: 30px 20px repeat(4,30px);
+    grid-template-rows: 30px 20px repeat(4,32px);
     margin-bottom: 15px;
 }
 

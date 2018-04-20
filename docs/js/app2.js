@@ -8,7 +8,7 @@ class App extends React.Component {
             showLoading: false,
             showBreadcrumbs: true,
             breads: ["Inicio"],
-            currentWindow: "Grupos"
+            currentWindow: "Partidos"
         }
     }
 
@@ -58,6 +58,7 @@ class App extends React.Component {
             {breadcrumbs}
             <SideMenu fnOnClickGoTo={this.fnOnClickGoTo.bind(this)} renderSideMenu={this.state.showSideMenu} />
             <GlobalContent currentWindow={this.state.currentWindow} renderBreadcrumbs={this.state.showBreadcrumbs} />
+            <div className="footer"></div>
         </div>
 
     }

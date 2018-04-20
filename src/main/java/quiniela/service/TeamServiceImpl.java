@@ -22,7 +22,7 @@ public class TeamServiceImpl implements TeamService {
 
     static private AtomicLong counter = new AtomicLong();
 
-    final static private Integer CSV_MAX_VALUES_TEAM = 4;
+    final static private Integer CSV_MAX_VALUES_TEAM = 5;
 
     @Autowired
     private TeamRepository teamRepository;
@@ -51,7 +51,7 @@ public class TeamServiceImpl implements TeamService {
             t.setName(values.get(i + 1));
             t.setShortName(values.get(i + 2));
             t.setGroup(values.get(i + 3));
-            t.setFlagUrl("URL");
+            t.setFlagUrl(values.get(i + 4));
             inserTeam.add(t);
 
             idTeamName.put(t.getName(), t.getId());
@@ -71,6 +71,7 @@ public class TeamServiceImpl implements TeamService {
         }
         teamRepository.saveAll(inserTeam);
         groupRepository.saveAll(inserGroup.values());
+
     }
 
     @Override

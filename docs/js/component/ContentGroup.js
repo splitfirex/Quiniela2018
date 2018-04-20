@@ -1,7 +1,49 @@
 class ContentGroup extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            groups: []
+        }
+    }
+
+    componentDidMount() {
+        getPlayerGroups(
+            this.props.playername == null ? "_NOT_A_PLAYER" : this.props.playername,
+            this.props.laddername == null ? "_NOT_A_LADDERBOARD_" : this.props.laddername,
+            this.processGroups.bind(this));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.playername != nextProps.playername || nextProps.playername != this.props.playername) {
+            getPlayerGroups(
+                nextProps.username == null ? "_NOT_A_PLAYER" : nextProps.username,
+                nextProps.laddername == null ? "_NOT_A_LADDERBOARD_" : nextProps.laddername,
+                this.processGroups.bind(this));
+        }
+    }
+
+    processGroups(newGroups) {
+        this.setState({
+            groups: newGroups
+        })
+    }
+
+    renderGroups() {
+        return this.state.groups.map(function (currentValue, index, array) {
+            return <Group key={"groupbox" + index} groupid={currentValue.idGroup}
+            details={currentValue.details}>
+            </Group>
+        });
+    }
+
     render() {
-        return [<Group />, <Group />]
+
+        if (this.state.groups.length == 0) {
+            return <Loading />
+        }
+
+        return this.renderGroups();
     }
 }
 
@@ -15,10 +57,12 @@ ContentGroup.defaultProps = {
 
 function Group(props) {
 
+
+
     return (
         <div className="group">
             <div className="title">
-                <div> Grupo A</div>
+                <div> Grupo {groups[props.groupid-1].name}</div>
             </div>
             <div className="row">
                 <div>
@@ -29,10 +73,10 @@ function Group(props) {
                 <div>Dif</div>
                 <div>P</div>
             </div>
-            <GroupRow/>
-            <GroupRow/>
-            <GroupRow/>
-            <GroupRow/>
+            {Object.keys(props.details).map(function (key, index) {
+                var ele = props.details[key];
+                return <GroupRow key={"GroupRow" + index} idTeam={ele.id} ng={ele.ng} p={ele.p} pg={ele.pg} />
+            })}
         </div>
     )
 }
@@ -42,13 +86,13 @@ function GroupRow(props) {
     return (
         <div className="row" >
             <div>
-                <div className="flag BRA"></div>
+                <div className={"flag flag-" + teams[props.idTeam - 1].flagUrl}></div>
             </div>
-            <div>Brazil</div>
-            <div>2</div>
-            <div>3</div>
-            <div>-5</div>
-            <div>4</div>
+            <div>{teams[props.idTeam - 1].name}</div>
+            <div>{props.pg}</div>
+            <div>{props.ng}</div>
+            <div>{props.pg - props.ng}</div>
+            <div>{props.p}</div>
         </div>
     )
 }

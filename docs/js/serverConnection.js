@@ -1,19 +1,21 @@
 var token = "";
-var server = "http://localhost:9000";
+var server = "http://192.168.0.156:9000";
 var teams = getTeams();
 var matches = getMatches();
 var groups = getGroups();
 
+var myheaders = new Headers({ 'Content-Type': 'application/json' });
+
 var postData = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: myheaders,
     mode: 'cors',
     cache: 'default'
 };
 
 var getData = {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: myheaders,
     mode: 'cors',
     cache: 'default'
 };

@@ -6,6 +6,7 @@ import quiniela.model.enums.TypeMatch;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Document(collection = "match")
 public class Match{
@@ -16,7 +17,7 @@ public class Match{
     private String visitorTeam;
     private Integer scoreHomeTeam;
     private Integer scoreVisitorTeam;
-    private LocalDateTime date;
+    private Long date;
     private TypeMatch typeMatch;
 
     public long getId() {
@@ -59,11 +60,11 @@ public class Match{
         this.scoreVisitorTeam = scoreVisitorTeam;
     }
 
-    public LocalDateTime getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 

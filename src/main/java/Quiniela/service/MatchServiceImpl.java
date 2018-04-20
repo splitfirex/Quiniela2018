@@ -15,6 +15,8 @@ import quiniela.utils.CVSParser;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,19 +46,22 @@ public class MatchServiceImpl implements MatchService {
 
     @PostConstruct
     private void init() {
-        matchRepository.deleteAll();
+      /*  matchRepository.deleteAll();
         List<String> values = CVSParser.ParseMatches("matches.cvs");
         List<Match> inserMatches = new ArrayList<>();
         for (int i = CSV_MAX_VALUES_MATCHES; i < values.size(); i += CSV_MAX_VALUES_MATCHES) {
             Match match = new Match();
+
             match.setId(Long.parseLong(values.get(i)));
-            match.setDate(LocalDateTime.parse(values.get(i + 1), formatter));
+            ZonedDateTime zoneTime =ZonedDateTime.of(LocalDateTime.parse(values.get(i + 1), formatter), ZoneId.of("UTC+02:00"));
+            match.setDate(zoneTime.toInstant().toEpochMilli());
+
             match.setHomeTeam(values.get(i + 2));
             match.setVisitorTeam(values.get(i + 3));
             match.setTypeMatch(TypeMatch.valueOf(values.get(i + 5)));
             inserMatches.add(match);
         }
-        matchRepository.saveAll(inserMatches);
+        matchRepository.saveAll(inserMatches);*/
     }
 
 
