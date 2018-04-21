@@ -15,6 +15,15 @@ class App extends React.Component {
         }
     }
 
+    goTop(){
+        scrollIt(
+            document.querySelector('.content-warp'),
+            300,
+            'easeOutQuad',
+            () => console.log(`Just finished scrolling to px`)
+          );
+    }
+
     toggleMenu() {
         this.setState({
             showSideMenu: !this.state.showSideMenu
@@ -40,12 +49,14 @@ class App extends React.Component {
                 breads: ["Inicio", this.state.laddername]
             })
         }
+        this.goTop();
     }
 
     fnOnClickGoTo(destination) {
         console.log(destination);
         this.changeWindow(destination);
         this.toggleMenu();
+        this.goTop();
     }
 
     fnOnClickLadder(newLaddername) {
@@ -55,7 +66,8 @@ class App extends React.Component {
             currentWindow: "Jugadores",
             showBreadcrumbs: true,
             breads: ["Inicio", newLaddername]
-        })
+        });
+        this.goTop();
     }
 
     fnOnMatchClick(newPlayername) {
@@ -63,7 +75,8 @@ class App extends React.Component {
             playername: newPlayername,
             currentWindow: "Partidos",
             breads: ["Inicio", this.state.laddername, newPlayername]
-        })
+        });
+        this.goTop();
     }
 
     fnOnGroupClick(newPlayername) {
@@ -71,7 +84,8 @@ class App extends React.Component {
             playername: newPlayername,
             currentWindow: "Grupos",
             breads: ["Inicio", this.state.laddername, newPlayername]
-        })
+        });
+        this.goTop();
     }
 
 
