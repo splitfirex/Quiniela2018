@@ -14,15 +14,13 @@
 .breadCrumbs>div{
     display: inline;
     line-height: 30px;
-    padding-left: 10px;
+    padding-left: 5px;
 }
 
-.breadCrumbs>div:not(:last-child){
+.breadCrumbs>div:not(:last-child)::after{
     content: " > ";
-    padding-left: 10px;
+    padding-left: 5px;
 }
-
-
 
 .breadCrumbs>div.backButton{
     padding-left: 0;

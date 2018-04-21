@@ -13,21 +13,25 @@ class GlobalContent extends React.Component {
             return <div className="title">Grupos</div>
         } else if (this.props.currentWindow == "Partidos") {
             return <div className="title">Partidos</div>
+        }else if (this.props.currentWindow == "Jugadores") {
+            return <div className="title">Jugadores</div>
         }
+        return <div className="title">{this.props.laddername}</div>
     }
 
 
     renderContent(){
         if (this.props.currentWindow == "Inicio") {
-            return <ContentLadder />
+            return <ContentLadder {...this.props} />
         } else if (this.props.currentWindow == "Partidos") {
-            return <ContentMatch />
+            return <ContentMatch {...this.props} />
         } else if (this.props.currentWindow == "Jugadores") {
-            return <ContentPlayer />
+            return <ContentPlayer {...this.props} />
         } else if (this.props.currentWindow == "Grupos") {
-            return <ContentGroup />
+            return <ContentGroup {...this.props} />
         }
     }
+
 
     render() {
 
@@ -51,8 +55,6 @@ class GlobalContent extends React.Component {
     }
 
 }
-
-
 
 GlobalContent.defaultProps = {
     renderBreadcrumbs: false,

@@ -15,10 +15,12 @@
 }
 
 .menu.logged{
-    grid-template-columns: 50px auto auto 25px;
+    
+    grid-template-columns: 50px auto auto 90px;
 }
 
 .menu>div:nth-child(1){
+    color: grey;
     height: 100%;
     width: 100%;
     transition: all 0.5s ease-out;
@@ -39,6 +41,8 @@
 }
 
 .menu>div:last-child{
+    color: grey;
+    background-color: rgba(0,0,0,.1);
     height: 100%;
     width: 100%;
     transition: all 0.5s ease-out;
@@ -48,14 +52,7 @@
     background-color: rgb(0,0, 0,.5);
 }
 
-.loading{
-    font-size: 4em;
-    color: white;
-    height: 100%;
-    width: 100%;
-    padding-top:50%;    
-    background-color: rgb(0,0, 0,.5);
-}
+
 
 .logo{
     background-image: url(../img/logo.png);

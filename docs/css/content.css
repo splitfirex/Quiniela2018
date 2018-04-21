@@ -1,6 +1,6 @@
 .content-warp{
     padding-top: 65px;
-
+    min-height: 600px;
     font-family: 'Roboto Mono', monospace;
 }
 

@@ -7,6 +7,7 @@ class SideMenu extends React.Component {
                 <div onClick={this.props.fnOnClickGoTo.bind(null,"Inicio")}>Inicio</div>
                 <div onClick={this.props.fnOnClickGoTo.bind(null,"Grupos")}>Grupos</div>
                 <div onClick={this.props.fnOnClickGoTo.bind(null,"Partidos")}>Partidos</div>
+                <div onClick={this.props.fnOnClickGoTo.bind(null,"Partidos")}>Iniciar sesion</div>
             </div>
         </div>
     }

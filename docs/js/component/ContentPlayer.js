@@ -1,7 +1,46 @@
 class ContentPlayer extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            players: []
+        }
+    }
+
+    processPlayers(responseLadders) {
+        this.setState({
+            players: responseLadders.listPlayers
+        });
+    }
+
+
+    componentDidMount() {
+        postPlayerLaddersDetail(this.props.laddername,this.processPlayers.bind(this));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        postPlayerLaddersDetail(this.props.laddername,this.processPlayers.bind(this));
+    }
+
+    renderPayers(){
+        var that = this;
+        return this.state.players.map(function (currentValue, index, array) {
+         
+            return <Player 
+            username={currentValue.username} 
+            points={currentValue.points} 
+            fnOnMatchClick={that.props.fnOnMatchClick}
+            fnOnGroupClick={that.props.fnOnGroupClick}/>
+        })
+    }
+
     render() {
-        return [<Player />, <PlayerAdmin />]
+
+        if(this.state.players.length ==0){
+            return <Loading/>
+        }
+
+        return this.renderPayers();
     }
 
 }
@@ -16,7 +55,7 @@ function Player(props) {
     return (
         <div className="player">
             <div className="playerShow">
-                <div> Nombre jugador</div>
+                <div> {props.username} | {props.points} </div>
             </div>
             <div className="playerContent">
                 <div>63</div>
@@ -35,8 +74,8 @@ function Player(props) {
                 </div>
             </div>
             <div className="playerMenu">
-                <div><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
-                <div><div className="iconCenter"><i className="fas fa-list-alt"></i> Grupos</div></div>
+                <div onClick={props.fnOnMatchClick.bind(this,props.username)} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
+                <div onClick={props.fnOnGroupClick.bind(this,props.username)} ><div className="iconCenter"><i className="fas fa-list-alt"></i> Grupos</div></div>
             </div>
         </div>
     )
