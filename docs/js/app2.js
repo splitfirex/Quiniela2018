@@ -92,8 +92,9 @@ class App extends React.Component {
     changeWindow(newWindow) {
         if (newWindow == "Inicio") {
             this.setState({
-                breads: ["Inicio"],
+                breads: [],
                 currentWindow: newWindow,
+                showBreadcrumbs: false,
                 laddername: null,
                 playername: null
             });
@@ -102,6 +103,7 @@ class App extends React.Component {
             this.setState({
                 breads: ["Inicio", "Grupos"],
                 currentWindow: newWindow,
+                showBreadcrumbs: true,
                 laddername: null,
                 playername: null
             });
@@ -110,6 +112,7 @@ class App extends React.Component {
             this.setState({
                 breads: ["Inicio", "Partidos"],
                 currentWindow: newWindow,
+                showBreadcrumbs: true,
                 laddername: null,
                 playername: null
             });
