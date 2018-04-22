@@ -57,6 +57,8 @@ class App extends React.Component {
     fnOnModalBack(){
         this.setState({
             showModal: false,
+            currentWindow: "Inicio",
+            showBreadcrumbs: false,
             currentModalWindow: null
         })
     }
@@ -65,6 +67,18 @@ class App extends React.Component {
         this.setState({
             username : newUsername,
             showModal: false,
+            currentWindow: "Inicio",
+            showBreadcrumbs: false,
+            currentModalWindow: null
+        })
+    }
+
+    fnRegisterOK(newUsername){
+        this.setState({
+            username : newUsername,
+            showModal: false,
+            currentWindow: "Inicio",
+            showBreadcrumbs: false,
             currentModalWindow: null
         })
     }

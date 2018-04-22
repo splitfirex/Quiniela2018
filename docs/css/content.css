@@ -359,7 +359,15 @@ div.match.edit div.teambox.left{
   grid-template-rows: 50px 80px 30px 100px 50px auto;
 }
 
-.modalContent >div.login > div:last-child{
+.modalContent >div.register{
+    align-items: center;
+    justify-items: center;
+    display: grid;
+  grid-template-rows: 50px 50px 50px 50px 80px 50px auto;
+}
+
+
+.modalContent >div.login > div:last-child, .modalContent >div.register > div:last-child {
     font-size: 0.7em;
 }
 

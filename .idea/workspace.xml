@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fb9086fe-e20c-4783-97b4-107008fc8884" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/css/content.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/css/content.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index2.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/app2.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/app2.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/ContentGroup.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ContentGroup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/ContentMatch.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ContentMatch.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/GlobalContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/GlobalContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/SideMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/SideMenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/serverConnection.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/serverConnection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gs-actuator-service.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gs-actuator-service.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/quiniela/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/quiniela/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/quiniela/service/LadderBoardServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/quiniela/service/LadderBoardServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/quiniela/service/TeamServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/quiniela/service/TeamServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-    </list>
+    <list default="true" id="fb9086fe-e20c-4783-97b4-107008fc8884" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="C:\Users\danie\Desktop\Quiniela2018\.idea\shelf/" />
     <ignored path="C:\Users\dfarina\Desktop\Q\Quiniela2018\.idea\shelf/" />
@@ -489,7 +473,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.49934897" weight="0.3269494" />
@@ -499,7 +482,7 @@
       <window_info anchor="right" id="Maven Projects" order="3" visible="true" weight="0.095703125" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49804688" visible="true" weight="0.19425444" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49804688" weight="0.19425444" />
       <window_info anchor="bottom" id="Spring" order="7" />
       <window_info id="Designer" order="2" />
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.8325123" visible="true" weight="0.2154948" />

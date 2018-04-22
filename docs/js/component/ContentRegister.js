@@ -11,17 +11,18 @@ class ContentRegister extends React.Component {
         }
     }
 
-    tryLogin() {
-        getPlayerLogin(this.state.username, this.state.password, this.processLogin.bind(this));
+    tryRegister() {
+        getPlayerLogin(this.state.username, this.state.password, this.processRegister.bind(this));
     }
 
-    processLogin(response) {
+    
+    processRegister(response) {
         if (Object.keys(response).length === 0 && response.constructor === Object) {
             this.setState({
                 error: true
             })
         } else {
-            this.props.fnLoginOK(this.state.username);
+            this.props.fnRegisterOK(this.state.username);
         }
     }
 
@@ -47,15 +48,15 @@ class ContentRegister extends React.Component {
     }
 
     render() {
-        return <div className="login">
+        return <div className="register">
 
-            <div>Iniciar Sesion</div>
+            <div>Registrarse</div>
             <div><input className={this.state.error ? "error" : ""} id="username" type="text" placeholder="Usuario" value={this.state.username} onChange={this.handleChange.bind(this)} /></div>
             <div><input className={this.state.errorPassword ? "error" : ""} id="password" type="password" placeholder="Contraseña" value={this.state.password} onChange={this.handleChange.bind(this)} /></div>
             <div><input className={this.state.errorPassword ? "error" : ""} id="passwordRepeat" type="password" placeholder="Repite contraseña" value={this.state.passwordRepeat} onChange={this.handleChange.bind(this)} /></div>
-            <div><button onClick={this.tryLogin.bind(this)} >Enviar</button></div>
+            <div><button onClick={this.tryRegister.bind(this)} >Enviar</button></div>
             <div> </div>
-            <div>Ya tienes una cuenta? Inicia sesion!</div>
+            <div>Ya tienes una cuenta? <a onClick={this.props.changeToLogin.bind(this)} href="javascript:void(0);">Inicia sesion!</a></div>
 
         </div>
     }

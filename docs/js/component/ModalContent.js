@@ -2,15 +2,34 @@ class ModalContent extends React.Component {
 
     constructor(props) {
         super(props);
-
+        this.state ={
+            showLogin: true,
+            showRegister: false
+        }
     }
 
     renderContent() {
-        if (this.props.currentModalWindow == "Iniciar Sesion") {
-            return <ContentRegister {...this.props} />
+        if (this.props.currentModalWindow == "Iniciar Sesion" && this.state.showLogin) {
+            return <ContentLogin changeToRegister={this.changeToRegister.bind(this)} {...this.props} />
+        }else if(this.props.currentModalWindow == "Iniciar Sesion" && this.state.showRegister){
+            return <ContentRegister changeToLogin={this.changeToLogin.bind(this)} {...this.props} />
         }
         return <div></div>
 
+    }
+
+    changeToLogin(){
+        this.setState({
+            showRegister: false,
+            showLogin: true
+        })
+    }
+
+    changeToRegister(){
+        this.setState({
+            showRegister: true,
+            showLogin: false
+        })
     }
 
     render() {
