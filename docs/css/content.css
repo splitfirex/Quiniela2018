@@ -315,4 +315,83 @@ div.match.edit div.teambox.left{
 }
 
 
+.modalContent {
+    font-size: 1.5em;
+    font-family: 'dusan';
+    color: white;
+    visibility: hidden;
+    position: fixed;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    width: 100%;
+    top:0;
+    z-index: 102;
+    transition: all 0.5s ease-out;
+    opacity: 0;
+    
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px auto;
+}
 
+.backButton{
+    text-align: center;
+    font-size: 1em;
+    width: 50px;
+    justify-items: center;
+    align-items: center;
+}
+
+.backButton:active{
+    Color:black;
+    background-color: rgba(255,255,255,0.8);
+}
+
+.modalContent.show{
+    opacity: 1;
+    visibility: visible;
+}
+
+.modalContent >div.login{
+    align-items: center;
+    justify-items: center;
+    display: grid;
+  grid-template-rows: 50px 80px 30px 100px 50px auto;
+}
+
+.modalContent >div.login > div:last-child{
+    font-size: 0.7em;
+}
+
+.modalContent input{
+    background-color: unset;
+    border: unset;
+    border-bottom: white 1px solid;
+    color: white;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.modalContent button{
+    background-color: unset;
+    border: unset;
+    border: white 1px solid;
+    padding: 10px;
+    color: white;
+}
+
+.modalContent button:active{
+    border: grey 1px solid;
+    background-color: white;
+    color: black;
+}
+
+.modalContent input:placeholder{
+    color: rgba(255,255,255,0.8);
+}
+
+.modalContent input.error{
+    color: rgba(255,5,5,0.8);
+    border-bottom: rgba(255,5,5,0.8) 1px solid;
+
+}

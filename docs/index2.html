@@ -36,20 +36,18 @@
 <script crossorigin type="text/babel" src="js/component/ContentPlayer.js"></script>
 <script crossorigin type="text/babel" src="js/component/ContentMatch.js"></script>
 <script crossorigin type="text/babel" src="js/component/ContentGroup.js"></script>
+<script crossorigin type="text/babel" src="js/component/ContentLogin.js"></script>
+<script crossorigin type="text/babel" src="js/component/ContentRegister.js"></script>
+<script crossorigin type="text/babel" src="js/component/ModalContent.js"></script>
+
 
 <script crossorigin type="text/babel" src="js/app2.js"></script>
 <script>
-window.addEventListener("load",function() {
-    setTimeout(function(){
-        // This hides the address bar:
-        window.scrollTo(0, 1);
-    }, 0);
-});
-
+    var _captchaTries = 0;
 </script>
 
 <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
-  crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/player.css" />
 <link rel="stylesheet" href="css/main.css" />
 <link rel="stylesheet" href="css/content.css" />
@@ -63,10 +61,12 @@ window.addEventListener("load",function() {
 <link rel="stylesheet" href="css/question.css" />
 <link rel="stylesheet" href="css/breadCrumbs.css" />
 <link rel="stylesheet" href="css/SideMenu.css" />
-
+<script src='https://www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit' async defer></script>
 
 </head>
+
 <body id="body">
-<div  id="root" class="root"></div>
+    <div id="root" class="root"></div>
 </body>
+
 </html>

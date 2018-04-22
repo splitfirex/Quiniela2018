@@ -1,6 +1,7 @@
 package quiniela.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
@@ -43,25 +44,29 @@ public class MatchServiceImpl implements MatchService {
 
     final static private Integer CSV_MAX_VALUES_MATCHES = 6;
 
+    @Value("${clean_and_build}")
+    Boolean cleanAndBuild;
 
     @PostConstruct
     private void init() {
-      /*  matchRepository.deleteAll();
-        List<String> values = CVSParser.ParseMatches("matches.cvs");
-        List<Match> inserMatches = new ArrayList<>();
-        for (int i = CSV_MAX_VALUES_MATCHES; i < values.size(); i += CSV_MAX_VALUES_MATCHES) {
-            Match match = new Match();
+        if(cleanAndBuild) {
+            matchRepository.deleteAll();
+            List<String> values = CVSParser.ParseMatches("matches.cvs");
+            List<Match> inserMatches = new ArrayList<>();
+            for (int i = CSV_MAX_VALUES_MATCHES; i < values.size(); i += CSV_MAX_VALUES_MATCHES) {
+                Match match = new Match();
 
-            match.setId(Long.parseLong(values.get(i)));
-            ZonedDateTime zoneTime =ZonedDateTime.of(LocalDateTime.parse(values.get(i + 1), formatter), ZoneId.of("UTC+02:00"));
-            match.setDate(zoneTime.toInstant().toEpochMilli());
+                match.setId(Long.parseLong(values.get(i)));
+                ZonedDateTime zoneTime = ZonedDateTime.of(LocalDateTime.parse(values.get(i + 1), formatter), ZoneId.of("UTC+02:00"));
+                match.setDate(zoneTime.toInstant().toEpochMilli());
 
-            match.setHomeTeam(values.get(i + 2));
-            match.setVisitorTeam(values.get(i + 3));
-            match.setTypeMatch(TypeMatch.valueOf(values.get(i + 5)));
-            inserMatches.add(match);
+                match.setHomeTeam(values.get(i + 2));
+                match.setVisitorTeam(values.get(i + 3));
+                match.setTypeMatch(TypeMatch.valueOf(values.get(i + 5)));
+                inserMatches.add(match);
+            }
+            matchRepository.saveAll(inserMatches);
         }
-        matchRepository.saveAll(inserMatches);*/
     }
 
 

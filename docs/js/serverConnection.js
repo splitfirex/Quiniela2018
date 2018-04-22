@@ -1,8 +1,11 @@
 var token = "";
-var server = "http://192.168.0.157:9080/QuiniRestService";
+//var server = "http://192.168.0.157:9080/QuiniRestService";
+var server = "http://localhost:9000";
 var teams = getTeams();
 var matches = getMatches();
 var groups = getGroups();
+var genericPlayername = "_NOT_A_PLAYER_"
+var genericLaddername = "_NOT_A_LADDERBOARD_"
 
 var myheaders = new Headers({ 'Content-Type': 'application/json' });
 

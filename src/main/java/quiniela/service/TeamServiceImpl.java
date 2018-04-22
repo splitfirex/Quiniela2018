@@ -1,5 +1,6 @@
 package quiniela.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import quiniela.model.Group;
@@ -34,43 +35,52 @@ public class TeamServiceImpl implements TeamService {
 
     private static HashMap<Long,String> nameTeamId = new HashMap<>();
 
+    @Value("${clean_and_build}")
+    Boolean cleanAndBuild;
+
     @PostConstruct
     private void init(){
-        List<String> values = CVSParser.ParseMatches("teams.cvs");
+        if(cleanAndBuild) {
+            List<String> values = CVSParser.ParseMatches("teams.cvs");
+            List<Team> inserTeam = new ArrayList<>();
+            HashMap<String, Group> inserGroup = new HashMap<>();
 
-        List<Team> inserTeam = new ArrayList<>();
-        HashMap<String,Group> inserGroup = new HashMap<>();
+            teamRepository.deleteAll();
+            groupRepository.deleteAll();
 
-        teamRepository.deleteAll();
-        groupRepository.deleteAll();
+            for (int i = CSV_MAX_VALUES_TEAM; i < values.size(); i += CSV_MAX_VALUES_TEAM) {
+                if (values.get(i + 1).contains("_")) continue;
+                Team t = new Team();
+                t.setId(Long.parseLong(values.get(i)));
+                t.setName(values.get(i + 1));
+                t.setShortName(values.get(i + 2));
+                t.setGroup(values.get(i + 3));
+                t.setFlagUrl(values.get(i + 4));
+                inserTeam.add(t);
 
-        for (int i = CSV_MAX_VALUES_TEAM; i < values.size(); i += CSV_MAX_VALUES_TEAM) {
-            if(values.get(i+1).contains("_")) continue;
-            Team t = new Team();
-            t.setId(Long.parseLong(values.get(i)));
-            t.setName(values.get(i + 1));
-            t.setShortName(values.get(i + 2));
-            t.setGroup(values.get(i + 3));
-            t.setFlagUrl(values.get(i + 4));
-            inserTeam.add(t);
+                idTeamName.put(t.getName(), t.getId());
+                nameTeamId.put(t.getId(), t.getName());
 
-            idTeamName.put(t.getName(), t.getId());
-            nameTeamId.put(t.getId(), t.getName());
-
-            if(values.get(i + 3).equals("-")) continue;
-            if (!inserGroup.keySet().contains(values.get(i + 3))) {
-                Group group = new Group();
-                group.setName(values.get(i + 3));
-                group.setId(counter.incrementAndGet());
-                group.addTeam(values.get(i + 1));
-                inserGroup.put(values.get(i + 3), group);
-            }else{
-                Group group = inserGroup.get(values.get(i + 3));
-                group.addTeam(values.get(i + 1));
+                if (values.get(i + 3).equals("-")) continue;
+                if (!inserGroup.keySet().contains(values.get(i + 3))) {
+                    Group group = new Group();
+                    group.setName(values.get(i + 3));
+                    group.setId(counter.incrementAndGet());
+                    group.addTeam(values.get(i + 1));
+                    inserGroup.put(values.get(i + 3), group);
+                } else {
+                    Group group = inserGroup.get(values.get(i + 3));
+                    group.addTeam(values.get(i + 1));
+                }
             }
+            teamRepository.saveAll(inserTeam);
+            groupRepository.saveAll(inserGroup.values());
+        }else{
+            for(Team team : teamRepository.findAll()){
+                idTeamName.put(team.getName(), team.getId());
+                nameTeamId.put(team.getId(), team.getName());
+            };
         }
-        teamRepository.saveAll(inserTeam);
-        groupRepository.saveAll(inserGroup.values());
 
     }
 

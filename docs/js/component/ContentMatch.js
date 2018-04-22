@@ -11,16 +11,16 @@ class ContentMatch extends React.Component {
 
     componentDidMount() {
         getPlayerMatches(
-            this.props.playername == null ? "_NOT_A_PLAYER" : this.props.playername,
-            this.props.laddername == null ? "_NOT_A_LADDERBOARD_" : this.props.laddername,
+            this.props.playername == null ? genericPlayername : this.props.playername,
+            this.props.laddername == null ? genericLaddername : this.props.laddername,
             this.processMatches.bind(this));
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.playername != nextProps.playername || nextProps.laddername != this.props.laddername) {
             getPlayerMatches(
-                nextProps.playername == null ? "_NOT_A_PLAYER" : nextProps.playername,
-                nextProps.laddername == null ? "_NOT_A_LADDERBOARD_" : nextProps.laddername,
+                nextProps.playername == null ? genericPlayername : nextProps.playername,
+                nextProps.laddername == null ? genericLaddername : nextProps.laddername,
                 this.processMatches.bind(this));
         }
     }

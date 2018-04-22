@@ -9,16 +9,16 @@ class ContentGroup extends React.Component {
 
     componentDidMount() {
         getPlayerGroups(
-            this.props.playername == null ? "_NOT_A_PLAYER" : this.props.playername,
-            this.props.laddername == null ? "_NOT_A_LADDERBOARD_" : this.props.laddername,
+            this.props.playername == null ? genericPlayername : this.props.playername,
+            this.props.laddername == null ? genericLaddername : this.props.laddername,
             this.processGroups.bind(this));
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.playername != nextProps.playername || nextProps.playername != this.props.playername) {
             getPlayerGroups(
-                nextProps.username == null ? "_NOT_A_PLAYER" : nextProps.username,
-                nextProps.laddername == null ? "_NOT_A_LADDERBOARD_" : nextProps.laddername,
+                nextProps.username == null ? genericPlayername : nextProps.username,
+                nextProps.laddername == null ? genericLaddername : nextProps.laddername,
                 this.processGroups.bind(this));
         }
     }

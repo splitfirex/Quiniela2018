@@ -1,6 +1,7 @@
 package quiniela.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import quiniela.model.LadderBoard;
 import quiniela.model.LadderBoardPlayer;
@@ -32,9 +33,14 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     @Autowired
     private MatchService matchService;
 
+    @Value("${clean_and_build}")
+    Boolean cleanAndBuild;
+
     @PostConstruct
     private void init() {
-        ladderBoardRepository.deleteAll();
+        if(cleanAndBuild) {
+            ladderBoardRepository.deleteAll();
+        }
     }
 
 

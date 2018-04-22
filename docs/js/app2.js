@@ -4,24 +4,26 @@ class App extends React.Component {
         super(props);
         this.state = {
             showSideMenu: false,
-            showBackButton: false,
             showLoading: false,
             showBreadcrumbs: false,
+            showBack: false,
+            showModal: false,
             breads: [],
             currentWindow: "Inicio",
+            currentModalWindow: "Login",
             username: null,
             playername: null,
             laddername: null
         }
     }
 
-    goTop(){
+    goTop() {
         scrollIt(
             document.querySelector('.content-warp'),
             300,
             'easeOutQuad',
             () => console.log(`Just finished scrolling to px`)
-          );
+        );
     }
 
     toggleMenu() {
@@ -37,19 +39,34 @@ class App extends React.Component {
     }
 
     fnOnClickBack() {
-        if(this.state.breads.length == 2){
+        if (this.state.breads.length == 2) {
             this.setState({
                 currentWindow: "Inicio",
                 showBreadcrumbs: false,
                 breads: []
             })
-        }else if(this.state.breads.length == 3){
+        } else if (this.state.breads.length == 3) {
             this.setState({
                 currentWindow: "Jugadores",
                 breads: ["Inicio", this.state.laddername]
             })
         }
         this.goTop();
+    }
+
+    fnOnModalBack(){
+        this.setState({
+            showModal: false,
+            currentModalWindow: null
+        })
+    }
+
+    fnLoginOK(newUsername){
+        this.setState({
+            username : newUsername,
+            showModal: false,
+            currentModalWindow: null
+        })
     }
 
     fnOnClickGoTo(destination) {
@@ -116,6 +133,11 @@ class App extends React.Component {
                 laddername: null,
                 playername: null
             });
+        } else if (newWindow == "Iniciar Sesion") {
+            this.setState({
+                showModal: true,
+                currentModalWindow: newWindow,
+            });
         }
     }
 
@@ -133,7 +155,7 @@ class App extends React.Component {
             {loading}
             <Menu
                 fnToggleMenu={this.toggleMenu.bind(this)}
-                renderBack={this.state.breads.length > 1}
+                renderBack={this.state.showBreadcrumbs}
                 fnOnClickBack={this.fnOnClickBack.bind(this)} />
             {breadcrumbs}
             <SideMenu fnOnClickGoTo={this.fnOnClickGoTo.bind(this)} renderSideMenu={this.state.showSideMenu} />
@@ -146,6 +168,11 @@ class App extends React.Component {
                 fnOnGroupClick={this.fnOnGroupClick.bind(this)}
                 currentWindow={this.state.currentWindow}
                 renderBreadcrumbs={this.state.showBreadcrumbs} />
+            <ModalContent
+                fnLoginOK={this.fnLoginOK.bind(this)}
+                fnOnModalBack={this.fnOnModalBack.bind(this)}
+                currentModalWindow={this.state.currentModalWindow}
+                renderModal={this.state.showModal} />
             <div className="footer"></div>
         </div>
 

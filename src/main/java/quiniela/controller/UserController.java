@@ -2,6 +2,7 @@ package quiniela.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,8 @@ public class UserController {
     @Autowired
     private GroupService groupService;
 
+    @Value("${ladder.laddername}")
+    String genericLaddername;
 
     @RequestMapping(value = "/ladders", method = RequestMethod.GET)
     @ResponseBody
@@ -62,7 +65,7 @@ public class UserController {
     @ResponseBody
     public ViewLadderBoard getLaddersCompleteNoPassword(@RequestParam("laddername") String laddername) {
         LadderBoard l = ladderBoardService.getLadderBoard(laddername);
-        if(l.getPassword() == null){
+        if(l.getPassword() == null || l.getName().equals(genericLaddername)){
             return new ViewLadderBoard(l);
         }
         return null;
@@ -89,7 +92,7 @@ public class UserController {
     public List<PlayerMatch> getMatches(@RequestParam("username") String username, @RequestParam("laddername") String laddername) {
         LadderBoard l = ladderBoardService.getLadderBoard(laddername);
         Player p = playerService.getPlayerByUsername(username);
-        if (l == null || (l != null && l.getPassword() != null)) return null;
+        if ((l == null || (l != null && l.getPassword() != null)) && !l.getName().equals(genericLaddername)) return null;
 
         return matchService.getMatchesByPlayerLadder(l, p);
     }
@@ -115,7 +118,7 @@ public class UserController {
     public List<PlayerGroup> getGroups(@RequestParam("username") String username, @RequestParam("laddername") String laddername, @RequestHeader HttpHeaders headers) {
         LadderBoard l = ladderBoardService.getLadderBoard(laddername);
         Player p = playerService.getPlayerByUsername(username);
-        if (l == null || (l != null && l.getPassword() != null)) return null;
+        if ((l == null || (l != null && l.getPassword() != null)) && !l.getName().equals(genericLaddername)) return null;
 
         return groupService.getGroupsByPlayerLadder(l, p);
     }
