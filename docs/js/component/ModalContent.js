@@ -13,8 +13,12 @@ class ModalContent extends React.Component {
             return <ContentLogin changeToRegister={this.changeToRegister.bind(this)} {...this.props} />
         }else if(this.props.currentModalWindow == "Iniciar Sesion" && this.state.showRegister){
             return <ContentRegister changeToLogin={this.changeToLogin.bind(this)} {...this.props} />
+        }else if(this.props.currentModalWindow == "Nueva quiniela"){
+            return <ContentNewLadder {...this.props} />
+        }else if(this.props.currentModalWindow == "Unirse a quiniela"){
+            return <ContentJoinLadder {...this.props} />
         }
-        return <div></div>
+        return <div style={{textAlign: "center", fontSize: "1em", alignSelf: "center" }}><i className="fas fa-cog fa-spin"></i> <br/> Procesando... </div>
 
     }
 

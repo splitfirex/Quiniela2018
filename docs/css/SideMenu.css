@@ -1,6 +1,6 @@
 .sideMenu-modal{
     visibility: hidden;
-    background-color: black;
+    background-color: grey;
     position: fixed;
     opacity: 0;
     top: px;
@@ -15,6 +15,7 @@
 }
 
 .sideMenu-wrap{
+      color: rgba(100,100,100);
       font-family: 'Roboto', sans-serif;
       visibility: hidden;
       position: fixed;

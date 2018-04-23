@@ -15,8 +15,6 @@ class GlobalContent extends React.Component {
             return <div className="title">Partidos</div>
         }else if (this.props.currentWindow == "Jugadores") {
             return <div className="title">Jugadores</div>
-        }else if (this.props.currentWindow == "Iniciar Sesion") {
-            return <div className="title">Iniciar Sesion</div>
         }
         return <div className="title">{this.props.laddername}</div>
     }
@@ -31,17 +29,15 @@ class GlobalContent extends React.Component {
             return <ContentPlayer {...this.props} />
         } else if (this.props.currentWindow == "Grupos") {
             return <ContentGroup {...this.props} />
-        }else if (this.props.currentWindow == "Iniciar Sesion") {
-            return <ContentLogin {...this.props} />
-        }
+        } 
     }
 
 
     render() {
 
         if (this.props.currentWindow == "Inicio" && this.props.username != null) {
-            var newQuiniela = <div className="newLadder">
-                <div> <i className="fas fa-plus"></i> Crear nueva quiniela</div>
+            var newQuiniela = <div className="newLadder" onClick={this.props.fnOnClickGoTo.bind(null, "Nueva quiniela")}>
+                <div> <i className="fas fa-plus" ></i> Crear nueva quiniela</div>
             </div>
         }
 

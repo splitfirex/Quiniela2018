@@ -1,6 +1,6 @@
 var token = "";
-var server = "http://192.168.0.157:9080/QuiniRestService";
-//var server = "http://localhost:9000";
+//var server = "http://192.168.0.157:9080/QuiniRestService";
+var server = "http://localhost:9000";
 var teams = getTeams();
 var matches = getMatches();
 var groups = getGroups();
@@ -91,6 +91,16 @@ function getPlayerLadders(callback) {
 function postPlayerLadders(callback) {
     postData.body = JSON.stringify({ "token": token });
     fetch(server + '/user/ladders', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            callback(res)
+        });
+}
+
+function postCreateLadder(laddername,password,callback) {
+    postData.body = JSON.stringify({ "token": token, "nameladder":laddername, "password":password });
+    fetch(server + '/user/createladder', postData)
         .then(function (response) {
             return response.json();
         }).then(function (res) {

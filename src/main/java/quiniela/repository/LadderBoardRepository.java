@@ -22,7 +22,7 @@ public interface LadderBoardRepository extends MongoRepository<LadderBoard, Long
     @Query("{ 'listPlayers.username' : ?0, 'listPlayers.isActive': ?1 } }")
     List<LadderBoard> findByUsername(String username, boolean active);
 
-    @Query(value = "{}", fields = "{ 'name' : 1, 'listPlayers.username' : 1 , 'password': 1 }")
+    @Query(value = "{}", fields = "{ 'name' : 1, 'listPlayers.username' : 1 , 'listPlayers.isActive': 1, 'password': 1 }")
     List<LadderBoard> findAllShort();
 
     @Query("{ 'name': ?0, 'listPlayers.username' : ?1, 'listPlayers.isActive': true }")

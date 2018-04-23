@@ -8,36 +8,42 @@ class ContentPlayer extends React.Component {
     }
 
     processPlayers(responseLadders) {
-        this.setState({
-            players: responseLadders.listPlayers
-        });
+        if (responseLadders.listPlayers == null) {
+            this.setState({
+                players: []
+            });
+        } else {
+            this.setState({
+                players: responseLadders.listPlayers
+            });
+        }
     }
 
 
     componentDidMount() {
-        postPlayerLaddersDetail(this.props.laddername,this.processPlayers.bind(this));
+        postPlayerLaddersDetail(this.props.laddername, this.processPlayers.bind(this));
     }
 
     componentWillReceiveProps(nextProps) {
-        postPlayerLaddersDetail(this.props.laddername,this.processPlayers.bind(this));
+        postPlayerLaddersDetail(this.props.laddername, this.processPlayers.bind(this));
     }
 
-    renderPayers(){
+    renderPayers() {
         var that = this;
         return this.state.players.map(function (currentValue, index, array) {
-         
-            return <Player 
-            username={currentValue.username} 
-            points={currentValue.points} 
-            fnOnMatchClick={that.props.fnOnMatchClick}
-            fnOnGroupClick={that.props.fnOnGroupClick}/>
+
+            return <Player
+                username={currentValue.username}
+                points={currentValue.points}
+                fnOnMatchClick={that.props.fnOnMatchClick}
+                fnOnGroupClick={that.props.fnOnGroupClick} />
         })
     }
 
     render() {
 
-        if(this.state.players.length ==0){
-            return <Loading/>
+        if (this.state.players.length == 0) {
+            return <Loading />
         }
 
         return this.renderPayers();
@@ -46,8 +52,8 @@ class ContentPlayer extends React.Component {
 }
 
 ContentPlayer.defaultProps = {
-    username : null,
-    laddername : null
+    username: null,
+    laddername: null
 }
 
 
@@ -74,8 +80,8 @@ function Player(props) {
                 </div>
             </div>
             <div className="playerMenu">
-                <div onClick={props.fnOnMatchClick.bind(this,props.username)} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
-                <div onClick={props.fnOnGroupClick.bind(this,props.username)} ><div className="iconCenter"><i className="fas fa-list-alt"></i> Grupos</div></div>
+                <div onClick={props.fnOnMatchClick.bind(this, props.username)} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
+                <div onClick={props.fnOnGroupClick.bind(this, props.username)} ><div className="iconCenter"><i className="fas fa-list-alt"></i> Grupos</div></div>
             </div>
         </div>
     )

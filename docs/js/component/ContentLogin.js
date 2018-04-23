@@ -3,8 +3,8 @@ class ContentLogin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: null,
-            password: null,
+            username: undefined,
+            password: undefined,
             error: false
         }
     }
@@ -32,8 +32,8 @@ class ContentLogin extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            username: null,
-            password: null
+            username: undefined,
+            password: undefined
         })
     }
 

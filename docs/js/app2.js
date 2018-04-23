@@ -10,7 +10,7 @@ class App extends React.Component {
             showModal: false,
             breads: [],
             currentWindow: "Inicio",
-            currentModalWindow: "Login",
+            currentModalWindow: "Nueva quiniela",
             username: null,
             playername: null,
             laddername: null
@@ -32,30 +32,26 @@ class App extends React.Component {
         })
     }
 
-    toggleLoading() {
-        this.setState({
-            showLoading: !this.state.showLoading
-        })
-    }
-
     fnOnClickBack() {
+        this.toggleLoadingModal();
         if (this.state.breads.length == 2) {
-            this.setState({
+            this.setPostState({
                 currentWindow: "Inicio",
                 showBreadcrumbs: false,
                 breads: []
-            })
+            });
         } else if (this.state.breads.length == 3) {
-            this.setState({
+            this.setPostState({
                 currentWindow: "Jugadores",
                 breads: ["Inicio", this.state.laddername]
-            })
+            });
         }
         this.goTop();
     }
 
-    fnOnModalBack(){
-        this.setState({
+    fnOnModalBack() {
+        this.toggleLoadingModal();
+        this.setPostState({
             showModal: false,
             currentWindow: "Inicio",
             showBreadcrumbs: false,
@@ -63,9 +59,10 @@ class App extends React.Component {
         })
     }
 
-    fnLoginOK(newUsername){
-        this.setState({
-            username : newUsername,
+    fnLoginOK(newUsername) {
+        this.toggleLoadingModal();
+        this.setPostState({
+            username: newUsername,
             showModal: false,
             currentWindow: "Inicio",
             showBreadcrumbs: false,
@@ -73,9 +70,10 @@ class App extends React.Component {
         })
     }
 
-    fnRegisterOK(newUsername){
-        this.setState({
-            username : newUsername,
+    fnRegisterOK(newUsername) {
+        this.toggleLoadingModal();
+        this.setPostState({
+            username: newUsername,
             showModal: false,
             currentWindow: "Inicio",
             showBreadcrumbs: false,
@@ -83,16 +81,28 @@ class App extends React.Component {
         })
     }
 
-    fnOnClickGoTo(destination) {
+    fnNewLadderOK(newLaddername) {
+        this.toggleLoadingModal();
+        this.setPostState({
+            laddername: newLaddername,
+            showBreadcrumbs: true,
+            showModal: false,
+            currentWindow: "Jugadores",
+            breads:  ["Inicio", newLaddername],
+            currentModalWindow: null
+        })
+    }
+
+    fnOnClickGoTo(destination,laddername) {
         console.log(destination);
-        this.changeWindow(destination);
-        this.toggleMenu();
+        console.log(laddername);
+        this.changeWindow(destination,laddername);
         this.goTop();
     }
 
     fnOnClickLadder(newLaddername) {
-        console.log(newLaddername);
-        this.setState({
+        this.toggleLoadingModal();
+        this.setPostState({
             laddername: newLaddername,
             currentWindow: "Jugadores",
             showBreadcrumbs: true,
@@ -102,7 +112,8 @@ class App extends React.Component {
     }
 
     fnOnMatchClick(newPlayername) {
-        this.setState({
+        this.toggleLoadingModal();
+        this.setPostState({
             playername: newPlayername,
             currentWindow: "Partidos",
             breads: ["Inicio", this.state.laddername, newPlayername]
@@ -111,7 +122,8 @@ class App extends React.Component {
     }
 
     fnOnGroupClick(newPlayername) {
-        this.setState({
+        this.toggleLoadingModal();
+        this.setPostState({
             playername: newPlayername,
             currentWindow: "Grupos",
             breads: ["Inicio", this.state.laddername, newPlayername]
@@ -119,28 +131,48 @@ class App extends React.Component {
         this.goTop();
     }
 
+    toggleLoadingModal() {
+        this.setState({
+            currentModalWindow: null,
+            showModal: true,
+            showSideMenu: false
+        })
 
-    changeWindow(newWindow) {
+    }
+
+    setPostState(newState) {
+        this.timer = setTimeout(
+            function () {
+                this.setState({
+                    showModal: false,
+                    currentModalWindow: null,
+                    ...newState,
+                })
+            }.bind(this),
+            250);
+    }
+
+
+    changeWindow(newWindow, laddername) {
+        this.toggleLoadingModal();
         if (newWindow == "Inicio") {
-            this.setState({
+            this.setPostState({
                 breads: [],
                 currentWindow: newWindow,
                 showBreadcrumbs: false,
                 laddername: null,
                 playername: null
             });
-
         } else if (newWindow == "Grupos") {
-            this.setState({
+            this.setPostState({
                 breads: ["Inicio", "Grupos"],
                 currentWindow: newWindow,
                 showBreadcrumbs: true,
                 laddername: null,
-                playername: null
+                playername: null,
             });
-
         } else if (newWindow == "Partidos") {
-            this.setState({
+            this.setPostState({
                 breads: ["Inicio", "Partidos"],
                 currentWindow: newWindow,
                 showBreadcrumbs: true,
@@ -148,11 +180,34 @@ class App extends React.Component {
                 playername: null
             });
         } else if (newWindow == "Iniciar Sesion") {
-            this.setState({
+            this.setPostState({
+                showModal: true,
+                currentModalWindow: newWindow
+            });
+        } else if (newWindow == "Cerrar Sesion") {
+            this.setPostState({
+                breads: [],
+                currentWindow: "Inicio",
+                showBreadcrumbs: false,
+                currentModalWindow: null,
+                username: null,
+                laddername: null,
+                playername: null
+            });
+        }else if (newWindow == "Nueva quiniela") {
+            this.setPostState({
+                showModal: true,
+                currentModalWindow: newWindow
+            });
+        }else if (newWindow == "Unirse a quiniela") {
+            this.setPostState({
                 showModal: true,
                 currentModalWindow: newWindow,
+                laddername: laddername
             });
         }
+
+       
     }
 
     render() {
@@ -172,17 +227,24 @@ class App extends React.Component {
                 renderBack={this.state.showBreadcrumbs}
                 fnOnClickBack={this.fnOnClickBack.bind(this)} />
             {breadcrumbs}
-            <SideMenu fnOnClickGoTo={this.fnOnClickGoTo.bind(this)} renderSideMenu={this.state.showSideMenu} />
+            <SideMenu
+                username={this.state.username}
+                fnOnClickGoTo={this.fnOnClickGoTo.bind(this)}
+                renderSideMenu={this.state.showSideMenu} />
             <GlobalContent
                 laddername={this.state.laddername}
                 playername={this.state.playername}
                 username={this.state.username}
+                fnOnClickGoTo={this.fnOnClickGoTo.bind(this)}
                 fnOnClickLadder={this.fnOnClickLadder.bind(this)}
                 fnOnMatchClick={this.fnOnMatchClick.bind(this)}
                 fnOnGroupClick={this.fnOnGroupClick.bind(this)}
                 currentWindow={this.state.currentWindow}
                 renderBreadcrumbs={this.state.showBreadcrumbs} />
             <ModalContent
+                laddername={this.state.laddername}
+                fnNewLadderOK={this.fnNewLadderOK.bind(this)}
+                fnRegisterOK={this.fnRegisterOK.bind(this)}
                 fnLoginOK={this.fnLoginOK.bind(this)}
                 fnOnModalBack={this.fnOnModalBack.bind(this)}
                 currentModalWindow={this.state.currentModalWindow}

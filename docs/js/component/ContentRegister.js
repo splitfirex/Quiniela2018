@@ -12,7 +12,7 @@ class ContentRegister extends React.Component {
     }
 
     tryRegister() {
-        getPlayerLogin(this.state.username, this.state.password, this.processRegister.bind(this));
+        getPlayerRegister(this.state.username, this.state.password, this.processRegister.bind(this));
     }
 
     

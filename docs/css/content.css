@@ -66,7 +66,7 @@
 .content >div.ladder >div.ladderMenu{
     background-color: white;
     display: grid;
-    grid-template-columns: 1fr 50px 50px 50px;
+    grid-template-columns: 1fr 50px 50px;
 }
 
 
@@ -159,7 +159,7 @@ div.matchInfo >div:nth-child(1){
     align-items: center;
     text-align: center;
     display: grid;
-    grid-template-rows: 20px 30px;
+    grid-template-rows: 10px 30px;
 }
 
 div.match.edit .matchInfo{
@@ -174,7 +174,6 @@ div.teamMatch{
 }
 
 div.teambox{
-    margin-top:-10px;
     text-align: center;
     justify-items: center;
     align-items: center;
@@ -273,7 +272,6 @@ div.match.edit div.teambox.left{
 }
 
 .teamboxSeparator{
-    margin-top: -10px;
     text-align: center;
     line-height: 50px
 }
@@ -402,4 +400,30 @@ div.match.edit div.teambox.left{
     color: rgba(255,5,5,0.8);
     border-bottom: rgba(255,5,5,0.8) 1px solid;
 
+}
+
+.modalContent >div.newLadder{
+    align-items: center;
+    justify-items: center;
+    display: grid;
+  grid-template-rows: 50px 80px 30px 100px 50px auto;
+}
+
+.modalContent >div.newLadder >div.public {
+    display: grid;
+    grid-template-columns: 40px;
+}
+
+.green{
+    border: rgb(82, 158, 72) 1px solid;
+    color: rgb(82, 158, 72) ;
+}
+
+.red{
+    border: tomato 1px solid;
+    color: tomato ;
+}
+
+.modalContent >div.newLadder >div.public >div{
+    padding: 10px;
 }
