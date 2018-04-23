@@ -19,6 +19,16 @@ class ContentLadder extends React.Component {
 
     componentWillReceiveProps(nextProps) {
        getPlayerLadders(this.processLadders.bind(this));
+        
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+
+        if(nextState.ladders == this.state.ladders){
+            return false
+        }
+
+        return true;
     }
 
     renderLadders() {
@@ -33,9 +43,9 @@ class ContentLadder extends React.Component {
                     containsPendingUser={currentValue.listPlayers.filter(user => (user.username === that.props.username && !user.active)).length != 0 }
                     name={currentValue.name}
                     protected={currentValue.protected}
-                    bgColor={colors.next()}
                     showPlayers={that.props.loadPlayers}
                     fnOnClick={that.props.fnOnClickLadder}
+                    bgColor={currentValue.bgColor}
                     fnOnClickGoTo={that.props.fnOnClickJoinLadder.bind(null,currentValue.name,currentValue.protected)}
                 />
             } else {
@@ -44,9 +54,9 @@ class ContentLadder extends React.Component {
                     usersCount={currentValue.listPlayers.length}
                     name={currentValue.name}
                     protected={currentValue.protected}
-                    bgColor={colors.next()}
                     showPlayers={that.props.loadPlayers}
                     fnOnClick={that.props.fnOnClickLadder}
+                    bgColor={currentValue.bgColor}
                     fnOnClickProtected={that.props.fnOnClickGoTo.bind(null,"Iniciar Sesion")}
                 />
             }
@@ -96,7 +106,7 @@ function LoggedLadder(props) {
 
     return (
         <div key={props.name + props.usersCount} className="ladder"  >
-            <div className="ladderShow" onClick={!props.protected || props.containsUser ? props.fnOnClick.bind(null, props.name) : function(){}}>
+            <div style={{backgroundColor:props.bgColor}} className="ladderShow" onClick={!props.protected || props.containsUser ? props.fnOnClick.bind(null, props.name) : function(){}}>
                 <div>
                     {props.name}
                 </div>
@@ -114,7 +124,7 @@ function Ladder(props) {
 
     return (
         <div  key={props.name + props.usersCount} className="ladder logged" onClick={!props.protected ? props.fnOnClick.bind(null, props.name) : props.fnOnClickProtected}>
-            <div className="ladderShow" >
+            <div className="ladderShow" style={{backgroundColor:props.bgColor}} >
                 <div>
                     {props.name}
                 </div>

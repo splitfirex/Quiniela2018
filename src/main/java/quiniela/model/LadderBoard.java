@@ -10,6 +10,15 @@ public class LadderBoard {
 
     private long id;
     private String name;
+    private String bgColor;
+
+    public String getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(String bgColor) {
+        this.bgColor = bgColor;
+    }
 
     private List<LadderBoardPlayer> listPlayers = new ArrayList<>();
 

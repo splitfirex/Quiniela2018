@@ -11,6 +11,7 @@ import quiniela.repository.PlayerMatchRepositoty;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -52,6 +53,12 @@ public class LadderBoardServiceImpl implements LadderBoardService {
         l.setPassword(password != null ? loginService.encode(password) : null);
         l.setId(counter.incrementAndGet());
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true, true));
+        Random rand = new Random();
+        int nextInt = rand.nextInt(256*256*256);
+        l.setBgColor(String.format("#%06x", nextInt));
+
+
+
 
         matchService.createPlayerMatches(l,p);
         groupService.createPlayerGroup(l,p);
