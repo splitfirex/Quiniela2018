@@ -13,13 +13,12 @@ class ContentLadder extends React.Component {
         });
     }
 
-
     componentDidMount() {
         getPlayerLadders(this.processLadders.bind(this));
     }
 
     componentWillReceiveProps(nextProps) {
-        getPlayerLadders(this.processLadders.bind(this));
+       getPlayerLadders(this.processLadders.bind(this));
     }
 
     renderLadders() {
@@ -31,12 +30,13 @@ class ContentLadder extends React.Component {
                     key={"Ladder" + index}
                     usersCount={currentValue.listPlayers.length}
                     containsUser={currentValue.listPlayers.filter(user => (user.username === that.props.username && user.active)).length != 0 }
+                    containsPendingUser={currentValue.listPlayers.filter(user => (user.username === that.props.username && !user.active)).length != 0 }
                     name={currentValue.name}
                     protected={currentValue.protected}
                     bgColor={colors.next()}
                     showPlayers={that.props.loadPlayers}
                     fnOnClick={that.props.fnOnClickLadder}
-                    fnOnClickGoTo={that.props.fnOnClickGoTo}
+                    fnOnClickGoTo={that.props.fnOnClickJoinLadder.bind(null,currentValue.name,currentValue.protected)}
                 />
             } else {
                 return <Ladder
@@ -84,16 +84,18 @@ function LoggedLadder(props) {
         var protectedIcon = <div><div className="iconCenter"><i className="fas fa-unlock"></i></div></div>;
     }
 
-    var joinIcon = <div onClick={props.fnOnClickGoTo.bind(null, "Unirse a quiniela", props.name)} ><div className="iconCenter"><i className="fas fa-user-plus"></i></div></div>;
+    var joinIcon = <div onClick={props.fnOnClickGoTo} ><div className="iconCenter"><i className="fas fa-user-plus"></i></div></div>;
 
     if( props.containsUser ){
         var joinIcon = <div style={{border:"unset"}}></div>;
     }
 
-
+    if (props.containsPendingUser) {
+        var joinIcon = <div><div className="iconCenter"><i className="far fa-clock"></i></div></div>;
+    }
 
     return (
-        <div className="ladder"  >
+        <div key={props.name + props.usersCount} className="ladder"  >
             <div className="ladderShow" onClick={!props.protected || props.containsUser ? props.fnOnClick.bind(null, props.name) : function(){}}>
                 <div>
                     {props.name}
@@ -111,8 +113,8 @@ function LoggedLadder(props) {
 function Ladder(props) {
 
     return (
-        <div className="ladder logged" onClick={!props.protected ? props.fnOnClick.bind(null, props.name) : props.fnOnClickProtected}>
-            <div className="ladderShow">
+        <div  key={props.name + props.usersCount} className="ladder logged" onClick={!props.protected ? props.fnOnClick.bind(null, props.name) : props.fnOnClickProtected}>
+            <div className="ladderShow" >
                 <div>
                     {props.name}
                 </div>

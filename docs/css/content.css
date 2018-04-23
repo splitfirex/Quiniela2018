@@ -48,10 +48,10 @@
     text-align: right;
     background: repeating-linear-gradient(
         -45deg,
-        #222,
-        #222 10px,
-        #333 10px,
-        #333 20px
+        rgba(0,0,0,0.6),
+        rgba(0,0,0,0.6) 10px,
+        rgba(0,0,0,0.8) 10px,
+        rgba(0,0,0,0.8) 20px
       );
 
 }
@@ -320,7 +320,7 @@ div.match.edit div.teambox.left{
     visibility: hidden;
     position: fixed;
     height: 100%;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0,0,0,0.9);
     width: 100%;
     top:0;
     z-index: 102;
@@ -384,6 +384,7 @@ div.match.edit div.teambox.left{
     border: white 1px solid;
     padding: 10px;
     color: white;
+    border-radius: 3px;
 }
 
 .modalContent button:active{
@@ -406,7 +407,7 @@ div.match.edit div.teambox.left{
     align-items: center;
     justify-items: center;
     display: grid;
-  grid-template-rows: 50px 80px 30px 100px 50px auto;
+  grid-template-rows:  50px 80px 50px 100px 50px auto;
 }
 
 .modalContent >div.newLadder >div.public {
@@ -415,12 +416,10 @@ div.match.edit div.teambox.left{
 }
 
 .green{
-    border: rgb(82, 158, 72) 1px solid;
     color: rgb(82, 158, 72) ;
 }
 
 .red{
-    border: tomato 1px solid;
     color: tomato ;
 }
 

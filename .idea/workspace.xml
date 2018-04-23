@@ -2,23 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fb9086fe-e20c-4783-97b4-107008fc8884" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/css/SideMenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/css/SideMenu.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/css/content.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/css/content.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index2.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/js/app2.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/app2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/js/component/ContentJoinLadder.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ContentJoinLadder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/js/component/ContentLadder.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ContentLadder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/ContentLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ContentLogin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/ContentPlayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ContentPlayer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/ContentRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ContentRegister.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/js/component/GlobalContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/GlobalContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/ModalContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/ModalContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/js/component/SideMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/component/SideMenu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/js/serverConnection.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/js/serverConnection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gs-actuator-service.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gs-actuator-service.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/quiniela/repository/LadderBoardCustomRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/quiniela/repository/LadderBoardCustomRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/quiniela/repository/LadderBoardRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/quiniela/repository/LadderBoardRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="C:\Users\danie\Desktop\Quiniela2018\.idea\shelf/" />
@@ -39,7 +28,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/controller/UserController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="53" column="65" lean-forward="true" selection-start-line="53" selection-start-column="65" selection-end-line="53" selection-end-column="65" />
+              <caret line="77" selection-start-line="77" selection-end-line="77" />
             </state>
           </provider>
         </entry>
@@ -47,8 +36,8 @@
       <file leaf-file-name="JoinLadderForm.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/model/form/JoinLadderForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="29" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="29" />
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -65,8 +54,8 @@
       <file leaf-file-name="LadderBoardService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/service/LadderBoardService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+            <state relative-caret-position="153">
+              <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -89,16 +78,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LadderBoardServiceImpl.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="LadderBoardServiceImpl.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/service/LadderBoardServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="108" column="45" lean-forward="true" selection-start-line="108" selection-start-column="45" selection-end-line="108" selection-end-column="45" />
+            <state relative-caret-position="318">
+              <caret line="70" selection-start-line="70" selection-end-line="70" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LadderBoardRepository.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LadderBoardRepository.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/repository/LadderBoardRepository.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
@@ -462,7 +451,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -473,10 +461,10 @@
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49934897" visible="true" weight="0.06818182" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49934897" weight="0.24025974" />
       <window_info anchor="bottom" id="Spring" order="7" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.8325123" visible="true" weight="0.21801706" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.8325123" visible="true" weight="0.21801706" />
       <window_info anchor="right" id="Bean Validation" order="3" />
       <window_info id="Web" order="2" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" />
@@ -484,7 +472,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Favorites" order="2" sideWeight="0.1330724" side_tool="true" weight="0.21354167" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35430917" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3538961" />
       <window_info anchor="right" id="Palette" order="3" />
       <window_info id="Web" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -557,11 +545,40 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="77" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/quiniela/controller/UserController.java</url>
+          <line>76</line>
+          <properties />
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/quiniela/service/LadderBoardServiceImpl.java</url>
+          <line>63</line>
+          <properties />
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="79" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>loginService.encode(password)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>l.getPassword()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>!l.getPassword().equals(loginService.encode(password))</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>time</expression-string>
         <language-id>JAVA</language-id>
@@ -589,21 +606,6 @@
       </expression>
       <expression>
         <expression-string>Instant.ofEpochMilli(match.getDate())</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Instant.ofEpochMilli(match.getDate()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>headers.get(&quot;timeZone&quot;).get(0)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Integer.parseInt(headers.get(&quot;timeZone&quot;).get(0))</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -905,17 +907,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/model/form/JoinLadderForm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="29" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/repository/LadderBoardCustomRepository.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="7" column="22" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/repository/LadderBoardRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="24" column="103" selection-start-line="24" selection-start-column="103" selection-end-line="24" selection-end-column="103" />
         </state>
       </provider>
     </entry>
@@ -929,31 +931,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/controller/UserController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/model/form/JoinLadderForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="53" column="65" lean-forward="true" selection-start-line="53" selection-start-column="65" selection-end-line="53" selection-end-column="65" />
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/service/LadderBoardService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+        <state relative-caret-position="153">
+          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/controller/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="77" selection-start-line="77" selection-end-line="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/service/LadderBoardServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="108" column="45" lean-forward="true" selection-start-line="108" selection-start-column="45" selection-end-line="108" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/quiniela/repository/LadderBoardRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="24" column="103" selection-start-line="24" selection-start-column="103" selection-end-line="24" selection-end-column="103" />
+        <state relative-caret-position="318">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
         </state>
       </provider>
     </entry>

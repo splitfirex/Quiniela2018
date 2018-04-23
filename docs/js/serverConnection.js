@@ -108,6 +108,16 @@ function postCreateLadder(laddername,password,callback) {
         });
 }
 
+function postJoinLadder(laddername,password,callback) {
+    postData.body = JSON.stringify({ "token": token, "nameladder":laddername, "password":password });
+    fetch(server + '/user/joinladder', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            callback(res)
+        });
+}
+
 function postPlayerLaddersDetail(laddername, callback) {
     if (token != "") {
         postData.body = JSON.stringify({ "token": token, "ladderName": laddername });

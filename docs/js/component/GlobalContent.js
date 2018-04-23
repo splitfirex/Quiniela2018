@@ -32,7 +32,6 @@ class GlobalContent extends React.Component {
         } 
     }
 
-
     render() {
 
         if (this.props.currentWindow == "Inicio" && this.props.username != null) {

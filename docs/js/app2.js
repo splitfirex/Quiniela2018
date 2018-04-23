@@ -8,6 +8,7 @@ class App extends React.Component {
             showBreadcrumbs: false,
             showBack: false,
             showModal: false,
+            protected: false,
             breads: [],
             currentWindow: "Inicio",
             currentModalWindow: "Nueva quiniela",
@@ -93,11 +94,31 @@ class App extends React.Component {
         })
     }
 
+    fnJoinLadderOK(newLaddername){
+        this.toggleLoadingModal();
+        this.setPostState({
+            showBreadcrumbs: false,
+            showModal: false,
+            currentWindow: "Inicio",
+            breads:  [],
+            currentModalWindow: null
+        })
+    }
+
     fnOnClickGoTo(destination,laddername) {
         console.log(destination);
         console.log(laddername);
-        this.changeWindow(destination,laddername);
+        this.changeWindow(destination);
         this.goTop();
+    }
+
+    fnOnClickJoinLadder(laddername,isProtected){
+        this.setPostState({
+            showModal: true,
+            currentModalWindow: "Unirse a quiniela",
+            laddername: laddername,
+            protected: isProtected
+        });
     }
 
     fnOnClickLadder(newLaddername) {
@@ -153,7 +174,7 @@ class App extends React.Component {
     }
 
 
-    changeWindow(newWindow, laddername) {
+    changeWindow(newWindow) {
         this.toggleLoadingModal();
         if (newWindow == "Inicio") {
             this.setPostState({
@@ -199,12 +220,6 @@ class App extends React.Component {
                 showModal: true,
                 currentModalWindow: newWindow
             });
-        }else if (newWindow == "Unirse a quiniela") {
-            this.setPostState({
-                showModal: true,
-                currentModalWindow: newWindow,
-                laddername: laddername
-            });
         }
 
        
@@ -235,6 +250,7 @@ class App extends React.Component {
                 laddername={this.state.laddername}
                 playername={this.state.playername}
                 username={this.state.username}
+                fnOnClickJoinLadder={this.fnOnClickJoinLadder.bind(this)}
                 fnOnClickGoTo={this.fnOnClickGoTo.bind(this)}
                 fnOnClickLadder={this.fnOnClickLadder.bind(this)}
                 fnOnMatchClick={this.fnOnMatchClick.bind(this)}
@@ -242,10 +258,12 @@ class App extends React.Component {
                 currentWindow={this.state.currentWindow}
                 renderBreadcrumbs={this.state.showBreadcrumbs} />
             <ModalContent
+                ladderProtected={this.state.protected}
                 laddername={this.state.laddername}
                 fnNewLadderOK={this.fnNewLadderOK.bind(this)}
                 fnRegisterOK={this.fnRegisterOK.bind(this)}
-                fnLoginOK={this.fnLoginOK.bind(this)}
+                fnLoginOK={this.fnLoginOK.bind(this)} 
+                fnJoinLadderOK={this.fnJoinLadderOK.bind(this)}
                 fnOnModalBack={this.fnOnModalBack.bind(this)}
                 currentModalWindow={this.state.currentModalWindow}
                 renderModal={this.state.showModal} />
