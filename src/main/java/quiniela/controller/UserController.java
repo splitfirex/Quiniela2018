@@ -102,13 +102,31 @@ public class UserController {
     public List<PlayerMatch> getMatches(@RequestBody PlayerMatchForm form) {
         Player player = loginService.getPlayerByToken(form.getToken());
         Player p = playerService.getPlayerByUsername(form.getUsername());
-        LadderBoard l = ladderBoardService.getLadderBoard(form.getLadder());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
         if (l != null) {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
             if (l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;
 
             return matchService.getMatchesByPlayerLadder(l, p);
 
+        }
+        return null;
+    }
+
+
+    @RequestMapping(value = "/updateplayerstatus", method = RequestMethod.POST)
+    @ResponseBody
+    public ViewLadderBoard changePlayerStatus(@RequestBody PlayerStatusForm form) {
+        Player player = loginService.getPlayerByToken(form.getToken());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
+        if (l != null) {
+            LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
+            LadderBoardPlayer lbpToUpdate = l.getPlayerByName(form.getUsername());
+            if (!lbp.getAdmin() || !lbp.getActive() || lbpToUpdate == null) return null;
+
+            lbpToUpdate.setAdmin(form.getAdmin());
+            lbpToUpdate.setActive(form.getActivate());
+            return new ViewLadderBoard(ladderBoardService.updateUserStatus(l,lbpToUpdate));
         }
         return null;
     }
@@ -128,7 +146,7 @@ public class UserController {
     public List<PlayerGroup> getGroups(@RequestBody PlayerMatchForm form) {
         Player player = loginService.getPlayerByToken(form.getToken());
         Player p = playerService.getPlayerByUsername(form.getUsername());
-        LadderBoard l = ladderBoardService.getLadderBoard(form.getLadder());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
         if (l != null) {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
             if (l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;

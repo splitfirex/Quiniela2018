@@ -3,7 +3,9 @@ package quiniela.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Document(collection = "ladderBoard")
 public class LadderBoard {
@@ -20,7 +22,7 @@ public class LadderBoard {
         this.bgColor = bgColor;
     }
 
-    private List<LadderBoardPlayer> listPlayers = new ArrayList<>();
+    private Set<LadderBoardPlayer> listPlayers = new HashSet<>();
 
     private String password;
 
@@ -48,11 +50,11 @@ public class LadderBoard {
         this.password = password;
     }
 
-    public List<LadderBoardPlayer> getListPlayers() {
+    public Set<LadderBoardPlayer> getListPlayers() {
         return listPlayers;
     }
 
-    public void setListPlayers(List<LadderBoardPlayer> listPlayers) {
+    public void setListPlayers(Set<LadderBoardPlayer> listPlayers) {
         this.listPlayers = listPlayers;
     }
 

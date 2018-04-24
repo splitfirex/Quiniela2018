@@ -61,23 +61,50 @@ function getMatches() {
 }
 
 function getPlayerMatches(username, ladder, callback) {
-
-    fetch(server + '/user/playermatches?username=' + username + '&laddername=' + ladder, getData)
-        .then(function (response) {
-            return response.json();
-        }).then(function (res) { callback(res) });
+    if (token == "") {
+        fetch(server + '/user/playermatches?username=' + username + '&laddername=' + ladder, getData)
+            .then(function (response) {
+                return response.json();
+            }).then(function (res) { callback(res) });
+    } else {
+        postData.body = JSON.stringify({ "token": token, "username": username, "laddername": ladder });
+        fetch(server + '/user/playermatches', postData)
+            .then(function (response) {
+                return response.json();
+            }).then(function (res) {
+                callback(res)
+            });
+    }
 
 }
 
 function getPlayerGroups(username, ladder, callback) {
-
-    fetch(server + '/user/playergroups?username=' + username + '&laddername=' + ladder, getData)
-        .then(function (response) {
-            return response.json();
-        }).then(function (res) { callback(res) });
+    if (token == "") {
+        fetch(server + '/user/playergroups?username=' + username + '&laddername=' + ladder, getData)
+            .then(function (response) {
+                return response.json();
+            }).then(function (res) { callback(res) });
+    } else {
+        postData.body = JSON.stringify({ "token": token, "username": username, "laddername": ladder });
+        fetch(server + '/user/playergroups', postData)
+            .then(function (response) {
+                return response.json();
+            }).then(function (res) {
+                callback(res)
+            });
+    }
 
 }
 
+function postUpdatePlayerStatus(username, laddername, admin, active, callback) {
+    postData.body = JSON.stringify({ "token": token, "username": username, "activate": active, "admin": admin, "laddername": laddername });
+    fetch(server + '/user/updateplayerstatus', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            callback(res)
+        });
+}
 
 function getPlayerLadders(callback) {
     fetch(server + '/user/ladders', getData)
@@ -98,8 +125,8 @@ function postPlayerLadders(callback) {
         });
 }
 
-function postCreateLadder(laddername,password,callback) {
-    postData.body = JSON.stringify({ "token": token, "nameladder":laddername, "password":password });
+function postCreateLadder(laddername, password, callback) {
+    postData.body = JSON.stringify({ "token": token, "nameladder": laddername, "password": password });
     fetch(server + '/user/createladder', postData)
         .then(function (response) {
             return response.json();
@@ -108,8 +135,8 @@ function postCreateLadder(laddername,password,callback) {
         });
 }
 
-function postJoinLadder(laddername,password,callback) {
-    postData.body = JSON.stringify({ "token": token, "nameladder":laddername, "password":password });
+function postJoinLadder(laddername, password, callback) {
+    postData.body = JSON.stringify({ "token": token, "nameladder": laddername, "password": password });
     fetch(server + '/user/joinladder', postData)
         .then(function (response) {
             return response.json();
@@ -122,18 +149,18 @@ function postPlayerLaddersDetail(laddername, callback) {
     if (token != "") {
         postData.body = JSON.stringify({ "token": token, "ladderName": laddername });
         fetch(server + '/user/ladders/detail', postData)
-        .then(function (response) {
-            return response.json();
-        }).then(function (res) {
-            callback(res)
-        });
-    }else{
-        fetch(server + '/user/ladders/detail?laddername='+laddername, getData)
-        .then(function (response) {
-            return response.json();
-        }).then(function (res) {
-            callback(res)
-        });
+            .then(function (response) {
+                return response.json();
+            }).then(function (res) {
+                callback(res)
+            });
+    } else {
+        fetch(server + '/user/ladders/detail?laddername=' + laddername, getData)
+            .then(function (response) {
+                return response.json();
+            }).then(function (res) {
+                callback(res)
+            });
     }
 }
 

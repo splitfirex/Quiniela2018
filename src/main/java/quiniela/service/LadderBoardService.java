@@ -2,6 +2,7 @@ package quiniela.service;
 
 import org.springframework.stereotype.Service;
 import quiniela.model.LadderBoard;
+import quiniela.model.LadderBoardPlayer;
 import quiniela.model.Player;
 
 import java.util.List;
@@ -22,5 +23,7 @@ public interface LadderBoardService {
     LadderBoard getLadderBoardByName(String name, Player p);
 
     LadderBoard getLadderBoard(String name);
+
+    LadderBoard updateUserStatus(LadderBoard l, LadderBoardPlayer lbp);
 
 }
