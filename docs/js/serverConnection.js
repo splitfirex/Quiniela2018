@@ -1,5 +1,5 @@
 var token = "";
-var server = "http://77.231.246.1:9080/QuiniRestService";
+var server = "https://77.231.246.1:9080/QuiniRestService";
 //var server = "http://localhost:9000";
 var teams = getTeams();
 var matches = getMatches();
