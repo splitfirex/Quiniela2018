@@ -1,6 +1,7 @@
 package quiniela.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import quiniela.model.LadderBoard;
 import quiniela.model.LadderBoardPlayer;
@@ -10,6 +11,7 @@ import quiniela.repository.PlayerMatchRepositoty;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -32,9 +34,14 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     @Autowired
     private MatchService matchService;
 
+    @Value("${clean_and_build}")
+    Boolean cleanAndBuild;
+
     @PostConstruct
     private void init() {
-        ladderBoardRepository.deleteAll();
+        if(cleanAndBuild) {
+            ladderBoardRepository.deleteAll();
+        }
     }
 
 
@@ -46,6 +53,12 @@ public class LadderBoardServiceImpl implements LadderBoardService {
         l.setPassword(password != null ? loginService.encode(password) : null);
         l.setId(counter.incrementAndGet());
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true, true));
+        Random rand = new Random();
+        int nextInt = rand.nextInt(256*256*256);
+        l.setBgColor(String.format("#%06x", nextInt));
+
+
+
 
         matchService.createPlayerMatches(l,p);
         groupService.createPlayerGroup(l,p);
@@ -83,7 +96,7 @@ public class LadderBoardServiceImpl implements LadderBoardService {
             l.getListPlayers().remove(l.getPlayerByName(p.getUsername()));
             if(isAdmin && countAdmin == 1){
                 if (l.getListPlayers().size() > 1) {
-                    l.getListPlayers().get(0).setAdmin(true);
+                    l.getListPlayers().iterator().next().setAdmin(true);
                 }
             }
             matchService.deletePlayerMatches(l,p);
@@ -97,6 +110,8 @@ public class LadderBoardServiceImpl implements LadderBoardService {
 
         return l;
     }
+
+
 
     @Override
     public List<LadderBoard> listLadderBoard() {
@@ -117,5 +132,11 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     @Override
     public LadderBoard getLadderBoard(String name) {
         return ladderBoardRepository.findByName(name);
+    }
+
+    @Override
+    public LadderBoard updateUserStatus(LadderBoard l, LadderBoardPlayer lbp) {
+        l.getListPlayers().add(lbp);
+        return ladderBoardRepository.save(l);
     }
 }

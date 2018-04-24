@@ -2,6 +2,8 @@ package quiniela.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import quiniela.model.*;
@@ -36,6 +38,8 @@ public class UserController {
     @Autowired
     private GroupService groupService;
 
+    @Value("${ladder.laddername}")
+    String genericLaddername;
 
     @RequestMapping(value = "/ladders", method = RequestMethod.GET)
     @ResponseBody
@@ -61,7 +65,7 @@ public class UserController {
     @ResponseBody
     public ViewLadderBoard getLaddersCompleteNoPassword(@RequestParam("laddername") String laddername) {
         LadderBoard l = ladderBoardService.getLadderBoard(laddername);
-        if(l.getPassword() == null){
+        if(l.getPassword() == null || l.getName().equals(genericLaddername)){
             return new ViewLadderBoard(l);
         }
         return null;
@@ -88,7 +92,7 @@ public class UserController {
     public List<PlayerMatch> getMatches(@RequestParam("username") String username, @RequestParam("laddername") String laddername) {
         LadderBoard l = ladderBoardService.getLadderBoard(laddername);
         Player p = playerService.getPlayerByUsername(username);
-        if (l == null || (l != null && l.getPassword() != null)) return null;
+        if ((l == null || (l != null && l.getPassword() != null)) && !l.getName().equals(genericLaddername)) return null;
 
         return matchService.getMatchesByPlayerLadder(l, p);
     }
@@ -98,7 +102,7 @@ public class UserController {
     public List<PlayerMatch> getMatches(@RequestBody PlayerMatchForm form) {
         Player player = loginService.getPlayerByToken(form.getToken());
         Player p = playerService.getPlayerByUsername(form.getUsername());
-        LadderBoard l = ladderBoardService.getLadderBoard(form.getLadder());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
         if (l != null) {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
             if (l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;
@@ -109,12 +113,30 @@ public class UserController {
         return null;
     }
 
+
+    @RequestMapping(value = "/updateplayerstatus", method = RequestMethod.POST)
+    @ResponseBody
+    public ViewLadderBoard changePlayerStatus(@RequestBody PlayerStatusForm form) {
+        Player player = loginService.getPlayerByToken(form.getToken());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
+        if (l != null) {
+            LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
+            LadderBoardPlayer lbpToUpdate = l.getPlayerByName(form.getUsername());
+            if (!lbp.getAdmin() || !lbp.getActive() || lbpToUpdate == null) return null;
+
+            lbpToUpdate.setAdmin(form.getAdmin());
+            lbpToUpdate.setActive(form.getActivate());
+            return new ViewLadderBoard(ladderBoardService.updateUserStatus(l,lbpToUpdate));
+        }
+        return null;
+    }
+
     @RequestMapping(value = "/playergroups", method = RequestMethod.GET)
     @ResponseBody
-    public List<PlayerGroup> getGroups(@RequestParam("username") String username, @RequestParam("laddername") String laddername) {
+    public List<PlayerGroup> getGroups(@RequestParam("username") String username, @RequestParam("laddername") String laddername, @RequestHeader HttpHeaders headers) {
         LadderBoard l = ladderBoardService.getLadderBoard(laddername);
         Player p = playerService.getPlayerByUsername(username);
-        if (l == null || (l != null && l.getPassword() != null)) return null;
+        if ((l == null || (l != null && l.getPassword() != null)) && !l.getName().equals(genericLaddername)) return null;
 
         return groupService.getGroupsByPlayerLadder(l, p);
     }
@@ -124,7 +146,7 @@ public class UserController {
     public List<PlayerGroup> getGroups(@RequestBody PlayerMatchForm form) {
         Player player = loginService.getPlayerByToken(form.getToken());
         Player p = playerService.getPlayerByUsername(form.getUsername());
-        LadderBoard l = ladderBoardService.getLadderBoard(form.getLadder());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
         if (l != null) {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
             if (l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;

@@ -1,6 +1,7 @@
 package quiniela.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -11,11 +12,14 @@ public class LadderBoardCustomRepositoryImpl implements LadderBoardCustomReposit
     @Autowired
     MongoTemplate mongoTemplate;
 
+    @Value("${ladder.laddername}")
+    String genericLaddername;
+
     @Override
     public LadderBoard findByIdOrIfActive(String ladderName, String username) {
 
         Query query;
-        if (username == null) {
+        if (username == null && !ladderName.equals(genericLaddername)) {
             query = new Query(Criteria.where("name").is(ladderName).and("password").exists(false));
         } else {
             query = new Query(Criteria.where("name").is(ladderName)

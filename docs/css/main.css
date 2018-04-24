@@ -6,9 +6,6 @@
   font-family: "dusan";
   src: url("../font/FIFA_World_Cup_2018.ttf");
 }
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway');
-
-@import url('https://fonts.googleapis.com/css?family=Overpass+Mono');
 
 * {
   margin: 0;
@@ -27,27 +24,15 @@ html {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
   scroll-behavior: smooth;
-  max-width: 100vw;
   overflow-x: hidden;
-
-  background-color: rgb(89, 152, 211);
-  background-image: url("../img/bg3.png");
 }
 
 body {
-  max-width: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  
-  font-family: 'Overpass Mono', monospace;
+  background: url("../img/bg3.png");
   font-size: 0.876em;
   letter-spacing: 1px;
   padding: 0;
   margin: 0;
-  height: 100%;
- 
-  color: white;
-  scroll-behavior: smooth;
 }
 
 
@@ -59,20 +44,14 @@ body {
 
   left:0;
   z-index: 5;
- 
-  background-color: rgb(89, 152, 211);
-  background-image: url("../img/bg3.png");
+
 
   display: grid;
   grid-auto-columns: auto;
-  grid-auto-rows: 40px 170px 30px auto auto auto 300px;
+  grid-auto-rows: 170px 30px auto auto auto 300px;
   grid-template-areas: 
-  "menu" 
-  "head" 
   "notf"  
   "cont" 
-  "grop" 
-  "fixt" 
   "foot";
 }
 
@@ -81,7 +60,7 @@ body {
 }
 
 .section-title {
-  text-align: right;
+  text-align: center;
   font-size: 1.2em;
   height: 36px;
   padding-right: 30px;
@@ -123,16 +102,28 @@ body {
 }
 
 .loading{
+  font-size: 4em;
+  color: black;
+  padding: 50px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+  width: 100%;    
+  background-color: rgba(255,255,255, 1);
   text-align: center;
   align-content: center;
+  margin-bottom: 20px;
+  animation: fadein 1s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 
-
-
-#footer {
-  grid-area: foot;
-  background-color: rgba(100, 100, 100, 0.8);
+.footer {
+  
+  height: 400px;
+  background-color: rgba(100, 100, 100, 0.5);
 }
 
 

@@ -30,7 +30,7 @@ class ShowLadders extends React.Component {
         var colors = getGradient(this.state.ladders.length);
         var that = this;
         return this.state.ladders.map(function (currentValue, index, array) {
-            return <Ladder
+            return <Ladder2
                 key={"Ladder" + index}
                 usersCount={currentValue.listPlayers.length}
                 name={currentValue.name}
@@ -50,7 +50,7 @@ class ShowLadders extends React.Component {
 
 }
 
-function Ladder(props) {
+function Ladder2(props) {
 
     var renderIcon = <i className="fa-inverse fas fa-users"></i>
     if (props.protected) {

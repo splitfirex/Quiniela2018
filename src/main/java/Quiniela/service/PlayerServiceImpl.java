@@ -34,22 +34,27 @@ public class PlayerServiceImpl implements PlayerService {
     @Value("${player.password}")
     String genericPassword;
 
+    @Value("${ladder.laddername}")
+    String genericLaddername;
+
+    @Value("${ladder.password}")
+    String genericLadderPassword;
+
+    @Value("${clean_and_build}")
+    Boolean cleanAndBuild;
+
     @Value("${encryption.algorithm}")
     String algorithmEncode;
 
     @PostConstruct
     private void init() {
-        playerRepository.deleteAll();
+        if(cleanAndBuild) {
+            playerRepository.deleteAll();
 
-        Player p = createPlayer("_NOT_A_PLAYER", "_NOT_A_PLAYER");
-        String token = loginService.login("_NOT_A_PLAYER", "_NOT_A_PLAYER");
-
-        Player p2 = createPlayer("Daniel", "Daniel");
-
-        ladderBoardService.createLadderBoard("_NOT_A_LADDERBOARD_", null, p);
-        ladderBoardService.createLadderBoard("_NOT_A_LADDERBOARD2_", "1234", p);
-
-        ladderBoardService.joinLadderBoard("_NOT_A_LADDERBOARD_", "1234", p2);
+            Player p = createPlayer(genericUsername, genericPassword);
+            //String token = loginService.login(genericUsername, genericPassword);
+            ladderBoardService.createLadderBoard(genericLaddername, genericLadderPassword, p);
+        }
     }
 
     @Override

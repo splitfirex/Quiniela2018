@@ -1,15 +1,16 @@
 package quiniela.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import quiniela.model.Group;
 import quiniela.model.Match;
 import quiniela.service.GroupService;
 import quiniela.service.MatchService;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Controller
@@ -21,7 +22,7 @@ public class MatchController {
 
     @GetMapping("/all")
     @ResponseBody
-    public List<Match> getAllGroups() {
+    public List<Match> getAllGroups(@RequestHeader HttpHeaders headers) {
         return matchService.getAllMatches();
     }
 }

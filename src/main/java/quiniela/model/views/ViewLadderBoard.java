@@ -5,14 +5,16 @@ import quiniela.model.LadderBoardPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ViewLadderBoard extends TokenAbleView {
 
 
     private Long id;
     private String name;
-    private List<LadderBoardPlayer> listPlayers;
+    private Set<LadderBoardPlayer> listPlayers;
     private Boolean isProtected;
+    private String bgColor;
 
 
     public static List<ViewLadderBoard> fromList(List<LadderBoard> boards) {
@@ -30,6 +32,16 @@ public class ViewLadderBoard extends TokenAbleView {
         this.name = board.getName();
         this.listPlayers = board.getListPlayers();
         this.isProtected = board.getPassword() != null;
+        this.setBgColor(board.getBgColor());
+
+    }
+
+    public String getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(String bgColor) {
+        this.bgColor = bgColor;
     }
 
     public Long getId() {
@@ -48,11 +60,11 @@ public class ViewLadderBoard extends TokenAbleView {
         this.name = name;
     }
 
-    public List<LadderBoardPlayer> getListPlayers() {
+    public Set<LadderBoardPlayer> getListPlayers() {
         return listPlayers;
     }
 
-    public void setListPlayers(List<LadderBoardPlayer> listPlayers) {
+    public void setListPlayers(Set<LadderBoardPlayer> listPlayers) {
         this.listPlayers = listPlayers;
     }
 
