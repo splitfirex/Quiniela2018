@@ -1,5 +1,5 @@
 var token = "";
-var server = "https://77.231.246.1:9080/QuiniRestService";
+var server = "https://rest.gallego.ml:8443";
 //var server = "http://localhost:9000";
 var teams = getTeams();
 var matches = getMatches();
