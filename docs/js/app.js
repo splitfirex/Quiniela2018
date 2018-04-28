@@ -3,22 +3,25 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            model: {
-                username: null,
-                playername: null,
-                laddername: null,
-                matches: [],
-                ladders: [],
-                groups: []
-            },
-            currentState: "Init",
-            showLoading: false,
+            showModal: false,
             showWelcome: true,
+            showMenu: false,
+            showBreadcrumbs: false,
+
+            contentWindow: "LADDERS",
+            matches: [],
+            groups: [],
+            teams: [],
+            token: null,
+            subTitle: "Quinielas",
+            dispatch: (action) => this.dispatch(action)
         }
     }
 
     componentDidMount() {
-        fetchMatches.bind(this)();
+        prefetchMatches.bind(this)();
+        prefetchGroups.bind(this)();
+        prefetchTeams.bind(this)();
     }
 
     dispatch(action) {
@@ -28,29 +31,24 @@ class App extends React.Component {
     render() {
         return <div>
             {this.state.showWelcome && <Welcome />}
-            <App3 dispatch={(callback) => this.dispatch(callback)} />
+            {this.state.showBreadcrumbs && <BreadCrumbs breadcrumbs={this.state.breadcrumbs} />}
+            <Menu  {...this.state} />
+            <SideMenu {...this.state} />
+            <ModalContent  {...this.state} />
+            <GlobalContent {...this.state} />
+
+
             <div className="footer"></div>
         </div>
     }
 
 }
 
-class App3 extends React.Component {
+function Welcome() {
+    return (<div className="modalWelcome">
 
-    constructor(props) {
-        super(props);
-
-    }
-
-    render() {
-        return <div>
-            <div onClick={() => this.props.dispatch({ type: "LOAD_LADDERS" })}>HOLA</div>
-        </div>
-    }
-
+    </div>)
 }
-
-
 
 function Loading(props) {
     return (
@@ -59,32 +57,6 @@ function Loading(props) {
         </div>
     )
 }
-
-function Modal(props) {
-    return (
-        <div className="loading">
-            <i className="fas fa-spinner fa-pulse"></i>
-        </div>
-    )
-}
-
-function Welcome() {
-    return (
-        <div className="modalWelcome">
-            <i className="fas fa-spinner fa-pulse"></i>
-        </div>
-    )
-}
-
-function ModalProcesing(props) {
-    return (
-        <div className="modalLoading">
-            <i className="fas fa-spinner fa-pulse"></i>
-        </div>
-    )
-}
-
-
 
 
 ReactDOM.render(<App />, document.getElementById("root"));

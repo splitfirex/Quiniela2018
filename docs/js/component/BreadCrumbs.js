@@ -1,17 +1,10 @@
-class BreadCrumbs extends React.Component {
+function BreadCrumbs(props) {
+    var content = props.breadcrumbs.map(function (currentvalue, index, array) {
+        return <div key={"bread" + index} >{currentvalue}</div>
+    });
 
-    render() {
-        var content = this.props.listRender.map(function (currentvalue, index, array) {
-            return <div>{currentvalue}</div>
-        });
-
-        return <div className="breadCrumbs">
-            {content}
-        </div>;
-    }
+    return (<div className="breadCrumbs">
+        {content}
+    </div>);
 }
 
-BreadCrumbs.defaultProps = {
-    listRender: [],
-    fnGoBack: function () { }
-}

@@ -58,7 +58,7 @@ public class UserController {
     @ResponseBody
     public ViewLadderBoard getLaddersComplete(@RequestBody GetLadderForm p) {
         Player player = loginService.getPlayerByToken(p.getToken());
-        return new ViewLadderBoard(ladderBoardService.getLadderBoardByName(p.getLadderName(), player));
+        return new ViewLadderBoard(ladderBoardService.getLadderBoardByName(p.getLaddername(), player));
     }
 
     @RequestMapping(value = "/ladders/detail", method = RequestMethod.GET)
@@ -75,7 +75,7 @@ public class UserController {
     @ResponseBody
     public ViewLadderBoard joinLadder(@RequestBody JoinLadderForm form) {
         Player player = loginService.getPlayerByToken(form.getToken());
-        return new ViewLadderBoard(ladderBoardService.joinLadderBoard(form.getNameladder(), form.getPassword(), player));
+        return new ViewLadderBoard(ladderBoardService.joinLadderBoard(form.getLaddername(), form.getPassword(), player));
     }
 
 
@@ -83,7 +83,7 @@ public class UserController {
     @ResponseBody
     public ViewLadderBoard createLadder(@RequestBody JoinLadderForm form) {
         Player player = loginService.getPlayerByToken(form.getToken());
-        return new ViewLadderBoard(ladderBoardService.createLadderBoard(form.getNameladder(), form.getPassword(), player));
+        return new ViewLadderBoard(ladderBoardService.createLadderBoard(form.getLaddername(), form.getPassword(), player));
     }
 
 
@@ -105,7 +105,7 @@ public class UserController {
         LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
         if (l != null) {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
-            if (l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;
+            if (!l.getName().equals(genericLaddername) && l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;
 
             return matchService.getMatchesByPlayerLadder(l, p);
 
@@ -149,7 +149,7 @@ public class UserController {
         LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
         if (l != null) {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
-            if (l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;
+            if (!l.getName().equals(genericLaddername) && l.getPassword() != null && (lbp == null || !lbp.getActive())) return null;
 
             return groupService.getGroupsByPlayerLadder(l, p);
 
@@ -162,8 +162,28 @@ public class UserController {
     @ResponseBody
     public List<PlayerMatch> updateMatch(@RequestBody UpdateMatchForm form) {
         Player player = loginService.getPlayerByToken(form.getToken());
-        LadderBoard l = ladderBoardService.getLadderBoard(form.getLadderName());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
         return matchService.updatePlayerMatches(player,l,form.getIdMatch(),form.getHomeScore(),form.getVisitScore());
+    }
+
+
+    @RequestMapping(value = "/banplayer", method = RequestMethod.POST)
+    @ResponseBody
+    public ViewLadderBoard banPlayer(@RequestBody PlayerStatusForm form) {
+        Player player = loginService.getPlayerByToken(form.getToken());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
+        if (l != null) {
+            LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
+            LadderBoardPlayer lbpToUpdate = l.getPlayerByName(form.getUsername());
+            if (!lbp.getAdmin() || !lbp.getActive() || lbpToUpdate == null) return null;
+
+            lbpToUpdate.setAdmin(form.getAdmin());
+            lbpToUpdate.setActive(form.getActivate());
+            Player p = new Player();
+            p.setUsername(form.getUsername());
+            return new ViewLadderBoard(ladderBoardService.leaveLadderBoard(l,p));
+        }
+        return null;
     }
 
 }

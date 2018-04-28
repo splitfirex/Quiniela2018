@@ -3,76 +3,40 @@ class ContentJoinLadder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            laddername: props.laddername,
+            showLoading: false,
+
             password: undefined,
             public: true,
-            errorPassword: false
+            error: false
         }
     }
 
-    tryJoinLadder() {
-        if (this.props.ladderProtected && this.state.password != undefined && this.state.password.trim() != "") {
-            postJoinLadder(this.state.laddername,this.state.password,this.processJoinLadder.bind(this));
-        }else if(!this.props.ladderProtected){
-            postJoinLadder(this.state.laddername,null,this.processJoinLadder.bind(this));
-        }
-        this.setState({
-            errorPassword: true
-        });
-    }
-
-    processJoinLadder(response) {
-        if (Object.keys(response).length === 0 && response.constructor === Object) {
-            this.setState({
-                errorPassword: true
-            });
-        } else {
-            this.props.fnJoinLadderOK(response.name);
-        }
-    }
-
-    togglePublic() {
-        this.setState({
-            public: !this.state.public,
-            password: null
-        });
+    dispatch(action) {
+        this.setState(preState => GlobalAppActions(preState, action));
     }
 
     handleChange = event => {
         this.setState({
             [event.target.id]: event.target.value,
-            errorPassword: false
+            error: false
         });
     }
 
-    renderLock() {
-        if (this.props.ladderProtected) {
-            return <div key="newLadderunlock" className="iconCenter red" > <i className="fas fa-lock" ></i> </div>
-        }
-        return <div key="newLadderlock" className="iconCenter gree" > <i className="fas fa-unlock" ></i></div>
-    }
-
-    renderPassword() {
-        if (!this.props.ladderProtected) {
-            return <div> </div>
-        }
-        return <div><input className={this.state.errorPassword ? "error" : ""} type="pasword" placeholder="Contraseña" id="password" onChange={this.handleChange.bind(this)} /></div>
-    }
-
     render() {
-        return <div className="newLadder">
-
-            <div>Unirse a la quiniela</div>
-            <div>{this.state.laddername}</div>
-            <div className="public" >
-                {this.renderLock()}
+        return this.state.showLoading ? <div className="newLadder"><ModalLoading /></div>
+            :
+            <div className="newLadder">
+                <div>Unirse a la quiniela</div>
+                <div>{this.props.laddername}</div>
+                <div className="public" >
+                    {this.props.ladderProtected ? <div key="newLadderunlock" className="iconCenter red" > <i className="fas fa-lock" ></i> </div> : <div key="newLadderlock" className="iconCenter green" > <i className="fas fa-unlock" ></i></div>}
+                </div>
+                <div>
+                    {this.props.ladderProtected && <div><input className={this.state.error ? "error" : ""} type="pasword" placeholder="Contraseña" id="password" onChange={this.handleChange.bind(this)} /></div>}
+                </div>
+                <div><button onClick={() => fetchJoinLadder.bind(this)()}>Enviar</button></div>
+                <div> </div>
             </div>
-            <div>
-                {this.renderPassword()}
-            </div>
-            <div><button onClick={this.tryJoinLadder.bind(this)} >Enviar</button></div>
-            <div> </div>
-        </div>
     }
 
 }

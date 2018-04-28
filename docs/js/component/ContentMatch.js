@@ -3,74 +3,120 @@ class ContentMatch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            matches: []
+            showLoading: false,
+            content: []
         }
-    }
-
-
-
-    componentDidMount() {
-        getPlayerMatches(
-            this.props.playername == null ? genericPlayername : this.props.playername,
-            this.props.laddername == null ? genericLaddername : this.props.laddername,
-            this.processMatches.bind(this));
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.playername != nextProps.playername || nextProps.laddername != this.props.laddername) {
-            getPlayerMatches(
-                nextProps.playername == null ? genericPlayername : nextProps.playername,
-                nextProps.laddername == null ? genericLaddername : nextProps.laddername,
-                this.processMatches.bind(this));
+        if (nextProps.forceReload) {
+            this.props.dispatch({ type: "UNFORCE" });
+            fetchLadders.bind(this)();
         }
     }
 
-    processMatches(reponseMatches) {
+    toggleEdit(index) {
+        this.state.content[index].edit = !this.state.content[index].edit && true;
+        if (this.state.content[index].edit ==  false) {
+            fetchUpdateScore.bind(this)(index, this.state.content[index].hS,this.state.content[index].vS);
+        } else {
+            this.setState({
+                content: this.state.content
+            });
+        }
+
+    }
+
+    incrementScore(index, isHome) {
+        if (isHome) {
+            this.state.content[index].hS = this.state.content[index].hS == null ? 0 : this.state.content[index].hS + 1;
+        } else {
+            this.state.content[index].vS = this.state.content[index].vS == null ? 0 : this.state.content[index].vS + 1;
+        }
         this.setState({
-            matches: reponseMatches
+            content: this.state.content
         });
     }
 
+    decrementScore(index, isHome) {
+        if (isHome) {
+            this.state.content[index].hS = this.state.content[index].hS == null ? null : this.state.content[index].hS - 1;
+            if (this.state.content[index].hS == -1) this.state.content[index].hS = null;
+        } else {
+            this.state.content[index].vS = this.state.content[index].vS == null ? null : this.state.content[index].vS - 1;
+            if (this.state.content[index].vS == -1) this.state.content[index].vS = null
+        }
+        this.setState({
+            content: this.state.content
+        });
+    }
+
+    componentDidMount() {
+        fetchMatches.bind(this)();
+    }
+
+    dispatch(action) {
+        this.setState(preState => GlobalAppActions(preState, action));
+    }
+
     renderMatches() {
-        return this.state.matches.map(function (currentValue, index, array) {
-            var d = new Date(matches[index].date);
-            return <Match round={index + 1} key={"match" + index}
-                date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
-                homeTeamShort={teams[currentValue.hT - 1] == undefined ?
-                    matches[index].homeTeam : teams[currentValue.hT - 1].shortName}
-                visitorTeamShort={teams[currentValue.vT - 1] == undefined ?
-                    matches[index].visitorTeam : teams[currentValue.vT - 1].shortName}
-                flagUrlHome={teams[currentValue.hT - 1] == undefined ?
-                    "none": teams[currentValue.hT - 1].flagUrl}
-                flagUrlVisitor={teams[currentValue.vT - 1] == undefined ?
-                    "none" : teams[currentValue.vT - 1].flagUrl}
-
-                homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
-                visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS} />
-        })
+        return this.state.content.map(function (currentValue, index, array) {
+            var d = new Date(this.props.matches[index].date);
+            return this.props.username == this.props.playername ?
+                currentValue.edit != null && currentValue.edit ?
+                    <MatchEdit round={index + 1} key={"match" + index}
+                        index={index}
+                        date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
+                        homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
+                            this.props.matches[index].homeTeam : this.props.teams[currentValue.hT - 1].shortName}
+                        visitorTeamShort={this.props.teams[currentValue.vT - 1] == undefined ?
+                            this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT - 1].shortName}
+                        flagUrlHome={this.props.teams[currentValue.hT - 1] == undefined ?
+                            "none" : this.props.teams[currentValue.hT - 1].flagUrl}
+                        flagUrlVisitor={this.props.teams[currentValue.vT - 1] == undefined ?
+                            "none" : this.props.teams[currentValue.vT - 1].flagUrl}
+                        homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
+                        visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
+                        toggleEdit={(index) => this.toggleEdit(index)}
+                        inc={(index, home) => this.incrementScore(index, home)}
+                        dec={(index, home) => this.decrementScore(index, home)} />
+                    :
+                    <MatchUser round={index + 1} key={"match" + index}
+                        index={index}
+                        date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
+                        homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
+                            this.props.matches[index].homeTeam : this.props.teams[currentValue.hT - 1].shortName}
+                        visitorTeamShort={this.props.teams[currentValue.vT - 1] == undefined ?
+                            this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT - 1].shortName}
+                        flagUrlHome={this.props.teams[currentValue.hT - 1] == undefined ?
+                            "none" : this.props.teams[currentValue.hT - 1].flagUrl}
+                        flagUrlVisitor={this.props.teams[currentValue.vT - 1] == undefined ?
+                            "none" : this.props.teams[currentValue.vT - 1].flagUrl}
+                        homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
+                        visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
+                        toggleEdit={(index) => this.toggleEdit(index)} />
+                :
+                <Match round={index + 1} key={"match" + index}
+                    date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
+                    homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
+                        this.props.matches[index].homeTeam : this.props.teams[currentValue.hT - 1].shortName}
+                    visitorTeamShort={this.props.teams[currentValue.vT - 1] == undefined ?
+                        this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT - 1].shortName}
+                    flagUrlHome={this.props.teams[currentValue.hT - 1] == undefined ?
+                        "none" : this.props.teams[currentValue.hT - 1].flagUrl}
+                    flagUrlVisitor={this.props.teams[currentValue.vT - 1] == undefined ?
+                        "none" : this.props.teams[currentValue.vT - 1].flagUrl}
+                    homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
+                    visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS} />
+        }.bind(this))
     }
 
-    renderMatchesUser() {
-
-    }
 
     render() {
-
-        if (this.state.matches.length == 0) {
-            return <Loading />
-        } else if (this.props.playername == this.props.username) {
-
-        }
-
-        return this.renderMatches();
+        return this.state.showLoading ? <Loading /> : this.renderMatches();
     }
 }
 
-ContentMatch.defaultProps = {
-    username: null,
-    laddername: null,
-    playername: null
-}
 
 function Match(props) {
     return (
@@ -99,54 +145,55 @@ function Match(props) {
 function MatchUser(props) {
     return (
         <div className="match user">
-            <div>63</div>
+            <div>{props.round}</div>
             <div className="matchInfo">
-                <div><div>12/12 12:59</div></div>
+                <div><div>{props.date}</div></div>
                 <div className="teamMatch">
                     <div className="teambox">
-                        <div>FRA</div>
-                        <div><div className="flag RUS"></div></div>
-                        <div>3</div>
+                        <div>{props.homeTeamShort}</div>
+                        <div><div className={"flag flag-" + props.flagUrlHome}></div></div>
+                        <div>{props.homeTeamScore}</div>
                     </div>
                     <div className="teamboxSeparator">-</div>
                     <div className="teambox left">
-                        <div>6</div>
-                        <div><div className="flag BRA"></div></div>
-                        <div>BRA</div>
+                        <div>{props.visitorTeamScore}</div>
+                        <div><div className={"flag flag-" + props.flagUrlVisitor}></div></div>
+                        <div>{props.visitorTeamShort}</div>
                     </div>
                 </div>
             </div>
-            <div><div className="iconCenter"><i className="fas fa-edit"></i></div></div>
+            <div onClick={() => props.toggleEdit(props.index)}><div className="iconCenter"><i className="fas fa-edit"></i></div></div>
         </div>
     )
 }
 
 function MatchEdit(props) {
     return (<div className="match user edit">
-        <div>63</div>
+        <div>{props.round}</div>
         <div className="matchInfo">
-            <div><div>12/12 12:59</div></div>
+            <div><div>{props.date}</div></div>
             <div className="teamMatch">
-                <div className="teambox right">
-                    <div>FRA</div>
-                    <div><div className="flag RUS"></div></div>
+                <div className="teambox">
+                    <div>{props.homeTeamShort}</div>
+                    <div><div className={"flag flag-" + props.flagUrlHome}></div></div>
                 </div>
                 <div className="teamboxSeparator">-</div>
-                <div className="teambox left">
-                    <div><div className="flag BRA"></div></div>
-                    <div>BRA</div>
+                <div className="teambox">
+                    <div></div>
+                    <div><div className={"flag flag-" + props.flagUrlVisitor}></div></div>
+                    <div>{props.visitorTeamShort}</div>
                 </div>
             </div>
             <div className="editBox">
-                <div> <i className="fas fa-chevron-circle-left"></i> </div>
-                <div> 5</div>
-                <div> <i className="fas fa-chevron-circle-right"></i> </div>
+                <div onClick={() => props.dec(props.index, true)} > <i className="fas fa-chevron-circle-left"></i> </div>
+                <div>{props.homeTeamScore}</div>
+                <div onClick={() => props.inc(props.index, true)}> <i className="fas fa-chevron-circle-right"></i> </div>
                 <div></div>
-                <div> <i className="fas fa-chevron-circle-left"></i> </div>
-                <div> 5</div>
-                <div> <i className="fas fa-chevron-circle-right"></i> </div>
+                <div onClick={() => props.dec(props.index, false)}> <i className="fas fa-chevron-circle-left"></i> </div>
+                <div> {props.visitorTeamScore}</div>
+                <div onClick={() => props.inc(props.index, false)}> <i className="fas fa-chevron-circle-right"></i> </div>
             </div>
         </div>
-        <div><div className="iconCenter"><i className="fas fa-edit"></i></div></div>
+        <div onClick={() => props.toggleEdit(props.index)} ><div className="iconCenter"><i className="fas fa-edit"></i></div></div>
     </div>)
 }

@@ -202,8 +202,11 @@ div.match.edit div.teambox.left{
     display: grid;
     grid-template-columns: 50px 50px 50px auto 50px 50px 50px;
     grid-auto-rows: 50px;
-    align-items: center;
-    justify-items: center;
+}
+
+.editBox > div{
+    padding-top: 15px;
+    text-align: center;
 }
 
 .content >div.player{
@@ -354,7 +357,13 @@ div.match.edit div.teambox.left{
     align-items: center;
     justify-items: center;
     display: grid;
-  grid-template-rows: 50px 80px 30px 100px 50px auto;
+    grid-template-rows: 50px 80px 30px 100px 50px auto;
+    animation: fadein 1s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 .modalContent >div.register{
@@ -362,6 +371,7 @@ div.match.edit div.teambox.left{
     justify-items: center;
     display: grid;
   grid-template-rows: 50px 50px 50px 50px 80px 50px auto;
+  animation: fadein 1s;
 }
 
 

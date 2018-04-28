@@ -3,50 +3,38 @@ class ContentLadder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ladders: []
+            showLoading: false,
+            content: []
         }
     }
 
-    processLadders(responseLadders) {
-        this.setState({
-            ladders: responseLadders
-        });
-    }
-
-    componentDidMount() {
-        getPlayerLadders(this.processLadders.bind(this));
+    dispatch(action) {
+        this.setState(preState => GlobalAppActions(preState, action));
     }
 
     componentWillReceiveProps(nextProps) {
-       getPlayerLadders(this.processLadders.bind(this));
-        
+        if (nextProps.forceReload) {
+            this.props.dispatch({ type: "UNFORCE" });
+            fetchLadders.bind(this)();
+        }
     }
 
-    shouldComponentUpdate(nextProps, nextState){
-
-        if(nextState.ladders == this.state.ladders){
-            return false
-        }
-
-        return true;
+    componentDidMount() {
+        fetchLadders.bind(this)();
     }
 
     renderLadders() {
-        var colors = getGradient(this.state.ladders.length);
-        var that = this;
-        return this.state.ladders.map(function (currentValue, index, array) {
-            if (that.props.username != null) {
+        return this.state.content.map(function (currentValue, index, array) {
+            if (this.props.username != null) {
                 return <LoggedLadder
                     key={"Ladder" + index}
                     usersCount={currentValue.listPlayers.length}
-                    containsUser={currentValue.listPlayers.filter(user => (user.username === that.props.username && user.active)).length != 0 }
-                    containsPendingUser={currentValue.listPlayers.filter(user => (user.username === that.props.username && !user.active)).length != 0 }
+                    containsUser={currentValue.listPlayers.filter(user => (user.username === this.props.username && user.active)).length != 0}
+                    containsPendingUser={currentValue.listPlayers.filter(user => (user.username === this.props.username && !user.active)).length != 0}
                     name={currentValue.name}
                     protected={currentValue.protected}
-                    showPlayers={that.props.loadPlayers}
-                    fnOnClick={that.props.fnOnClickLadder}
                     bgColor={currentValue.bgColor}
-                    fnOnClickGoTo={that.props.fnOnClickJoinLadder.bind(null,currentValue.name,currentValue.protected)}
+                    dispatch={(action) => this.props.dispatch(action)}
                 />
             } else {
                 return <Ladder
@@ -54,31 +42,20 @@ class ContentLadder extends React.Component {
                     usersCount={currentValue.listPlayers.length}
                     name={currentValue.name}
                     protected={currentValue.protected}
-                    showPlayers={that.props.loadPlayers}
-                    fnOnClick={that.props.fnOnClickLadder}
                     bgColor={currentValue.bgColor}
-                    fnOnClickProtected={that.props.fnOnClickGoTo.bind(null,"Iniciar Sesion")}
+                    dispatch={(action) => this.props.dispatch(action)}
                 />
             }
-        })
+        }.bind(this));
 
     }
 
 
     render() {
-        if (this.state.ladders.length == 0) {
-            return <Loading />
-        }
 
-        return this.renderLadders()
+        return this.state.showLoading ? <Loading /> : this.renderLadders()
     }
 
-}
-
-ContentLadder.defaultProps = {
-    username: null,
-    laddername: null,
-    playername: null
 }
 
 
@@ -94,10 +71,10 @@ function LoggedLadder(props) {
         var protectedIcon = <div><div className="iconCenter"><i className="fas fa-unlock"></i></div></div>;
     }
 
-    var joinIcon = <div onClick={props.fnOnClickGoTo} ><div className="iconCenter"><i className="fas fa-user-plus"></i></div></div>;
+    var joinIcon = <div onClick={() => { props.dispatch({ type: "GO_TO", dest: "JOIN_LADDER", laddername: props.name, ladderProtected: props.protected }) }} ><div className="iconCenter"><i className="fas fa-user-plus"></i></div></div>;
 
-    if( props.containsUser ){
-        var joinIcon = <div style={{border:"unset"}}></div>;
+    if (props.containsUser) {
+        var joinIcon = <div style={{ border: "unset" }}></div>;
     }
 
     if (props.containsPendingUser) {
@@ -106,7 +83,9 @@ function LoggedLadder(props) {
 
     return (
         <div key={props.name + props.usersCount} className="ladder"  >
-            <div style={{backgroundColor:props.bgColor}} className="ladderShow" onClick={!props.protected || props.containsUser ? props.fnOnClick.bind(null, props.name) : function(){}}>
+            <div style={{ backgroundColor: props.bgColor }} className="ladderShow"
+                onClick={!props.protected || props.containsUser ? (() => { props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYERS", laddername: props.name }) })
+                    : (() => { })}>
                 <div>
                     {props.name}
                 </div>
@@ -123,8 +102,11 @@ function LoggedLadder(props) {
 function Ladder(props) {
 
     return (
-        <div  key={props.name + props.usersCount} className="ladder logged" onClick={!props.protected ? props.fnOnClick.bind(null, props.name) : props.fnOnClickProtected}>
-            <div className="ladderShow" style={{backgroundColor:props.bgColor}} >
+        <div className="ladder logged" >
+            <div className="ladderShow" style={{ backgroundColor: props.bgColor }}
+                onClick={!props.protected ?
+                    (() => { props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYERS", laddername: props.name }) })
+                    : (() => { props.dispatch({ type: "GO_TO", dest: "SIGN_IN" }) })} >
                 <div>
                     {props.name}
                 </div>

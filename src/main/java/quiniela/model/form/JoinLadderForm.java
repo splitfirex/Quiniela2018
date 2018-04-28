@@ -2,7 +2,7 @@ package quiniela.model.form;
 
 public class JoinLadderForm extends TokenAbleForm {
 
-    private String nameladder;
+    private String laddername;
     private String password;
     private Long idLadder;
 
@@ -22,11 +22,11 @@ public class JoinLadderForm extends TokenAbleForm {
         this.idLadder = idLadder;
     }
 
-    public String getNameladder() {
-        return nameladder;
+    public String getLaddername() {
+        return laddername;
     }
 
-    public void setNameladder(String nameladder) {
-        this.nameladder = nameladder;
+    public void setLaddername(String laddername) {
+        this.laddername = laddername;
     }
 }

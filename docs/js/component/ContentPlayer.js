@@ -3,127 +3,87 @@ class ContentPlayer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            players: [],
-            isAdmin: false
+            showLoading: false,
+            content: {
+                listPlayers: []
+            }
         }
-    }
-
-    processPlayers(responseLadders) {
-        if (responseLadders.listPlayers == null) {
-            this.setState({
-                players: []
-            });
-        } else {
-            var isAdmin = false;
-            if (this.props.username != null) {
-                responseLadders.listPlayers.forEach(function callback(currentValue, index, array) {
-                    if (this.props.username == currentValue.username && currentValue.admin) {
-                        isAdmin = true;
-                    }
-                }.bind(this));
-            }
-            this.setState({
-                players: responseLadders.listPlayers,
-                isAdmin: isAdmin
-            });
-        }
-    }
-
-    toggleAdmin(username) {
-        var player = null;
-        this.state.players.forEach(function callback(currentValue, index, array) {
-            if (username == currentValue.username) {
-                player = currentValue;
-            }
-        }.bind(this));
-
-        postUpdatePlayerStatus(player.username, this.props.laddername, !player.admin, player.active, this.processPlayers.bind(this));
-    }
-
-    toggleActivate(username) {
-        var player = null;
-        this.state.players.forEach(function callback(currentValue, index, array) {
-            if (username == currentValue.username) {
-                player = currentValue;
-            }
-        }.bind(this));
-
-        postUpdatePlayerStatus(player.username, this.props.laddername, player.admin, !player.active, this.processPlayers.bind(this));
     }
 
     componentDidMount() {
-        postPlayerLaddersDetail(this.props.laddername, this.processPlayers.bind(this));
+        fetchPlayers.bind(this)();
     }
 
     componentWillReceiveProps(nextProps) {
-        postPlayerLaddersDetail(this.props.laddername, this.processPlayers.bind(this));
+        if (nextProps.forceReload) {
+            this.props.dispatch({ type: "UNFORCE" });
+            fetchPlayers.bind(this)();
+        }
+    }
+
+    dispatch(action) {
+        this.setState(preState => GlobalAppActions(preState, action));
+    }
+
+    changeStatus(laddername, playername, admin, active) {
+        fetchPlayerStatus.bind(this)(laddername, playername, admin, active);
     }
 
     renderPayers() {
-        var that = this;
-        return this.state.players.map(function (currentValue, index, array) {
-            if (that.state.isAdmin) {
+        this.isAdmin = this.state.content.listPlayers.filter(user => (user.username === this.props.username && user.active && user.admin)).length != 0
+        return this.state.content.listPlayers.map(function (currentValue, index, array) {
+            if (this.isAdmin) {
 
-                if (currentValue.username == that.props.username) {
+                if (currentValue.username == this.props.username) {
                     return <Player
-                        username={currentValue.username}
+                        ppname={currentValue.username}
                         points={currentValue.points}
-                        fnOnMatchClick={that.props.fnOnMatchClick}
-                        fnOnGroupClick={that.props.fnOnGroupClick} />
+                        dispatch={(action) => this.props.dispatch(action)}
+                        {...this.props} />
                 }
 
                 return <PlayerAdmin
-                    username={currentValue.username}
+                    ppname={currentValue.username}
                     points={currentValue.points}
-                    fnOnMatchClick={that.props.fnOnMatchClick}
-                    fnOnGroupClick={that.props.fnOnGroupClick}
                     isAdmin={currentValue.admin}
                     isActive={currentValue.active}
-                    toggleAdmin={that.toggleAdmin.bind(that, currentValue.username)}
-                    toggleActivate={that.toggleActivate.bind(that, currentValue.username)} />
+                    dispatch={(action) => this.props.dispatch(action)}
+                    changeStatus={(laddername, playername, admin, active) =>
+                        this.changeStatus(laddername, playername, admin, active)
+                    }
+                    {...this.props} />
 
             } else {
                 if (currentValue.active) {
                     return <Player
-                        username={currentValue.username}
+                        ppname={currentValue.username}
                         points={currentValue.points}
-                        fnOnMatchClick={that.props.fnOnMatchClick}
-                        fnOnGroupClick={that.props.fnOnGroupClick} />
+                        dispatch={(action) => this.props.dispatch(action)}
+                        {...this.props} />
                 }
                 return null;
             }
-        });
+        }.bind(this));
     }
 
     render() {
-
-        if (this.state.players.length == 0) {
-            return <Loading />
-        }
-
-        return this.renderPayers();
+        return this.state.showLoading ? <Loading /> : this.renderPayers();
     }
 
 }
-
-ContentPlayer.defaultProps = {
-    username: null,
-    laddername: null
-}
-
 
 function Player(props) {
     return (
         <div className="player">
             <div className="playerShow">
-                <div> {props.username} | {props.points} </div>
+                <div> {props.ppname} | {props.points} </div>
             </div>
             <div className="playerContent">
 
             </div>
             <div className="playerMenu">
-                <div onClick={props.fnOnMatchClick.bind(this, props.username)} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
-                <div onClick={props.fnOnGroupClick.bind(this, props.username)} ><div className="iconCenter"><i className="fas fa-list-alt"></i> Grupos</div></div>
+                <div onClick={() => props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYER_MATCHES", laddername: props.laddername, playername: props.ppname })} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
+                <div onClick={() => props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYER_GROUPS", laddername: props.laddername, playername: props.ppname })} ><div className="iconCenter"><i className="fas fa-list-alt"></i> Grupos</div></div>
             </div>
         </div>
     )
@@ -133,17 +93,17 @@ function PlayerAdmin(props) {
     return (
         <div className="player">
             <div className="playerShow">
-                <div> {props.username} | {props.points} </div>
+                <div> {props.ppname} | {props.points} </div>
             </div>
             <div className="playerContent">
 
             </div>
             <div key={props.username + props.isAdmin + props.isActive} className="playerMenu admin">
-                <div onClick={props.fnOnMatchClick.bind(this, props.username)} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
-                <div onClick={props.fnOnGroupClick.bind(this, props.username)} ><div className="iconCenter"><i className="fas fa-list-alt"></i> Grupos</div></div>
-                <div onClick={props.toggleAdmin} ><div className="iconCenter"><i style={{ "color": props.isAdmin ? "blue" : "black" }} className="fas fa-at"></i></div></div>
-                <div onClick={props.toggleActivate} ><div className="iconCenter"><i style={{ "color": props.isActive ? "green" : "tomato" }} className="fas fa-user"></i></div></div>
-                <div><div className="iconCenter"><i className="fas fa-ban"></i></div></div>
+                <div onClick={() => props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYER_MATCHES", laddername: props.laddername, playername: props.ppname })} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
+                <div onClick={() => props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYER_GROUPS", laddername: props.laddername, playername: props.ppname })} ><div className="iconCenter"><i className="fas fa-list-alt"></i> Grupos</div></div>
+                <div onClick={() => props.changeStatus(props.laddername, props.ppname, !props.isAdmin, props.isActive)} ><div className="iconCenter"><i style={{ "color": props.isAdmin ? "blue" : "black" }} className="fas fa-at"></i></div></div>
+                <div onClick={() => props.changeStatus(props.laddername, props.ppname, props.isAdmin, !props.isActive)} ><div className="iconCenter"><i style={{ "color": props.isActive ? "green" : "tomato" }} className="fas fa-user"></i></div></div>
+                <div onClick={() => props.dispatch({ type: "GO_TO", dest: "BAN_PLAYER", laddername: props.laddername, playername: props.ppname })}><div className="iconCenter"><i className="fas fa-ban"></i></div></div>
             </div>
         </div>
     )

@@ -3,6 +3,9 @@ class ContentNewLadder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            showLoading: false,
+            showPassword: false,
+
             laddername: undefined,
             password: undefined,
             public: true,
@@ -11,38 +14,8 @@ class ContentNewLadder extends React.Component {
         }
     }
 
-    tryRegisterNewLadder() {
-        if (!this.state.public && (this.state.password == null || this.state.password.trim() == "")) {
-            this.setState({
-                errorPassword: true
-            });
-        } else if (this.state.laddername == null || this.state.laddername.trim() == "") {
-            this.setState({
-                error: true
-            });
-        }
-         else {
-            postCreateLadder(this.state.laddername, this.state.password, this.processNewLadder.bind(this));
-        }
-
-
-    }
-
-    processNewLadder(response) {
-        if (Object.keys(response).length === 0 && response.constructor === Object) {
-            this.setState({
-                error: true
-            });
-        } else {
-            this.props.fnNewLadderOK(response.name);
-        }
-    }
-
-    togglePublic() {
-        this.setState({
-            public: !this.state.public,
-            password: null
-        });
+    dispatch(action) {
+        this.setState(preState => GlobalAppActions(preState, action));
     }
 
     handleChange = event => {
@@ -53,34 +26,23 @@ class ContentNewLadder extends React.Component {
         });
     }
 
-    renderLock() {
-        if (this.state.public) {
-            return <div key="newLadderlock" className="iconCenter green" onClick={this.togglePublic.bind(this)}> <i className="fas fa-unlock" ></i> </div>
-        }
-        return <div key="newLadderUnlock" className="iconCenter red" onClick={this.togglePublic.bind(this)}> <i className="fas fa-lock" ></i></div>
-    }
-
-    renderPassword() {
-        if (this.state.public) {
-            return <div> </div>
-        }
-        return <div><input className={this.state.errorPassword ? "error" : ""}  type="pasword" placeholder="Contraseña" id="password" onChange={this.handleChange.bind(this)} /></div>
-    }
-
     render() {
-        return <div className="newLadder">
+        return this.state.showLoading ? <div className="newLadder"><ModalLoading /></div>
+            :
+            <div className="newLadder">
 
-            <div>Crear nueva quiniela</div>
-            <div><input className={this.state.error ? "error" : ""} id="laddername" type="text" placeholder="Nombre quiniela" value={this.state.laddername} onChange={this.handleChange.bind(this)} /></div>
-            <div className="public" >
-                {this.renderLock()}
+                <div>Crear nueva quiniela</div>
+                <div><input className={this.state.error ? "error" : ""} id="laddername" type="text" placeholder="Nombre quiniela" value={this.state.laddername} onChange={this.handleChange.bind(this)} /></div>
+                <div className="public" >
+                    {this.state.public && <div onClick={() => this.dispatch({ type: "TOGGLE_PUBLIC" })} key="newLadderlock" className="iconCenter green"> <i className="fas fa-unlock" ></i> </div>}
+                    {this.state.public || <div onClick={() => this.dispatch({ type: "TOGGLE_PUBLIC" })} key="newLadderUnlock" className="iconCenter red"> <i className="fas fa-lock" ></i></div>}
+                </div>
+                <div>
+                    {this.state.public || <div><input className={this.state.errorPassword ? "error" : ""} type="pasword" placeholder="Contraseña" id="password" onChange={this.handleChange.bind(this)} /></div>}
+                </div>
+                <div><button onClick={() => fetchNewLadder.bind(this)()} >Enviar</button></div>
+                <div> </div>
             </div>
-            <div>
-                {this.renderPassword()}
-            </div>
-            <div><button onClick={this.tryRegisterNewLadder.bind(this)} >Enviar</button></div>
-            <div> </div>
-        </div>
     }
 
 }
