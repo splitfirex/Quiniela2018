@@ -5,14 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
-import quiniela.model.LadderBoard;
-import quiniela.model.Match;
-import quiniela.model.Player;
-import quiniela.model.PlayerMatch;
+import quiniela.model.*;
 import quiniela.model.enums.TypeMatch;
 import quiniela.repository.MatchRepository;
+import quiniela.repository.PlayerGroupRepository;
 import quiniela.repository.PlayerMatchRepositoty;
 import quiniela.utils.CVSParser;
+import quiniela.utils.ScoreMath;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
@@ -40,7 +39,13 @@ public class MatchServiceImpl implements MatchService {
     PlayerMatchRepositoty playerMatchRepositoty;
 
     @Autowired
+    PlayerGroupRepository playerGroupRepositoty;
+
+    @Autowired
     TeamService teamService;
+
+    @Autowired
+    ScoreMath scoreMath;
 
     final static private Integer CSV_MAX_VALUES_MATCHES = 6;
 
@@ -119,7 +124,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public List<PlayerMatch> getMatchesByPlayerLadder(LadderBoard l, Player p) {
-        return playerMatchRepositoty.findAllByUserIdAndLadderboardID(p.getId(),l.getId());
+        return playerMatchRepositoty.findAllByUserIdAndLadderboardID(p.getId(),l.getId(),new Sort(Sort.Direction.ASC, "idMatch"));
     }
 
     @Override
@@ -128,12 +133,17 @@ public class MatchServiceImpl implements MatchService {
         pm.sethS(homeScore);
         pm.setvS(visitScore);
         playerMatchRepositoty.save(pm);
-        return getMatchesByPlayerLadder(l,p);
+        List<PlayerMatch> matches = getMatchesByPlayerLadder(l,p);
+        List<PlayerGroup> groups = playerGroupRepositoty.findAllByUserIdAndLadderboardID(p.getId(),l.getId());
+        scoreMath.processScores(l,p, matches,groups);
+        playerMatchRepositoty.saveAll(matches);
+        playerGroupRepositoty.saveAll(groups);
+        return matches;
     }
 
     @Override
     public void deletePlayerMatches(LadderBoard l, Player player) {
-        playerMatchRepositoty.deleteAll(playerMatchRepositoty.findAllByUserIdAndLadderboardID(player.getId(),l.getId()));
+        playerMatchRepositoty.deleteAll(playerMatchRepositoty.findAllByUserIdAndLadderboardID(player.getId(),l.getId(),new Sort(Sort.Direction.DESC, "idMatch")));
     }
 
 

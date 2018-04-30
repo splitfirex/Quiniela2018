@@ -35,6 +35,10 @@ public class TeamServiceImpl implements TeamService {
 
     private static HashMap<Long,String> nameTeamId = new HashMap<>();
 
+    private static HashMap<String,Long> nameTeamIdGroup = new HashMap<>();
+
+    private static HashMap<String,Long> groupNamegroupId = new HashMap<>();
+
     @Value("${clean_and_build}")
     Boolean cleanAndBuild;
 
@@ -56,6 +60,7 @@ public class TeamServiceImpl implements TeamService {
                 t.setShortName(values.get(i + 2));
                 t.setGroup(values.get(i + 3));
                 t.setFlagUrl(values.get(i + 4));
+
                 inserTeam.add(t);
 
                 idTeamName.put(t.getName(), t.getId());
@@ -67,9 +72,12 @@ public class TeamServiceImpl implements TeamService {
                     group.setName(values.get(i + 3));
                     group.setId(counter.incrementAndGet());
                     group.addTeam(values.get(i + 1));
+                    nameTeamIdGroup.put(values.get(i + 1),group.getId());
+                    groupNamegroupId.put(group.getName(),group.getId());
                     inserGroup.put(values.get(i + 3), group);
                 } else {
                     Group group = inserGroup.get(values.get(i + 3));
+                    nameTeamIdGroup.put(values.get(i + 1),group.getId());
                     group.addTeam(values.get(i + 1));
                 }
             }
@@ -79,6 +87,12 @@ public class TeamServiceImpl implements TeamService {
             for(Team team : teamRepository.findAll()){
                 idTeamName.put(team.getName(), team.getId());
                 nameTeamId.put(team.getId(), team.getName());
+            };
+            for(Group group : groupRepository.findAll()){
+                groupNamegroupId.put(group.getName(),group.getId());
+                for(String team : group.getTeams()) {
+                    nameTeamIdGroup.put(team,group.getId());
+                }
             };
         }
 
@@ -112,6 +126,21 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public String getTeamNameById(Long name) {
         return nameTeamId.get(name);
+    }
+
+    @Override
+    public Long getTeamGroupByName(String name) {
+        return nameTeamIdGroup.get(name);
+    }
+
+    @Override
+    public Long getTeamGroupById(Long name) {
+        return nameTeamIdGroup.get(nameTeamId.get(name));
+    }
+
+    @Override
+    public Long getGroupIdByName(String name) {
+        return groupNamegroupId.get(name);
     }
 
 }

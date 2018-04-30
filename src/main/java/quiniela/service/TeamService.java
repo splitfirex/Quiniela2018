@@ -20,4 +20,10 @@ public interface TeamService {
 
     String getTeamNameById(Long name);
 
+    Long getTeamGroupByName(String name);
+
+    Long getTeamGroupById(Long name);
+
+    Long getGroupIdByName(String name);
+
 }

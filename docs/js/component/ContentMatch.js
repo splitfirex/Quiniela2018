@@ -4,7 +4,8 @@ class ContentMatch extends React.Component {
         super(props);
         this.state = {
             showLoading: false,
-            content: []
+            content: [],
+            editables:[]
         }
     }
 
@@ -16,15 +17,16 @@ class ContentMatch extends React.Component {
     }
 
     toggleEdit(index) {
-        this.state.content[index].edit = !this.state.content[index].edit && true;
-        if (this.state.content[index].edit ==  false) {
+        if(this.state.editables.indexOf(index) == -1){
+            this.state.editables.push(index);
+        }else{
+            this.state.editables.splice(this.state.editables.indexOf(index), 1);
             fetchUpdateScore.bind(this)(index, this.state.content[index].hS,this.state.content[index].vS);
-        } else {
-            this.setState({
-                content: this.state.content
-            });
-        }
-
+        } 
+        this.setState({
+            editables: this.state.editables
+        });
+    
     }
 
     incrementScore(index, isHome) {
@@ -63,7 +65,7 @@ class ContentMatch extends React.Component {
         return this.state.content.map(function (currentValue, index, array) {
             var d = new Date(this.props.matches[index].date);
             return this.props.username == this.props.playername ?
-                currentValue.edit != null && currentValue.edit ?
+                this.state.editables.indexOf(index) != -1 ?
                     <MatchEdit round={index + 1} key={"match" + index}
                         index={index}
                         date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}

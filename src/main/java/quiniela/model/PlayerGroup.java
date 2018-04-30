@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 @Document(collection = "playerGroup")
@@ -15,7 +17,7 @@ public class PlayerGroup {
     private Long idPlayer;
     private Long idLadder;
 
-    private Map<Long,PlayerGroupDetail> details = new HashMap<>();
+    private LinkedList<PlayerGroupDetail> details = new LinkedList<>();
 
     public Long getId() {
         return id;
@@ -51,11 +53,11 @@ public class PlayerGroup {
         this.idGroup = idGroup;
     }
 
-    public Map<Long, PlayerGroupDetail> getDetails() {
+    public LinkedList<PlayerGroupDetail> getDetails() {
         return details;
     }
 
-    public void setDetails(Map<Long, PlayerGroupDetail> details) {
+    public void setDetails(LinkedList<PlayerGroupDetail> details) {
         this.details = details;
     }
 }
