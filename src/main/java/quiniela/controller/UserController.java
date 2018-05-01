@@ -140,7 +140,22 @@ public class UserController {
         Player p = playerService.getPlayerByUsername(username);
         if ((l == null || (l != null && l.getPassword() != null)) && !l.getName().equals(genericLaddername)) return null;
 
-        return groupService.getGroupsByPlayerLadder(l, p);
+        List<PlayerGroup> groups = groupService.getGroupsByPlayerLadder(l, p);
+        // Sorting the list based on values
+        for(PlayerGroup pg : groups){
+            Collections.sort(pg.getDetails(),new Comparator<PlayerGroupDetail>() {
+                @Override
+                public int compare(PlayerGroupDetail d2, PlayerGroupDetail d1)
+                {
+                    if(d1.getP().compareTo(d2.getP()) != 0){
+                        return d1.getP().compareTo(d2.getP());
+                    }else{
+                        return ((Integer)(d1.getPg() - d1.getNg())).compareTo(d2.getPg() - d2.getNg());
+                    }
+                }
+            });
+        }
+        return groups;
     }
 
     @RequestMapping(value = "/playergroups", method = RequestMethod.POST)

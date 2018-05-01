@@ -20,7 +20,7 @@ class ContentPlayer extends React.Component {
             fetchPlayers.bind(this)();
         }
     }
-
+    
     dispatch(action) {
         this.setState(preState => GlobalAppActions(preState, action));
     }
@@ -30,7 +30,7 @@ class ContentPlayer extends React.Component {
     }
 
     renderPayers() {
-        this.isAdmin = this.state.content.listPlayers.filter(user => (user.username === this.props.username && user.active && user.admin)).length != 0
+   
         return this.state.content.listPlayers.map(function (currentValue, index, array) {
             if (this.isAdmin) {
 
@@ -67,7 +67,15 @@ class ContentPlayer extends React.Component {
     }
 
     render() {
-        return this.state.showLoading ? <Loading /> : this.renderPayers();
+        if (!this.state.showLoading) {
+            this.isAdmin = this.state.content.listPlayers.filter(user => (user.username === this.props.username && user.active && user.admin)).length != 0
+        }
+        return this.state.showLoading ? <Loading /> : [
+            this.isAdmin && <div className="adminLadder">
+                <div> <i className="fas fa-external-link-square-alt" ></i> Abandonar</div>
+                <div> <i className="fas fa-adjust" ></i> Color</div>
+                <div> <i className="fas fa-times-circle" ></i> Expulsados</div>
+            </div>, this.renderPayers()]
     }
 
 }

@@ -6,7 +6,7 @@ function Menu(props) {
                 <i key="bars" className="fas fa-bars"></i>
             </div>
         </div>
-        <div><div className="logo"></div></div>
+        <div>{props.subTitle}</div>
         <div></div>
         <div onClick={() => props.dispatch({ type: "GO_BACK" })} style={{ visibility: props.showBreadcrumbs ? "visible" : "hidden" }}>
             <div className="iconCenter">

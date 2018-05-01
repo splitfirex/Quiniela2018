@@ -3,6 +3,7 @@ class ContentMatch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentSubtitle: "",
             showLoading: false,
             content: [],
             editables:[]
@@ -60,11 +61,29 @@ class ContentMatch extends React.Component {
     dispatch(action) {
         this.setState(preState => GlobalAppActions(preState, action));
     }
+    
+    renderSubtitle(newSubtitle){
+        if(this.state.currentSubtitle == newSubtitle){
+            return null;
+        }
+        this.state.currentSubtitle = newSubtitle;
+        return  <div>{this._translate(newSubtitle)}</div>
+    }
+
+    _translate(value){
+        switch(value){
+            case "GROUP_PHASE": return "Fase de grupos";
+            case "ROUND_OF_16": return "Octavos de final";
+            case "QUARTER_FINALS": return "Cuartos de final";
+            case "SEMI_FINALS": return "Semi Finales";
+            case "FINALS": return "Finales";
+        }
+    }
 
     renderMatches() {
         return this.state.content.map(function (currentValue, index, array) {
             var d = new Date(this.props.matches[index].date);
-            return this.props.username == this.props.playername ?
+            return this.props.playername != undefined && this.props.username == this.props.playername ?
                 this.state.editables.indexOf(index) != -1 ?
                     <MatchEdit round={index + 1} key={"match" + index}
                         index={index}
@@ -98,7 +117,7 @@ class ContentMatch extends React.Component {
                         visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
                         toggleEdit={(index) => this.toggleEdit(index)} />
                 :
-                <Match round={index + 1} key={"match" + index}
+                [this.renderSubtitle(this.props.matches[index].typeMatch),<Match round={index + 1} key={"match" + index}
                     date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
                     homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
                         this.props.matches[index].homeTeam : this.props.teams[currentValue.hT - 1].shortName}
@@ -109,7 +128,7 @@ class ContentMatch extends React.Component {
                     flagUrlVisitor={this.props.teams[currentValue.vT - 1] == undefined ?
                         "none" : this.props.teams[currentValue.vT - 1].flagUrl}
                     homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
-                    visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS} />
+                    visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS} />]
         }.bind(this))
     }
 

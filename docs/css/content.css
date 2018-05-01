@@ -315,6 +315,31 @@ div.match.edit div.teambox.left{
 
 }
 
+.content >div.adminLadder{
+    font-size: 1em;
+    text-align: center;
+    line-height: 50px;
+    background-color: white;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
+    margin-bottom: 15px;
+    height: 50px;
+    transition: all 0.1s ease-out;
+    animation: fadein 1s;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+}
+
+.content >div.adminLadder >div{
+    line-height: unset;
+    height: 50px;
+    border-left: rgba(0,0,0,.09) 1px solid;
+}
+
+.content >div.adminLadder >div:active{
+    background-color: lightgray;
+}
+
 
 .modalContent {
     font-size: 1.5em;
@@ -417,7 +442,7 @@ div.match.edit div.teambox.left{
     align-items: center;
     justify-items: center;
     display: grid;
-  grid-template-rows:  50px 80px 50px 100px 50px auto;
+     grid-template-rows:  50px 80px 50px 100px 50px auto;
 }
 
 .modalContent >div.newLadder >div.public {

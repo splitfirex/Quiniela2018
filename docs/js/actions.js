@@ -78,7 +78,7 @@ const GlobalAppActions = (state, action) => {
             window.scrollTo(0, 0);
             return { showMenu: !state.showMenu, showBreadcrumbs: false, breadcrumbs: [], subTitle: "Quinielas", contentWindow: "LADDERS", showModal: false, showLoading: false, username: undefined, token: undefined }
         case "SUCCESS_CREATE":
-            return { showBreadcrumbs: true, breadcrumbs: ["Inicio", action.laddername], subTitle: action.laddername, contentWindow: "PLAYERS", showModal: false, laddername: action.laddername }
+            return { contentModalWindow: "", showBreadcrumbs: true, breadcrumbs: ["Inicio", action.laddername], subTitle: action.laddername, contentWindow: "PLAYERS", showModal: false, laddername: action.laddername }
         case "SUCCESS_JOIN":
             return { forceReload: true, showModal: false, subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false, breadcrumbs: [] }
         case "UNFORCE":

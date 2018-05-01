@@ -30,6 +30,7 @@ class App extends React.Component {
 
     render() {
         return <div>
+            {this.state.showMenu && <div onClick={() => this.dispatch({ type: "TOGGLE_MENU" })} className={"sideMenu-modal " + (this.state.showMenu && "show")} />}
             {this.state.showWelcome && <Welcome />}
             {this.state.showBreadcrumbs && <BreadCrumbs breadcrumbs={this.state.breadcrumbs} />}
             <Menu  {...this.state} />
@@ -46,7 +47,10 @@ class App extends React.Component {
 
 function Welcome() {
     return (<div className="modalWelcome">
-
+        <div>
+            <img src="img/worldcup.svg" />
+            <img src="img/logo.png" style={{ height: "40px", marginTop: "40px" }} />
+        </div>
     </div>)
 }
 
