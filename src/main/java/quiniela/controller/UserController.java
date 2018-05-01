@@ -208,9 +208,6 @@ public class UserController {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
             LadderBoardPlayer lbpToUpdate = l.getPlayerByName(form.getUsername());
             if (!lbp.getAdmin() || !lbp.getActive() || lbpToUpdate == null) return null;
-
-            lbpToUpdate.setAdmin(form.getAdmin());
-            lbpToUpdate.setActive(form.getActivate());
             Player p = new Player();
             p.setUsername(form.getUsername());
             return new ViewLadderBoard(ladderBoardService.leaveLadderBoard(l,p));
@@ -218,4 +215,30 @@ public class UserController {
         return null;
     }
 
+    @RequestMapping(value = "/updatecolor", method = RequestMethod.POST)
+    @ResponseBody
+    public ViewLadderBoard updatecolor(@RequestBody PlayerStatusForm form) {
+        Player player = loginService.getPlayerByToken(form.getToken());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
+        if (l != null) {
+            LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
+            if (!lbp.getAdmin() || !lbp.getActive() ) return null;
+            return new ViewLadderBoard(ladderBoardService.updateLadderboardColor(l));
+        }
+        return null;
+    }
+
+
+    @RequestMapping(value = "/leaveladder", method = RequestMethod.POST)
+    @ResponseBody
+    public ViewLadderBoard leaveLadder(@RequestBody PlayerStatusForm form) {
+        Player player = loginService.getPlayerByToken(form.getToken());
+        LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
+        if (l != null) {
+            LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
+            if (!lbp.getAdmin() || !lbp.getActive()) return null;
+            return new ViewLadderBoard(ladderBoardService.leaveLadderBoard(l,player));
+        }
+        return null;
+    }
 }

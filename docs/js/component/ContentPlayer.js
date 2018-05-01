@@ -72,8 +72,8 @@ class ContentPlayer extends React.Component {
         }
         return this.state.showLoading ? <Loading /> : [
             this.isAdmin && <div className="adminLadder">
-                <div> <i className="fas fa-external-link-square-alt" ></i> Abandonar</div>
-                <div> <i className="fas fa-adjust" ></i> Color</div>
+                <div onClick={() => this.props.dispatch({type: "GO_TO", dest: "LEAVE_LADDER", laddername: this.props.laddername })} > <i className="fas fa-external-link-square-alt" ></i> Abandonar</div>
+                <div className="ladderColor" onClick={() => fetchUpdateColor.bind(this)() } style={{backgroundColor: this.state.content.bgColor, color:"white"}}> <i className="fas fa-adjust" ></i> Color</div>
                 <div> <i className="fas fa-times-circle" ></i> Expulsados</div>
             </div>, this.renderPayers()]
     }

@@ -22,9 +22,8 @@ const GlobalAppActions = (state, action) => {
         case "CLOSE_MODAL":
             return { showModal: false }
         case "GO_BACK":
-            if (state.breadcrumbs.length == 3) {
-                state.breadcrumbs.pop();
-                return { subTitle: state.breadcrumbs[1], showMenu: false, contentWindow: "PLAYERS", breadcrumbs: state.breadcrumbs }
+            if (state.playername != undefined) {
+                return { subTitle: "Jugadores", showMenu: false, contentWindow: "PLAYERS", breadcrumbs: [state.laddername], playername: undefined }
             }
             return { subTitle: "Quinielas", showMenu: false, laddername: undefined, contentWindow: "LADDERS", showBreadcrumbs: false, breadcrumbs: [] }
         case "TOGGLE_MENU":
@@ -38,20 +37,26 @@ const GlobalAppActions = (state, action) => {
             }
             return { showWelcome: false }
         case "GO_TO":
-            window.scrollTo(0, 0);
+
             switch (action.dest) {
                 case "SHOW_HOME":
-                    return { subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false, breadcrumbs: [] }
+                    window.scrollTo(0, 0);
+                    return { subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false }
                 case "SHOW_GROUPS":
-                    return { subTitle: "Grupos", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "GROUPS", showBreadcrumbs: true, breadcrumbs: ["Inicio", "Grupos"] }
+                    window.scrollTo(0, 0);
+                    return { subTitle: "Grupos", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "GROUPS", showBreadcrumbs: false }
                 case "SHOW_MATCHES":
-                    return { subTitle: "Partidos", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "MATCHES", showBreadcrumbs: true, breadcrumbs: ["Inicio", "Partidos"] }
+                    window.scrollTo(0, 0);
+                    return { subTitle: "Partidos", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "MATCHES", showBreadcrumbs: false }
                 case "SHOW_PLAYERS":
-                    return { subTitle: action.laddername, laddername: action.laddername, showMenu: false, contentWindow: "PLAYERS", showBreadcrumbs: true, breadcrumbs: ["Inicio", action.laddername] }
+                    window.scrollTo(0, 0);
+                    return { subTitle: "Jugadores", laddername: action.laddername, showMenu: false, contentWindow: "PLAYERS", showBreadcrumbs: true, breadcrumbs: [action.laddername] }
                 case "SHOW_PLAYER_MATCHES":
-                    return { subTitle: action.playername, playername: action.playername, laddername: action.laddername, showMenu: false, contentWindow: "MATCHES", showBreadcrumbs: true, breadcrumbs: ["Inicio", action.laddername, action.playername] }
+                    window.scrollTo(0, 0);
+                    return { subTitle: "Partidos", playername: action.playername, laddername: action.laddername, showMenu: false, contentWindow: "MATCHES", showBreadcrumbs: true, breadcrumbs: [action.playername] }
                 case "SHOW_PLAYER_GROUPS":
-                    return { subTitle: action.playername, playername: action.playername, laddername: action.laddername, showMenu: false, contentWindow: "GROUPS", showBreadcrumbs: true, breadcrumbs: ["Inicio", action.laddername, action.playername] }
+                    window.scrollTo(0, 0);
+                    return { subTitle: "Grupos", playername: action.playername, laddername: action.laddername, showMenu: false, contentWindow: "GROUPS", showBreadcrumbs: true, breadcrumbs: [action.playername] }
                 case "SIGN_IN":
                     return { showModal: true, showMenu: false, contentModalWindow: "SIGNIN" }
                 case "SIGN_UP":
@@ -61,7 +66,9 @@ const GlobalAppActions = (state, action) => {
                 case "JOIN_LADDER":
                     return { showModal: true, showMenu: false, contentModalWindow: "JOINLADDER", laddername: action.laddername, ladderProtected: action.ladderProtected }
                 case "BAN_PLAYER":
-                    return { showModal: true, showMenu: false, contentModalWindow: "BANPLAYER",  laddername: action.laddername, playername: action.playername }
+                    return { showModal: true, showMenu: false, contentModalWindow: "BANPLAYER", laddername: action.laddername, playername: action.playername }
+                case "LEAVE_LADDER":
+                    return { showModal: true, showMenu: false, contentModalWindow: "LEAVELADDER", laddername: action.laddername }
                 default:
                     return state
             }
@@ -73,18 +80,24 @@ const GlobalAppActions = (state, action) => {
             return { showLoading: false, content: action.content }
         case "SUCCESS_LOGIN":
             window.scrollTo(0, 0);
-            return { contentModalWindow: "", showBreadcrumbs: false, breadcrumbs: [], subTitle: "Quinielas", contentWindow: "LADDERS", showModal: false, showLoading: false, username: action.username, token: action.token }
+            return { contentModalWindow: "", showBreadcrumbs: false, subTitle: "Quinielas", contentWindow: "LADDERS", showModal: false, showLoading: false, username: action.username, token: action.token }
         case "SUCCESS_LOGOUT":
             window.scrollTo(0, 0);
-            return { showMenu: !state.showMenu, showBreadcrumbs: false, breadcrumbs: [], subTitle: "Quinielas", contentWindow: "LADDERS", showModal: false, showLoading: false, username: undefined, token: undefined }
+            return { showMenu: !state.showMenu, showBreadcrumbs: false, subTitle: "Quinielas", contentWindow: "LADDERS", showModal: false, showLoading: false, username: undefined, token: undefined }
+
         case "SUCCESS_CREATE":
-            return { contentModalWindow: "", showBreadcrumbs: true, breadcrumbs: ["Inicio", action.laddername], subTitle: action.laddername, contentWindow: "PLAYERS", showModal: false, laddername: action.laddername }
+            return { forceReload: true, contentModalWindow: "", showBreadcrumbs: true, breadcrumbs: [action.laddername], subTitle: action.laddername, contentWindow: "PLAYERS", showModal: false, laddername: action.laddername }
+        case "SUCCESS_LEAVE":
         case "SUCCESS_JOIN":
-            return { forceReload: true, showModal: false, subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false, breadcrumbs: [] }
+            return { forceReload: true, showModal: false, subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false }
         case "UNFORCE":
             return { forceReload: false }
         case "CLOSE_AND_RELOAD":
             return { forceReload: true, showModal: false }
+
+
+
+
     }
 
 }
@@ -292,12 +305,33 @@ var fetchBanPlayer = function () {
         }.bind(this));
 }
 
-var fetchUpdateScore = function(index,homeScore,visitScore){
-  postData.body = JSON.stringify({ "token": this.props.token, laddername: this.props.laddername, "idMatch": index, "homeScore": homeScore, "visitScore": visitScore });
+var fetchUpdateScore = function (index, homeScore, visitScore) {
+    postData.body = JSON.stringify({ "token": this.props.token, laddername: this.props.laddername, "idMatch": index, "homeScore": homeScore, "visitScore": visitScore });
     fetch(server + '/user/updatematch', postData)
         .then(function (response) {
             return response.json();
         }).then(function (res) {
-            this.dispatch({ type: "SUCCESS_CONTENT" , content: res  });
+            this.dispatch({ type: "SUCCESS_CONTENT", content: res });
+        }.bind(this));
+}
+
+var fetchUpdateColor = function () {
+    postData.body = JSON.stringify({ "token": this.props.token, laddername: this.props.laddername });
+    fetch(server + '/user/updatecolor', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            this.dispatch({ type: "SUCCESS_CONTENT", content: res });
+        }.bind(this));
+}
+
+var fetchLeaveLadder = function () {
+    this.dispatch({ type: "LOADING_CONTENT" });
+    postData.body = JSON.stringify({ "token": this.props.token, "laddername": this.props.laddername });
+    fetch(server + '/user/leaveladder', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            this.props.dispatch({ type: "SUCCESS_LEAVE" });
         }.bind(this));
 }

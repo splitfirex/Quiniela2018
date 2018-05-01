@@ -24,7 +24,17 @@ public class LadderBoard {
 
     private Set<LadderBoardPlayer> listPlayers = new HashSet<>();
 
+    private Set<LadderBoardPlayer> listBannedPlayers = new HashSet<>();
+
     private String password;
+
+    public Set<LadderBoardPlayer> getListBannedPlayers() {
+        return listBannedPlayers;
+    }
+
+    public void setListBannedPlayers(Set<LadderBoardPlayer> listBannedPlayers) {
+        this.listBannedPlayers = listBannedPlayers;
+    }
 
     public long getId() {
         return id;

@@ -96,7 +96,9 @@ public class LadderBoardServiceImpl implements LadderBoardService {
             l.getListPlayers().remove(l.getPlayerByName(p.getUsername()));
             if(isAdmin && countAdmin == 1){
                 if (l.getListPlayers().size() > 1) {
-                    l.getListPlayers().iterator().next().setAdmin(true);
+                    LadderBoardPlayer lbp = l.getListPlayers().iterator().next();
+                    lbp.setActive(true);
+                    lbp.setAdmin(true);
                 }
             }
             matchService.deletePlayerMatches(l,p);
@@ -137,6 +139,14 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     @Override
     public LadderBoard updateUserStatus(LadderBoard l, LadderBoardPlayer lbp) {
         l.getListPlayers().add(lbp);
+        return ladderBoardRepository.save(l);
+    }
+
+    @Override
+    public LadderBoard updateLadderboardColor(LadderBoard l) {
+        Random rand = new Random();
+        int nextInt = rand.nextInt(256*256*256);
+        l.setBgColor(String.format("#%06x", nextInt));
         return ladderBoardRepository.save(l);
     }
 }

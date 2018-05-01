@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import quiniela.model.*;
 import quiniela.model.enums.TypeMatch;
+import quiniela.repository.LadderBoardRepository;
 import quiniela.repository.MatchRepository;
 import quiniela.repository.PlayerGroupRepository;
 import quiniela.repository.PlayerMatchRepositoty;
@@ -40,6 +41,9 @@ public class MatchServiceImpl implements MatchService {
 
     @Autowired
     PlayerGroupRepository playerGroupRepositoty;
+
+    @Autowired
+    LadderBoardRepository ladderBoardRepository;
 
     @Autowired
     TeamService teamService;
@@ -138,6 +142,7 @@ public class MatchServiceImpl implements MatchService {
         scoreMath.processScores(l,p, matches,groups);
         playerMatchRepositoty.saveAll(matches);
         playerGroupRepositoty.saveAll(groups);
+
         return matches;
     }
 

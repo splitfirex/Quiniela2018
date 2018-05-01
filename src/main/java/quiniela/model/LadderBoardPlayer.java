@@ -10,6 +10,16 @@ public class LadderBoardPlayer {
     private Boolean isActive;
     private Long points;
 
+    public Long getWinnerTeam() {
+        return winnerTeam;
+    }
+
+    public void setWinnerTeam(Long winnerTeam) {
+        this.winnerTeam = winnerTeam;
+    }
+
+    private Long winnerTeam;
+
     public LadderBoardPlayer(){
 
     }

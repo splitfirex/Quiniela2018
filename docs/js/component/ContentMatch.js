@@ -85,7 +85,7 @@ class ContentMatch extends React.Component {
             var d = new Date(this.props.matches[index].date);
             return this.props.playername != undefined && this.props.username == this.props.playername ?
                 this.state.editables.indexOf(index) != -1 ?
-                    <MatchEdit round={index + 1} key={"match" + index}
+                [this.renderSubtitle(this.props.matches[index].typeMatch),<MatchEdit round={index + 1} key={"match" + index}
                         index={index}
                         date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
                         homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
@@ -100,9 +100,9 @@ class ContentMatch extends React.Component {
                         visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
                         toggleEdit={(index) => this.toggleEdit(index)}
                         inc={(index, home) => this.incrementScore(index, home)}
-                        dec={(index, home) => this.decrementScore(index, home)} />
+                        dec={(index, home) => this.decrementScore(index, home)} />]
                     :
-                    <MatchUser round={index + 1} key={"match" + index}
+                    [this.renderSubtitle(this.props.matches[index].typeMatch),<MatchUser round={index + 1} key={"match" + index}
                         index={index}
                         date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
                         homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
@@ -115,7 +115,7 @@ class ContentMatch extends React.Component {
                             "none" : this.props.teams[currentValue.vT - 1].flagUrl}
                         homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
                         visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
-                        toggleEdit={(index) => this.toggleEdit(index)} />
+                        toggleEdit={(index) => this.toggleEdit(index)} />]
                 :
                 [this.renderSubtitle(this.props.matches[index].typeMatch),<Match round={index + 1} key={"match" + index}
                     date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
@@ -215,6 +215,6 @@ function MatchEdit(props) {
                 <div onClick={() => props.inc(props.index, false)}> <i className="fas fa-chevron-circle-right"></i> </div>
             </div>
         </div>
-        <div onClick={() => props.toggleEdit(props.index)} ><div className="iconCenter"><i className="fas fa-edit"></i></div></div>
+        <div onClick={() => props.toggleEdit(props.index)} ><div className="iconCenter"><i className="fas fa-save"></i></div></div>
     </div>)
 }

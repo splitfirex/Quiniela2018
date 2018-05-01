@@ -10,6 +10,7 @@ function ModalContent(props) {
         {props.contentModalWindow == "NEWLADDER" && <ContentNewLadder {...props} />}
         {props.contentModalWindow == "JOINLADDER" && <ContentJoinLadder {...props} />}
         {props.contentModalWindow == "BANPLAYER" && <ContentBanPlayer {...props} />}
+        {props.contentModalWindow == "LEAVELADDER" && <ContentLeaveLadder {...props} />}
         
     </div>)
 }

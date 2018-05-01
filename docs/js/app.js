@@ -29,6 +29,10 @@ class App extends React.Component {
     }
 
     render() {
+        
+        document.body.classList.toggle('noscroll', this.state.showModal || this.state.showMenu  );
+    
+
         return <div>
             {this.state.showMenu && <div onClick={() => this.dispatch({ type: "TOGGLE_MENU" })} className={"sideMenu-modal " + (this.state.showMenu && "show")} />}
             {this.state.showWelcome && <Welcome />}

@@ -56,6 +56,16 @@
 
 }
 
+.ladderColor{
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(0,0,0,0.6),
+        rgba(0,0,0,0.6) 10px,
+        rgba(0,0,0,0.8) 10px,
+        rgba(0,0,0,0.8) 20px
+      );
+}
+
 .content >div.ladder >div.ladderShow >div{
     margin-top: 96px;
     margin-right: 20px;
@@ -124,7 +134,6 @@
 }
 
 .content >div.match.user.edit >div:last-child {
-    background-color: rgba(0, 0, 0, 0.5);;
     border-left: 1px solid rgba(0, 0, 0, 0.09);
     transition: all 0.5s ease-out;
 }

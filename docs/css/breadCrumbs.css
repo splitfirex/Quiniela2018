@@ -9,9 +9,11 @@
     z-index: 99;
     height: 30px;
     width: 100%;
+    text-align: center;
 }
 
 .breadCrumbs>div{
+    
     display: inline;
     line-height: 30px;
     padding-left: 5px;
