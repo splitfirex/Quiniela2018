@@ -160,6 +160,7 @@ public class MatchServiceImpl implements MatchService {
         scoreMath.processScores(l,p, matches,groups);
         playerMatchRepositoty.saveAll(matches);
         playerGroupRepositoty.saveAll(groups);
+        ladderBoardRepository.save(l);
 
         return matches;
     }

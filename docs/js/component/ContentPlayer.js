@@ -20,7 +20,7 @@ class ContentPlayer extends React.Component {
             fetchPlayers.bind(this)();
         }
     }
-    
+
     dispatch(action) {
         this.setState(preState => GlobalAppActions(preState, action));
     }
@@ -30,7 +30,7 @@ class ContentPlayer extends React.Component {
     }
 
     renderPayers() {
-   
+
         return this.state.content.listPlayers.map(function (currentValue, index, array) {
             if (this.isAdmin) {
 
@@ -38,6 +38,7 @@ class ContentPlayer extends React.Component {
                     return <Player
                         ppname={currentValue.username}
                         points={currentValue.points}
+                        winner={currentValue.winnerTeam}
                         dispatch={(action) => this.props.dispatch(action)}
                         {...this.props} />
                 }
@@ -47,6 +48,7 @@ class ContentPlayer extends React.Component {
                     points={currentValue.points}
                     isAdmin={currentValue.admin}
                     isActive={currentValue.active}
+                    winner={currentValue.winnerTeam}
                     dispatch={(action) => this.props.dispatch(action)}
                     changeStatus={(laddername, playername, admin, active) =>
                         this.changeStatus(laddername, playername, admin, active)
@@ -58,6 +60,7 @@ class ContentPlayer extends React.Component {
                     return <Player
                         ppname={currentValue.username}
                         points={currentValue.points}
+                        winner={currentValue.winnerTeam}
                         dispatch={(action) => this.props.dispatch(action)}
                         {...this.props} />
                 }
@@ -69,12 +72,17 @@ class ContentPlayer extends React.Component {
     render() {
         if (!this.state.showLoading) {
             this.isAdmin = this.state.content.listPlayers.filter(user => (user.username === this.props.username && user.active && user.admin)).length != 0
+            this.isActive = this.state.content.listPlayers.filter(user => (user.username === this.props.username && user.active)).length != 0
         }
         return this.state.showLoading ? <Loading /> : [
-            this.isAdmin && <div className="adminLadder">
-                <div onClick={() => this.props.dispatch({type: "GO_TO", dest: "LEAVE_LADDER", laddername: this.props.laddername })} > <i className="fas fa-external-link-square-alt" ></i> Abandonar</div>
-                <div className="ladderColor" onClick={() => fetchUpdateColor.bind(this)() } style={{backgroundColor: this.state.content.bgColor, color:"white"}}> <i className="fas fa-adjust" ></i> Color</div>
-                <div> <i className="fas fa-times-circle" ></i> Expulsados</div>
+            this.isAdmin &&
+            <div className="adminLadder">
+                <div onClick={() => this.props.dispatch({ type: "GO_TO", dest: "LEAVE_LADDER", laddername: this.props.laddername })} > <i className="fas fa-external-link-square-alt" ></i> Abandonar</div>
+                <div className="ladderColor" onClick={() => fetchUpdateColor.bind(this)()} style={{ backgroundColor: this.state.content.bgColor, color: "white" }}> <i className="fas fa-adjust" ></i> Color</div>
+            </div>,
+            (!this.isAdmin && this.isActive) &&
+            <div className="userLadder">
+                <div onClick={() => this.props.dispatch({ type: "GO_TO", dest: "LEAVE_LADDER", laddername: this.props.laddername })} > <i className="fas fa-external-link-square-alt" ></i> Abandonar la quiniela</div>
             </div>, this.renderPayers()]
     }
 
@@ -83,7 +91,7 @@ class ContentPlayer extends React.Component {
 function Player(props) {
     return (
         <div className="player">
-            <div className="playerShow">
+            <div className={"playerShow f" + (props.winner && props.teams[props.winner - 1].shortName)}>
                 <div> {props.ppname} | {props.points} </div>
             </div>
             <div className="playerContent">
@@ -100,7 +108,7 @@ function Player(props) {
 function PlayerAdmin(props) {
     return (
         <div className="player">
-            <div className="playerShow">
+            <div className={"playerShow f" + (props.winner && props.teams[props.winner - 1].shortName)}>
                 <div> {props.ppname} | {props.points} </div>
             </div>
             <div className="playerContent">
@@ -115,6 +123,52 @@ function PlayerAdmin(props) {
             </div>
         </div>
     )
+}
+
+class PlayerShortMatches extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            showLoading: false,
+            content: {
+                prevMatch: [],
+                nextMatch: []
+            }
+        }
+    }
+
+    componentDidMount() {
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+    }
+
+    dispatch(action) {
+
+    }
+
+    render() {
+        return <div>
+            <div>63</div>
+            <div className="teamMatch" style={{ "borderBottom": "grey 1px solid" }}>
+                <div className="teambox">
+                    <div>FRA</div>
+                    <div><div className="flag RUS"></div></div>
+                    <div>3</div>
+                </div>
+                <div className="teamboxSeparator">-</div>
+                <div className="teambox left">
+                    <div>6</div>
+                    <div><div className="flag BRA"></div></div>
+                    <div>BRA</div>
+                </div>
+            </div>
+        </div>
+    }
+
 }
 
 function auxMatch() {

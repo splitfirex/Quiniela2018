@@ -22,6 +22,7 @@ const GlobalAppActions = (state, action) => {
         case "CLOSE_MODAL":
             return { showModal: false }
         case "GO_BACK":
+            window.scrollTo(0, 0);
             if (state.playername != undefined) {
                 return { subTitle: "Jugadores", showMenu: false, contentWindow: "PLAYERS", breadcrumbs: [state.laddername], playername: undefined }
             }

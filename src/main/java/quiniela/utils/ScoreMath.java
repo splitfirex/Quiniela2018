@@ -143,7 +143,7 @@ public class ScoreMath {
                 playerMatch.sethT(getTeamByStatusMatch(playerMatches, statusTeamHome, Integer.parseInt(matchTeamHome) - 1));
                 playerMatch.setvT(getTeamByStatusMatch(playerMatches, statusTeamVisit, Integer.parseInt(matchTeamVisit) - 1));
 
-                if (playerMatch.getIdMatch().intValue() == playerMatches.size()) {
+                if ((playerMatch.getIdMatch().intValue()+1) == playerMatches.size() && playerMatch.gethS() != null && playerMatch.getvS() !=null) {
                     playerLadder.getPlayerByName(player.getUsername()).setWinnerTeam(playerMatch.gethS() > playerMatch.getvS() ? playerMatch.gethT() : playerMatch.getvT());
                 }
             }

@@ -242,7 +242,7 @@ public class UserController {
         LadderBoard l = ladderBoardService.getLadderBoard(form.getLaddername());
         if (l != null) {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
-            if (!lbp.getAdmin() || !lbp.getActive()) return null;
+            if ( !lbp.getActive()) return null;
             return new ViewLadderBoard(ladderBoardService.leaveLadderBoard(l,player));
         }
         return null;
