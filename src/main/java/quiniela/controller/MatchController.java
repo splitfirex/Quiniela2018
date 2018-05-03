@@ -22,7 +22,7 @@ public class MatchController {
 
     @GetMapping("/all")
     @ResponseBody
-    public List<Match> getAllGroups(@RequestHeader HttpHeaders headers) {
-        return matchService.getAllMatches();
+    public List<Match> getAllMatches(@RequestHeader HttpHeaders headers) {
+        return matchService.getAllMatchesAndUpdate();
     }
 }

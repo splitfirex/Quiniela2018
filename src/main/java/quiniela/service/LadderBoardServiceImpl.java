@@ -149,4 +149,9 @@ public class LadderBoardServiceImpl implements LadderBoardService {
         l.setBgColor(String.format("#%06x", nextInt));
         return ladderBoardRepository.save(l);
     }
+
+    @Override
+    public LadderBoard updateLadderBoard(LadderBoard l) {
+        return ladderBoardRepository.save(l);
+    }
 }

@@ -43,6 +43,12 @@ public class UserController {
     @Value("${ladder.laddername}")
     String genericLaddername;
 
+    @Value("${player.username}")
+    String genericUsername;
+
+    @Value("${general.key}")
+    String generalKey;
+
     @RequestMapping(value = "/ladders", method = RequestMethod.GET)
     @ResponseBody
     public List<ViewLadderBoard> getLadders() {
@@ -238,6 +244,19 @@ public class UserController {
             LadderBoardPlayer lbp = l.getPlayerByName(player.getUsername());
             if (!lbp.getAdmin() || !lbp.getActive()) return null;
             return new ViewLadderBoard(ladderBoardService.leaveLadderBoard(l,player));
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/updatemainmatch", method = RequestMethod.POST)
+    @ResponseBody
+    public ViewLadderBoard updateMainMatch(@RequestBody MainMatchForm form) {
+        if(loginService.encode(form.getPassword()).equals(generalKey)){
+            LadderBoard l = ladderBoardService.getLadderBoard(genericLaddername);
+            Player p = playerService.getPlayerByUsername(genericUsername);
+            matchService.updatePlayerMatches(p,l,form.getIdMatch()-1,form.getHomeScore(),form.getVisitScore());
+            scoreMath.updatesPoints();
+
         }
         return null;
     }

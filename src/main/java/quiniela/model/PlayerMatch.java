@@ -18,6 +18,16 @@ public class PlayerMatch {
     private Integer hS;
     private Integer vS;
 
+    private Long status;
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
+
     public Long getIdMatch() {
         return idMatch;
     }

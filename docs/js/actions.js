@@ -1,4 +1,4 @@
-var server = "http://192.168.0.156:9000";
+var server = "http://localhost:9000";
 var genericPlayername = "_NOT_A_PLAYER_";
 var genericLaddername = "_NOT_A_LADDERBOARD_";
 
@@ -333,5 +333,15 @@ var fetchLeaveLadder = function () {
             return response.json();
         }).then(function (res) {
             this.props.dispatch({ type: "SUCCESS_LEAVE" });
+        }.bind(this));
+}
+
+var fetchUpdateMainMatch = function(password, idmatch, homeScore, visitScore){
+    postData.body = JSON.stringify({ "password": password, idMatch: idmatch, homeScore: homeScore, visitScore: visitScore });
+    fetch(server + '/user/updatemainmatch', postData)
+        .then(function (response) {
+            return response.json();
+        }).then(function (res) {
+            console.log(res);
         }.bind(this));
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import quiniela.model.*;
 import quiniela.model.enums.TypeMatch;
@@ -15,6 +16,7 @@ import quiniela.utils.CVSParser;
 import quiniela.utils.ScoreMath;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -72,6 +74,7 @@ public class MatchServiceImpl implements MatchService {
                 match.setHomeTeam(values.get(i + 2));
                 match.setVisitorTeam(values.get(i + 3));
                 match.setTypeMatch(TypeMatch.valueOf(values.get(i + 5)));
+                match.setEditable(true);
                 inserMatches.add(match);
             }
             matchRepository.saveAll(inserMatches);
@@ -81,7 +84,22 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public List<Match> getAllMatches() {
-        return matchRepository.findAllFixtures(new Sort(Sort.Direction.ASC, "id"));
+        List<Match> matches =  matchRepository.findAllFixtures(new Sort(Sort.Direction.ASC, "id"));
+        return matches;
+    }
+
+    @Override
+    public List<Match> getAllMatchesAndUpdate() {
+        ZonedDateTime currentTime = ZonedDateTime.ofInstant(Instant.now(),ZoneId.systemDefault());
+        List<Match> matches =  matchRepository.findAllFixtures(new Sort(Sort.Direction.ASC, "id"));
+        for(Match m : matches){
+            ZonedDateTime zoneTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(m.getDate()),ZoneId.of("UTC+02:00")).plusDays(-1L);
+            if(currentTime.isAfter(zoneTime)){
+                m.setEditable(false);
+                matchRepository.save(m);
+            }
+        }
+        return matches;
     }
 
     @Override
@@ -144,6 +162,11 @@ public class MatchServiceImpl implements MatchService {
         playerGroupRepositoty.saveAll(groups);
 
         return matches;
+    }
+
+    @Override
+    public void updatePlayerMatches(List<PlayerMatch> matches) {
+        playerMatchRepositoty.saveAll(matches);
     }
 
     @Override

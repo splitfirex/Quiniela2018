@@ -459,13 +459,23 @@ div.match.edit div.teambox.left{
     grid-template-columns: 40px;
 }
 
+.greenBG{
+    background-color: rgba(82, 158, 72,0.2) ;
+}
+
+.tomatoBG{
+    background-color: rgba(255, 99, 71,0.2) ;
+}
+
+
 .green{
-    color: rgb(82, 158, 72) ;
+    background-color: rgba(82, 158, 72,1) ;
 }
 
 .red{
-    color: tomato ;
+    background-color: rgba(255, 99, 71,1) ;
 }
+
 
 .modalContent >div.newLadder >div.public >div{
     padding: 10px;

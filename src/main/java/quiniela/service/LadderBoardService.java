@@ -28,4 +28,6 @@ public interface LadderBoardService {
 
     LadderBoard updateLadderboardColor(LadderBoard l);
 
+    LadderBoard updateLadderBoard(LadderBoard l);
+
 }

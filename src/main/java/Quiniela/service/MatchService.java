@@ -13,6 +13,8 @@ public interface MatchService {
 
     List<Match> getAllMatches();
 
+    List<Match> getAllMatchesAndUpdate();
+
     List<Match> getMatchByGroup(String Group);
 
     List<Match> getMatchByTeam(String Team);
@@ -24,4 +26,6 @@ public interface MatchService {
     List<PlayerMatch> getMatchesByPlayerLadder(LadderBoard l, Player p);
 
     List<PlayerMatch> updatePlayerMatches(Player p, LadderBoard l, Long idMatch, Integer homeScore, Integer visitScore);
+
+    void updatePlayerMatches(List<PlayerMatch> matches);
 }
