@@ -90,7 +90,7 @@ public class LadderBoardServiceImpl implements LadderBoardService {
             boolean isAdmin = false;
 
             for (LadderBoardPlayer user : l.getListPlayers()) {
-                if (user.getAdmin() == true) countAdmin += 1;
+                if (user.getAdmin() != null && user.getAdmin() == true) countAdmin += 1;
                 if (user.getUsername().equals(p.getUsername())) isAdmin = true;
             }
             l.getListPlayers().remove(l.getPlayerByName(p.getUsername()));

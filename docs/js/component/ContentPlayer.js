@@ -131,6 +131,7 @@ class PlayerShortMatches extends React.Component {
         super(props);
         this.state = {
             showLoading: false,
+            playername: props.ppname,
             content: {
                 prevMatches: [],
                 nextMatches: []
@@ -142,50 +143,64 @@ class PlayerShortMatches extends React.Component {
         fetchNextMatches.bind(this)();
     }
 
-    componentWillReceiveProps(nextProps) {
-      /*  if (nextProps.forceReload) {
-            this.props.dispatch({ type: "UNFORCE" });
-            fetchPlayers.bind(this)();
-        }*/
-    }
-
     dispatch(action) {
-       this.setState(preState => GlobalAppActions(preState, action));
+        this.setState(preState => GlobalAppActions(preState, action));
     }
 
 
-    renderMatches() {
-
+    renderNextMatches() {
         return this.state.content.nextMatches.map(function (currentValue, index, array) {
             var d = new Date(this.props.matches[index].date);
-            return <AuxMatch round={index + 1} key={"match" + index}
-            date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
-            homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
-                this.props.matches[index].homeTeam : this.props.teams[currentValue.hT - 1].shortName}
-            visitorTeamShort={this.props.teams[currentValue.vT - 1] == undefined ?
-                this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT - 1].shortName}
-            flagUrlHome={this.props.teams[currentValue.hT - 1] == undefined ?
-                "none" : this.props.teams[currentValue.hT - 1].flagUrl}
-            flagUrlVisitor={this.props.teams[currentValue.vT - 1] == undefined ?
-                "none" : this.props.teams[currentValue.vT - 1].flagUrl}
-            homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
-            visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
-            matchStatus={currentValue.status} />
+            return <AuxMatch round={currentValue.idMatch + 1} key={"match" + index} oddLast={(index + 1) % 2 != 0 && (this.state.content.nextMatches.length - 1 == index)}
+                date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
+                homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
+                    this.props.matches[index].homeTeam : this.props.teams[currentValue.hT - 1].shortName}
+                visitorTeamShort={this.props.teams[currentValue.vT - 1] == undefined ?
+                    this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT - 1].shortName}
+                flagUrlHome={this.props.teams[currentValue.hT - 1] == undefined ?
+                    "none" : this.props.teams[currentValue.hT - 1].flagUrl}
+                flagUrlVisitor={this.props.teams[currentValue.vT - 1] == undefined ?
+                    "none" : this.props.teams[currentValue.vT - 1].flagUrl}
+                homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
+                visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
+                matchStatus={currentValue.status} />
+        }.bind(this));
+    }
+
+    renderPrevMatches() {
+        return this.state.content.prevMatches.map(function (currentValue, index, array) {
+            var d = new Date(this.props.matches[index].date);
+            return <AuxMatch round={currentValue.idMatch + 1} oddLast={(index + 1) % 2 != 0 && (this.state.content.prevMatches.length - 1 == index)} key={"match" + index}
+                date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
+                homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
+                    this.props.matches[index].homeTeam : this.props.teams[currentValue.hT - 1].shortName}
+                visitorTeamShort={this.props.teams[currentValue.vT - 1] == undefined ?
+                    this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT - 1].shortName}
+                flagUrlHome={this.props.teams[currentValue.hT - 1] == undefined ?
+                    "none" : this.props.teams[currentValue.hT - 1].flagUrl}
+                flagUrlVisitor={this.props.teams[currentValue.vT - 1] == undefined ?
+                    "none" : this.props.teams[currentValue.vT - 1].flagUrl}
+                homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
+                visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
+                matchStatus={currentValue.status} />
         }.bind(this));
     }
 
     render() {
-        return this.renderMatches();
+        return [
+            this.state.content.prevMatches.length != 0 && <div style={{ gridColumn: "1 / span 2" }}>Partidos previos</div>,
+            this.renderPrevMatches(),
+            this.state.content.nextMatches.length != 0 && <div style={{ gridColumn: "1 / span 2" }}>Partidos siguientes </div>,
+            this.renderNextMatches()]
     }
 
 }
 
 function AuxMatch(props) {
     return (
-        <div>
-            <div>{props.round}</div>
-            <div  className={"teamMatch " + (props.matchStatus == 0 || props.matchStatus == null ? "whiteBG" : (props.matchStatus == 1  ? "greenBG" : "tomatoBG" ))} style={{ "borderBottom": "grey 1px solid" }}>
-            <div className="teambox">
+        <div style={{ gridColumn: props.oddLast && "1 / span 2" }}>
+            <div className={"teamMatch " + (props.matchStatus == 0 || props.matchStatus == null ? "whiteBG" : (props.matchStatus == 1 ? "greenBG" : "tomatoBG"))} style={{ "borderBottom": "grey 1px solid" }}>
+                <div className="teambox">
                     <div>{props.homeTeamShort}</div>
                     <div><div className={"flag flag-" + props.flagUrlHome}></div></div>
                     <div>{props.homeTeamScore}</div>

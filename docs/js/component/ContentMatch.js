@@ -83,7 +83,9 @@ class ContentMatch extends React.Component {
     renderMatches() {
         return this.state.content.map(function (currentValue, index, array) {
             var d = new Date(this.props.matches[index].date);
-            return this.props.playername != undefined && this.props.username == this.props.playername && this.props.matches[index].editable ?
+            return this.props.playername != undefined && 
+            this.props.username == this.props.playername && 
+            this.props.matches[index].editable && !this.props.matches[index].finish  ?
                 this.state.editables.indexOf(index) != -1 ?
                     [this.renderSubtitle(this.props.matches[index].typeMatch), <MatchEdit round={index + 1} key={"match" + index}
                         index={index}

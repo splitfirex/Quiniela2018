@@ -1,4 +1,4 @@
-var server = "http://localhost:9000";
+var server = "http://192.168.0.156:9000";
 var genericPlayername = "_NOT_A_PLAYER_";
 var genericLaddername = "_NOT_A_LADDERBOARD_";
 
@@ -340,13 +340,13 @@ var fetchLeaveLadder = function () {
 var fetchNextMatches = function () {
     this.dispatch({ type: "LOADING_CONTENT" });
     if (this.props.token == null) {
-        fetch(server + '/user/nextmatches?username=' + (this.props.playername || genericPlayername) + '&laddername=' + (this.props.laddername || genericLaddername), getData)
+        fetch(server + '/user/nextmatches?username=' + (this.state.playername || genericPlayername) + '&laddername=' + (this.props.laddername || genericLaddername), getData)
             .then(res => res.json())
             .then(function (json) {
                 this.dispatch({ type: "SUCCESS_CONTENT", content: json });
             }.bind(this));
     } else {
-        postData.body = JSON.stringify({ "token": this.props.token, "username": (this.props.playername || genericPlayername), "laddername": (this.props.laddername || genericLaddername) });
+        postData.body = JSON.stringify({ "token": this.props.token, "username": (this.state.playername || genericPlayername), "laddername": (this.props.laddername || genericLaddername) });
         fetch(server + "/user/nextmatches", postData)
             .then(res => res.json())
             .then(function (json) {

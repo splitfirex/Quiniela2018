@@ -132,8 +132,13 @@ public class ScoreMath {
                 String visitGN = matches.get(playerMatch.getIdMatch().intValue()).getVisitorTeam().split("_")[0];
                 String visitGP = matches.get(playerMatch.getIdMatch().intValue()).getVisitorTeam().split("_")[1];
 
-                playerMatch.sethT(getTeamByPositionGroup(team_group, homeGN, Integer.parseInt(homeGP)));
-                playerMatch.setvT(getTeamByPositionGroup(team_group, visitGN, Integer.parseInt(visitGP)));
+                Long idHomeTeam = getTeamByPositionGroup(team_group, homeGN, Integer.parseInt(homeGP));
+                Long idVisitTeam = getTeamByPositionGroup(team_group, visitGN, Integer.parseInt(visitGP));
+                if(playerMatch.gethT() != idHomeTeam || playerMatch.getvT() != idVisitTeam ){
+                    playerMatch.sethT(idHomeTeam);
+                    playerMatch.setvT(idVisitTeam);
+                    playerMatch.update = true;
+                }
             } else {
                 String statusTeamHome = matches.get(playerMatch.getIdMatch().intValue()).getHomeTeam().split("_")[0];
                 String matchTeamHome = matches.get(playerMatch.getIdMatch().intValue()).getHomeTeam().split("_")[1];
@@ -141,9 +146,13 @@ public class ScoreMath {
                 String statusTeamVisit = matches.get(playerMatch.getIdMatch().intValue()).getVisitorTeam().split("_")[0];
                 String matchTeamVisit = matches.get(playerMatch.getIdMatch().intValue()).getVisitorTeam().split("_")[1];
 
-                playerMatch.sethT(getTeamByStatusMatch(playerMatches, statusTeamHome, Integer.parseInt(matchTeamHome) - 1));
-                playerMatch.setvT(getTeamByStatusMatch(playerMatches, statusTeamVisit, Integer.parseInt(matchTeamVisit) - 1));
+                Long idHomeTeam = getTeamByStatusMatch(playerMatches, statusTeamHome, Integer.parseInt(matchTeamHome) - 1);
+                Long idVisitTeam =getTeamByStatusMatch(playerMatches, statusTeamVisit, Integer.parseInt(matchTeamVisit) - 1);
 
+                if(idHomeTeam != playerMatch.gethT() || idVisitTeam != playerMatch.getvT() ) {
+                    playerMatch.sethT(idHomeTeam);
+                    playerMatch.setvT(idVisitTeam);
+                }
                 if ((playerMatch.getIdMatch().intValue()+1) == playerMatches.size() && playerMatch.gethS() != null && playerMatch.getvS() !=null) {
                     playerLadder.getPlayerByName(player.getUsername()).setWinnerTeam(playerMatch.gethS() > playerMatch.getvS() ? playerMatch.gethT() : playerMatch.getvT());
                 }

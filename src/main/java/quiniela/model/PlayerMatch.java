@@ -20,6 +20,8 @@ public class PlayerMatch {
 
     private Long status;
 
+    public boolean update =false;
+
     public Long getStatus() {
         return status;
     }

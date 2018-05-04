@@ -22,6 +22,15 @@ public class Match{
     private TypeMatch typeMatch;
 
     private Boolean editable;
+    private Boolean finish;
+
+    public Boolean getFinish() {
+        return finish;
+    }
+
+    public void setFinish(Boolean finish) {
+        this.finish = finish;
+    }
 
     public boolean isEditable() {
         return editable;

@@ -250,16 +250,20 @@ div.match.edit div.teambox.left{
     grid-template-columns: 1fr 1fr;
 }
 
-.content >div.player >div.playerContent >div{
+.content >div.player >div.playerContent{
+    zoom:0.5;
     display:  grid;
-    grid-template-columns: 50px auto;
+    grid-template-columns: repeat(auto-fit, minmax(0.5fr, 1fr));
+}
+
+.content >div.player >div.playerContent > div:nth-last-child(){
+    border-bottom: unset;
 }
 
 .content >div.player >div.playerContent > div >div:nth-child(odd){
     text-align: center;
     font-weight: bold;
     line-height: 50px;
-    border-bottom: 1px solid grey;
 }
 
 .content >div.player >div.playerMenu.admin{
