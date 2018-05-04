@@ -94,8 +94,8 @@ function Player(props) {
             <div className={"playerShow f" + (props.winner && props.teams[props.winner - 1].shortName)}>
                 <div> {props.ppname} | {props.points} </div>
             </div>
-            <div className="playerContent">
-
+            <div id={"id" + props.ppname} className="playerContent">
+                <PlayerShortMatches {...props} />
             </div>
             <div className="playerMenu">
                 <div onClick={() => props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYER_MATCHES", laddername: props.laddername, playername: props.ppname })} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
@@ -111,8 +111,8 @@ function PlayerAdmin(props) {
             <div className={"playerShow f" + (props.winner && props.teams[props.winner - 1].shortName)}>
                 <div> {props.ppname} | {props.points} </div>
             </div>
-            <div className="playerContent">
-
+            <div id={"id" + props.ppname} className="playerContent">
+                <PlayerShortMatches {...props} />
             </div>
             <div key={props.username + props.isAdmin + props.isActive} className="playerMenu admin">
                 <div onClick={() => props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYER_MATCHES", laddername: props.laddername, playername: props.ppname })} ><div className="iconCenter"><i className="fas fa-list-ol"></i> Partidos</div></div>
@@ -132,60 +132,69 @@ class PlayerShortMatches extends React.Component {
         this.state = {
             showLoading: false,
             content: {
-                prevMatch: [],
-                nextMatch: []
+                prevMatches: [],
+                nextMatches: []
             }
         }
     }
 
     componentDidMount() {
-
+        fetchNextMatches.bind(this)();
     }
 
     componentWillReceiveProps(nextProps) {
-
+      /*  if (nextProps.forceReload) {
+            this.props.dispatch({ type: "UNFORCE" });
+            fetchPlayers.bind(this)();
+        }*/
     }
 
     dispatch(action) {
+       this.setState(preState => GlobalAppActions(preState, action));
+    }
 
+
+    renderMatches() {
+
+        return this.state.content.nextMatches.map(function (currentValue, index, array) {
+            var d = new Date(this.props.matches[index].date);
+            return <AuxMatch round={index + 1} key={"match" + index}
+            date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
+            homeTeamShort={this.props.teams[currentValue.hT - 1] == undefined ?
+                this.props.matches[index].homeTeam : this.props.teams[currentValue.hT - 1].shortName}
+            visitorTeamShort={this.props.teams[currentValue.vT - 1] == undefined ?
+                this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT - 1].shortName}
+            flagUrlHome={this.props.teams[currentValue.hT - 1] == undefined ?
+                "none" : this.props.teams[currentValue.hT - 1].flagUrl}
+            flagUrlVisitor={this.props.teams[currentValue.vT - 1] == undefined ?
+                "none" : this.props.teams[currentValue.vT - 1].flagUrl}
+            homeTeamScore={currentValue.hS == null ? "*" : currentValue.hS}
+            visitorTeamScore={currentValue.vS == null ? "*" : currentValue.vS}
+            matchStatus={currentValue.status} />
+        }.bind(this));
     }
 
     render() {
-        return <div>
-            <div>63</div>
-            <div className="teamMatch" style={{ "borderBottom": "grey 1px solid" }}>
-                <div className="teambox">
-                    <div>FRA</div>
-                    <div><div className="flag RUS"></div></div>
-                    <div>3</div>
-                </div>
-                <div className="teamboxSeparator">-</div>
-                <div className="teambox left">
-                    <div>6</div>
-                    <div><div className="flag BRA"></div></div>
-                    <div>BRA</div>
-                </div>
-            </div>
-        </div>
+        return this.renderMatches();
     }
 
 }
 
-function auxMatch() {
+function AuxMatch(props) {
     return (
         <div>
-            <div>63</div>
-            <div className="teamMatch" style={{ "borderBottom": "grey 1px solid" }}>
-                <div className="teambox">
-                    <div>FRA</div>
-                    <div><div className="flag RUS"></div></div>
-                    <div>3</div>
+            <div>{props.round}</div>
+            <div  className={"teamMatch " + (props.matchStatus == 0 || props.matchStatus == null ? "whiteBG" : (props.matchStatus == 1  ? "greenBG" : "tomatoBG" ))} style={{ "borderBottom": "grey 1px solid" }}>
+            <div className="teambox">
+                    <div>{props.homeTeamShort}</div>
+                    <div><div className={"flag flag-" + props.flagUrlHome}></div></div>
+                    <div>{props.homeTeamScore}</div>
                 </div>
                 <div className="teamboxSeparator">-</div>
                 <div className="teambox left">
-                    <div>6</div>
-                    <div><div className="flag BRA"></div></div>
-                    <div>BRA</div>
+                    <div>{props.visitorTeamScore}</div>
+                    <div><div className={"flag flag-" + props.flagUrlVisitor}></div></div>
+                    <div>{props.visitorTeamShort}</div>
                 </div>
             </div>
         </div>

@@ -337,7 +337,25 @@ var fetchLeaveLadder = function () {
         }.bind(this));
 }
 
-var fetchUpdateMainMatch = function(password, idmatch, homeScore, visitScore){
+var fetchNextMatches = function () {
+    this.dispatch({ type: "LOADING_CONTENT" });
+    if (this.props.token == null) {
+        fetch(server + '/user/nextmatches?username=' + (this.props.playername || genericPlayername) + '&laddername=' + (this.props.laddername || genericLaddername), getData)
+            .then(res => res.json())
+            .then(function (json) {
+                this.dispatch({ type: "SUCCESS_CONTENT", content: json });
+            }.bind(this));
+    } else {
+        postData.body = JSON.stringify({ "token": this.props.token, "username": (this.props.playername || genericPlayername), "laddername": (this.props.laddername || genericLaddername) });
+        fetch(server + "/user/nextmatches", postData)
+            .then(res => res.json())
+            .then(function (json) {
+                this.dispatch({ type: "SUCCESS_CONTENT", content: json });
+            }.bind(this));
+    }
+}
+
+var update = function(password, idmatch, homeScore, visitScore){
     postData.body = JSON.stringify({ "password": password, idMatch: idmatch, homeScore: homeScore, visitScore: visitScore });
     fetch(server + '/user/updatemainmatch', postData)
         .then(function (response) {

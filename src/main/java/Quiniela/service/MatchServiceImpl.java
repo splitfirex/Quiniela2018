@@ -3,8 +3,6 @@ package quiniela.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import quiniela.model.*;
 import quiniela.model.enums.TypeMatch;
@@ -22,9 +20,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -53,17 +50,28 @@ public class MatchServiceImpl implements MatchService {
     @Autowired
     ScoreMath scoreMath;
 
+    @Value("${player.username}")
+    String genericUsername;
+
+    @Value("${ladder.laddername}")
+    String genericLaddername;
+
     final static private Integer CSV_MAX_VALUES_MATCHES = 6;
+
+    private static List<Match> listMatches = new LinkedList<>();
+
+    private static List<Long> prevMatches = new LinkedList<>();
+    private static List<Long> nextMatches = new LinkedList<>();
 
     @Value("${clean_and_build}")
     Boolean cleanAndBuild;
 
     @PostConstruct
     private void init() {
-        if(cleanAndBuild) {
+        if (cleanAndBuild) {
             matchRepository.deleteAll();
             List<String> values = CVSParser.ParseMatches("matches.cvs");
-            List<Match> inserMatches = new ArrayList<>();
+            List<Match> listMatches = new ArrayList<>();
             for (int i = CSV_MAX_VALUES_MATCHES; i < values.size(); i += CSV_MAX_VALUES_MATCHES) {
                 Match match = new Match();
 
@@ -75,26 +83,28 @@ public class MatchServiceImpl implements MatchService {
                 match.setVisitorTeam(values.get(i + 3));
                 match.setTypeMatch(TypeMatch.valueOf(values.get(i + 5)));
                 match.setEditable(true);
-                inserMatches.add(match);
+                listMatches.add(match);
+                listMatches.add(match);
             }
-            matchRepository.saveAll(inserMatches);
+            matchRepository.saveAll(listMatches);
+        } else {
+            listMatches = matchRepository.findAllFixtures(new Sort(Sort.Direction.ASC, "id"));
         }
     }
 
 
     @Override
     public List<Match> getAllMatches() {
-        List<Match> matches =  matchRepository.findAllFixtures(new Sort(Sort.Direction.ASC, "id"));
-        return matches;
+        return listMatches;
     }
 
     @Override
     public List<Match> getAllMatchesAndUpdate() {
-        ZonedDateTime currentTime = ZonedDateTime.ofInstant(Instant.now(),ZoneId.systemDefault());
-        List<Match> matches =  matchRepository.findAllFixtures(new Sort(Sort.Direction.ASC, "id"));
-        for(Match m : matches){
-            ZonedDateTime zoneTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(m.getDate()),ZoneId.of("UTC+02:00")).plusDays(-1L);
-            if(currentTime.isAfter(zoneTime)){
+        ZonedDateTime currentTime = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+        List<Match> matches = getAllMatches();
+        for (Match m : matches) {
+            ZonedDateTime zoneTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(m.getDate()), ZoneId.of("UTC+02:00")).plusDays(-1L);
+            if (currentTime.isAfter(zoneTime) && m.isEditable()) {
                 m.setEditable(false);
                 matchRepository.save(m);
             }
@@ -103,35 +113,9 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Match> getMatchByGroup(String group) {
-        List<Match> result = new ArrayList<>();
-        for (String tn : teamService.getTeamsByGroup(group)) {
-            for (Match m : getMatchByTeam(tn)) {
-                if (!result.contains(m)) {
-                    result.add(m);
-                }
-            }
-        }
-        result.sort(Comparator.comparing(Match::getDate));
-        return result;
-    }
-
-    @Override
-    public List<Match> getMatchByTeam(String team) {
-        List<Match> result = new ArrayList<>();
-        for (Match m : matchRepository.findAllFixtures(new Sort(Sort.Direction.ASC, "id"))) {
-            if (m.getHomeTeam().equals(team) || m.getVisitorTeam().equals(team)) {
-                result.add(m);
-            }
-        }
-        result.sort(Comparator.comparing(Match::getDate));
-        return result;
-    }
-
-    @Override
     public void createPlayerMatches(LadderBoard l, Player player) {
         List<PlayerMatch> result = new ArrayList<>();
-        for(Match match : getAllMatches()){
+        for (Match match : getAllMatches()) {
             PlayerMatch pm = new PlayerMatch();
             pm.setId(counter.incrementAndGet());
             pm.setIdMatch(match.getId());
@@ -146,21 +130,45 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public List<PlayerMatch> getMatchesByPlayerLadder(LadderBoard l, Player p) {
-        return playerMatchRepositoty.findAllByUserIdAndLadderboardID(p.getId(),l.getId(),new Sort(Sort.Direction.ASC, "idMatch"));
+        return playerMatchRepositoty.findAllByUserIdAndLadderboardID(p.getId(), l.getId(), new Sort(Sort.Direction.ASC, "idMatch"));
     }
 
     @Override
     public List<PlayerMatch> updatePlayerMatches(Player p, LadderBoard l, Long idMatch, Integer homeScore, Integer visitScore) {
-        PlayerMatch pm = playerMatchRepositoty.findOneByUserIdAndLadderboardID(p.getId(),l.getId(),idMatch);
+        PlayerMatch pm = playerMatchRepositoty.findOneByUserIdAndLadderboardID(p.getId(), l.getId(), idMatch);
         pm.sethS(homeScore);
         pm.setvS(visitScore);
         playerMatchRepositoty.save(pm);
-        List<PlayerMatch> matches = getMatchesByPlayerLadder(l,p);
-        List<PlayerGroup> groups = playerGroupRepositoty.findAllByUserIdAndLadderboardID(p.getId(),l.getId());
-        scoreMath.processScores(l,p, matches,groups);
+        List<PlayerMatch> matches = getMatchesByPlayerLadder(l, p);
+        List<PlayerGroup> groups = playerGroupRepositoty.findAllByUserIdAndLadderboardID(p.getId(), l.getId());
+        scoreMath.processScores(l, p, matches, groups);
         playerMatchRepositoty.saveAll(matches);
         playerGroupRepositoty.saveAll(groups);
         ladderBoardRepository.save(l);
+
+        if (l.getName().equals(genericLaddername) && p.getUsername().equals(genericUsername)) {
+            PlayerMatch prev = null;
+            PlayerMatch next = null;
+            prevMatches = new LinkedList<>();
+            nextMatches = new LinkedList<>();
+
+            for (PlayerMatch match : matches) {
+                if (match.getStatus() == null) {
+                    next = match;
+                    break;
+                }
+                prev = match;
+            }
+
+            for (PlayerMatch match : matches) {
+                if (prev != null && sameDate(prev, match)) {
+                    prevMatches.add(match.getIdMatch());
+                }
+                if (next != null && sameDate(next, match)) {
+                    nextMatches.add(match.getIdMatch());
+                }
+            }
+        }
 
         return matches;
     }
@@ -171,10 +179,31 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void deletePlayerMatches(LadderBoard l, Player player) {
-        playerMatchRepositoty.deleteAll(playerMatchRepositoty.findAllByUserIdAndLadderboardID(player.getId(),l.getId(),new Sort(Sort.Direction.DESC, "idMatch")));
+    public List<PlayerMatch> getPrevMatches(LadderBoard l, Player p) {
+        return playerMatchRepositoty.findAllByIds(prevMatches,p.getId(),l.getId(), new Sort(Sort.Direction.ASC, "idMatch"));
     }
 
+    @Override
+    public List<PlayerMatch> getNextMatches(LadderBoard l, Player p) {
+        return playerMatchRepositoty.findAllByIds(nextMatches,p.getId(),l.getId(), new Sort(Sort.Direction.ASC, "idMatch"));
+    }
+
+    private Boolean sameDate(PlayerMatch match1, PlayerMatch match2) {
+
+        ZonedDateTime zoneTime1 = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listMatches.get(match1.getIdMatch().intValue()).getDate()), ZoneId.of("UTC+02:00"));
+        ZonedDateTime zoneTime2 = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listMatches.get(match2.getIdMatch().intValue()).getDate()), ZoneId.of("UTC+02:00"));
+
+        if (zoneTime1.getDayOfYear() == zoneTime2.getDayOfYear()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void deletePlayerMatches(LadderBoard l, Player player) {
+        playerMatchRepositoty.deleteAll(playerMatchRepositoty.findAllByUserIdAndLadderboardID(player.getId(), l.getId(), new Sort(Sort.Direction.DESC, "idMatch")));
+    }
 
 
 }

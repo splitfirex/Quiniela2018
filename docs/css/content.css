@@ -250,12 +250,12 @@ div.match.edit div.teambox.left{
     grid-template-columns: 1fr 1fr;
 }
 
-.content >div.player >div.playerContent{
+.content >div.player >div.playerContent >div{
     display:  grid;
     grid-template-columns: 50px auto;
 }
 
-.content >div.player >div.playerContent >div:nth-child(odd){
+.content >div.player >div.playerContent > div >div:nth-child(odd){
     text-align: center;
     font-weight: bold;
     line-height: 50px;

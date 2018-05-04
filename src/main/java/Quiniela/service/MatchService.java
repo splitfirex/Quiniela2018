@@ -15,10 +15,6 @@ public interface MatchService {
 
     List<Match> getAllMatchesAndUpdate();
 
-    List<Match> getMatchByGroup(String Group);
-
-    List<Match> getMatchByTeam(String Team);
-
     void deletePlayerMatches(LadderBoard l, Player player);
 
     void createPlayerMatches(LadderBoard l, Player player);
@@ -28,4 +24,8 @@ public interface MatchService {
     List<PlayerMatch> updatePlayerMatches(Player p, LadderBoard l, Long idMatch, Integer homeScore, Integer visitScore);
 
     void updatePlayerMatches(List<PlayerMatch> matches);
+
+    List<PlayerMatch> getPrevMatches(LadderBoard l, Player p);
+
+    List<PlayerMatch> getNextMatches(LadderBoard l, Player p);
 }

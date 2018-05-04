@@ -69,7 +69,8 @@ public class ScoreMath {
     private Long processPlayerMatchesPoints(List<PlayerMatch> systemMatches, List<PlayerMatch> playerMatches) {
         Long result = 0L;
         for (int i = 0; i < systemMatches.size(); i++) {
-            if(systemMatches.get(i).getvS() == null || systemMatches.get(i).gethS() == null) continue;
+            if(systemMatches.get(i).getvS() == null || systemMatches.get(i).gethS() == null ||
+                    playerMatches.get(i).getvS() == null || playerMatches.get(i).gethS() == null ) continue;
             if (systemMatches.get(i).getvT() == playerMatches.get(i).getvT()
                     || systemMatches.get(i).gethT() == playerMatches.get(i).gethT()) {
 

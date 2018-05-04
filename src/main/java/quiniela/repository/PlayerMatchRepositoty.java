@@ -19,4 +19,7 @@ public interface PlayerMatchRepositoty extends MongoRepository<PlayerMatch, Long
     @Query("{ idPlayer: ?0, idLadder: ?1, idMatch: ?2}")
     PlayerMatch findOneByUserIdAndLadderboardID(Long idUser, Long idLadder, Long idMatch);
 
+    @Query("{idMatch:{$in: ?0 },  idPlayer: ?1, idLadder: ?2}")
+    List<PlayerMatch> findAllByIds(List<Long> ids, Long idUser, Long idLadder, Sort sort);
+
 }
