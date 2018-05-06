@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PlayerMatch {
 
     @Id
-    private long id;
+    private Long id;
 
     private Long idMatch;
     private Long idPlayer;
@@ -82,11 +82,11 @@ public class PlayerMatch {
         this.vS = vS;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

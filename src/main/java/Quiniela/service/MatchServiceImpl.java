@@ -30,7 +30,7 @@ public class MatchServiceImpl implements MatchService {
 
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    private AtomicLong counter = new AtomicLong();
+    private AtomicLong counter = new AtomicLong(0);
 
 
     @Autowired
@@ -119,7 +119,7 @@ public class MatchServiceImpl implements MatchService {
         List<PlayerMatch> result = new ArrayList<>();
         for (Match match : getAllMatches()) {
             PlayerMatch pm = new PlayerMatch();
-            pm.setId(counter.incrementAndGet());
+            pm.setId(counter.getAndIncrement());
             pm.setIdMatch(match.getId());
             pm.sethT(teamService.getTeamIdByName(match.getHomeTeam()));
             pm.setvT(teamService.getTeamIdByName(match.getVisitorTeam()));

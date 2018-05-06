@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LadderBoardPlayer {
 
+
     private String username;
     private Boolean isAdmin;
     private Boolean isActive;

@@ -137,7 +137,7 @@ public class UserController {
 
             lbpToUpdate.setAdmin(form.getAdmin());
             lbpToUpdate.setActive(form.getActivate());
-            return new ViewLadderBoard(ladderBoardService.updateUserStatus(l, lbpToUpdate));
+            return new ViewLadderBoard(ladderBoardService.updateLadderBoard(l));
         }
         return null;
     }

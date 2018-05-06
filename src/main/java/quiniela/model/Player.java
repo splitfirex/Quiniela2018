@@ -10,17 +10,17 @@ import java.util.*;
 public class Player{
 
     @Id
-    private long id;
+    private Long id;
 
     @Indexed(unique = true)
     private String username;
     private String password;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

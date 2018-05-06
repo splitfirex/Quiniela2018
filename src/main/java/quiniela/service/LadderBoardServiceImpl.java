@@ -138,7 +138,6 @@ public class LadderBoardServiceImpl implements LadderBoardService {
 
     @Override
     public LadderBoard updateUserStatus(LadderBoard l, LadderBoardPlayer lbp) {
-        l.getListPlayers().add(lbp);
         return ladderBoardRepository.save(l);
     }
 

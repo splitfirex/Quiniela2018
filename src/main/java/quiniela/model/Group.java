@@ -11,7 +11,7 @@ import java.util.List;
 public class Group {
 
     @Id
-    private long id;
+    private Long id;
 
     @Indexed(unique = true)
     private String name;
@@ -34,11 +34,11 @@ public class Group {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

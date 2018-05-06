@@ -10,7 +10,7 @@ import java.util.Set;
 @Document(collection = "ladderBoard")
 public class LadderBoard {
 
-    private long id;
+    private Long id;
     private String name;
     private String bgColor;
 
@@ -36,11 +36,11 @@ public class LadderBoard {
         this.listBannedPlayers = listBannedPlayers;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

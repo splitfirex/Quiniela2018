@@ -1,6 +1,7 @@
 package quiniela.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import quiniela.model.Group;
@@ -15,13 +16,14 @@ import quiniela.utils.CVSParser;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class TeamServiceImpl implements TeamService {
 
-    static private AtomicLong counter = new AtomicLong();
+    static private AtomicLong counter = new AtomicLong(0);
 
     final static private Integer CSV_MAX_VALUES_TEAM = 5;
 
@@ -46,7 +48,7 @@ public class TeamServiceImpl implements TeamService {
     private void init(){
         if(cleanAndBuild) {
             List<String> values = CVSParser.ParseMatches("teams.cvs");
-            List<Team> inserTeam = new ArrayList<>();
+            List<Team> inserTeam = new LinkedList<>();
             HashMap<String, Group> inserGroup = new HashMap<>();
 
             teamRepository.deleteAll();
@@ -100,7 +102,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Team> getAllTeams() {
-        return teamRepository.findAll();
+        return teamRepository.findAllSort( new Sort(Sort.Direction.ASC, "id"));
     }
 
     @Override
