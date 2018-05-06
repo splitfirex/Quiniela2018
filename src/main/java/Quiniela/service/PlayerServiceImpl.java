@@ -54,6 +54,7 @@ public class PlayerServiceImpl implements PlayerService {
             Player p = createPlayer(genericUsername, genericPassword);
             //String token = loginService.login(genericUsername, genericPassword);
             ladderBoardService.createLadderBoard(genericLaddername, genericLadderPassword, p);
+            ladderBoardService.createLadderBoard("PRUEBA", null, p);
         }
     }
 

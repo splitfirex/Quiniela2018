@@ -6,10 +6,7 @@ import quiniela.model.*;
 import quiniela.repository.GroupRepository;
 import quiniela.repository.PlayerGroupRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -52,7 +49,7 @@ public class GroupServiceImpl implements GroupService {
             playerGroup.setIdPlayer(player.getId());
             playerGroup.setIdGroup(group.getId());
 
-            Map<Long, PlayerGroupDetail> mapDetails = new HashMap<>();
+            LinkedList<PlayerGroupDetail> mapDetails = new LinkedList<>();
             for(String team : group.getTeams()){
                 PlayerGroupDetail pgd = new PlayerGroupDetail();
                 pgd.setId(teamService.getTeamIdByName(team));
@@ -60,7 +57,7 @@ public class GroupServiceImpl implements GroupService {
                 pgd.setP(0);
                 pgd.setPg(0);
 
-                mapDetails.put(pgd.getId(),pgd);
+                mapDetails.add(pgd);
             }
             playerGroup.setDetails(mapDetails);
             saveList.add(playerGroup);

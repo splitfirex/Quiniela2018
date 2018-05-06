@@ -12,7 +12,8 @@ import java.time.ZonedDateTime;
 public class Match{
 
     @Id
-    private long id;
+    private Long id;
+
     private String homeTeam;
     private String visitorTeam;
     private Integer scoreHomeTeam;
@@ -20,11 +21,30 @@ public class Match{
     private Long date;
     private TypeMatch typeMatch;
 
-    public long getId() {
+    private Boolean editable;
+    private Boolean finish;
+
+    public Boolean getFinish() {
+        return finish;
+    }
+
+    public void setFinish(Boolean finish) {
+        this.finish = finish;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

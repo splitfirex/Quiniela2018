@@ -2,13 +2,13 @@ package quiniela.model.form;
 
 public class GetLadderForm extends TokenAbleForm {
 
-    private String ladderName;
+    private String laddername;
 
-    public String getLadderName() {
-        return ladderName;
+    public String getLaddername() {
+        return laddername;
     }
 
-    public void setLadderName(String ladderName) {
-        this.ladderName = ladderName;
+    public void setLaddername(String laddername) {
+        this.laddername = laddername;
     }
 }

@@ -26,4 +26,8 @@ public interface LadderBoardService {
 
     LadderBoard updateUserStatus(LadderBoard l, LadderBoardPlayer lbp);
 
+    LadderBoard updateLadderboardColor(LadderBoard l);
+
+    LadderBoard updateLadderBoard(LadderBoard l);
+
 }

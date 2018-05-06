@@ -1,36 +1,36 @@
 idTeam;name;shortname;group;url
-1;Russia;RUS;A;ru
-2;Egypt;EGY;A;eg
-3;Saudi Arabia;SAB;A;sa
-4;Uruguay;URU;A;uy
-5;Morocco;MRC;B;ma
-6;Iran;IRN;B;ir
-7;Portugal;POR;B;pt
-8;Spain;SPA;B;es
-9;France;FRA;C;fr
-10;Australia;AUS;C;au
-11;Peru;PER;C;pe
-12;Denmark;DEN;C;dk
-13;Croatia;CRO;D;hr
-14;Nigeria;NGA;D;ne
-15;Argentina;ARG;D;ar
-16;Iceland;ICE;D;is
-17;Costa Rica;COS;E;cr
-18;Serbia;SER;E;rs
-19;Brazil;BRA;E;br
-20;Switzerland;SWZ;E;ch
-21;Germany;GER;F;de
-22;Mexico;MEX;F;mx
-23;Sweden;SWD;F;se
-24;Korea Republic;KOR;F;kr
-25;Belgium;BEL;G;be
-26;Panama;PAN;G;pa
-27;Tunisia;TUN;G;tn
-28;England;ENG;G;gb
-29;Colombia;COL;H;co
-30;Japan;JAP;H;jp
-31;Poland;POL;H;pl
-32;Senegal;SEN;H;sn
+0;Russia;RUS;A;ru
+1;Egypt;EGY;A;eg
+2;Saudi Arabia;SAB;A;sa
+3;Uruguay;URU;A;uy
+4;Morocco;MRC;B;ma
+5;Iran;IRN;B;ir
+6;Portugal;POR;B;pt
+7;Spain;SPA;B;es
+8;France;FRA;C;fr
+9;Australia;AUS;C;au
+10;Peru;PER;C;pe
+11;Denmark;DEN;C;dk
+12;Croatia;CRO;D;hr
+13;Nigeria;NGA;D;ne
+14;Argentina;ARG;D;ar
+15;Iceland;ICE;D;is
+16;Costa Rica;COS;E;cr
+17;Serbia;SER;E;rs
+18;Brazil;BRA;E;br
+19;Switzerland;SWZ;E;ch
+20;Germany;GER;F;de
+21;Mexico;MEX;F;mx
+22;Sweden;SWD;F;se
+23;Korea Republic;KOR;F;kr
+24;Belgium;BEL;G;be
+25;Panama;PAN;G;pa
+26;Tunisia;TUN;G;tn
+27;England;ENG;G;gb
+28;Colombia;COL;H;co
+29;Japan;JAP;H;jp
+30;Poland;POL;H;pl
+31;Senegal;SEN;H;sn
 50;A_1;---;-;none
 51;B_1;---;-;none
 52;C_1;---;-;none

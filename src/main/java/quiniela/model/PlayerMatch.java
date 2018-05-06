@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PlayerMatch {
 
     @Id
-    private long id;
+    private Long id;
 
     private Long idMatch;
     private Long idPlayer;
@@ -17,6 +17,18 @@ public class PlayerMatch {
     private Long vT;
     private Integer hS;
     private Integer vS;
+
+    private Long status;
+
+    public boolean update =false;
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
 
     public Long getIdMatch() {
         return idMatch;
@@ -70,11 +82,11 @@ public class PlayerMatch {
         this.vS = vS;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

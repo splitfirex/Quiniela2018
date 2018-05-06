@@ -5,10 +5,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LadderBoardPlayer {
 
+
     private String username;
     private Boolean isAdmin;
     private Boolean isActive;
     private Long points;
+
+    public Long getWinnerTeam() {
+        return winnerTeam;
+    }
+
+    public void setWinnerTeam(Long winnerTeam) {
+        this.winnerTeam = winnerTeam;
+    }
+
+    private Long winnerTeam;
 
     public LadderBoardPlayer(){
 

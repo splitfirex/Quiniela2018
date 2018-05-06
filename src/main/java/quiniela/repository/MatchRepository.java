@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface MatchRepository extends MongoRepository<Match, Long> {
 
-    @Query("{ 'idPlayer' : { '$exists' : false } }")
+    @Query("{}")
     List<Match> findAllFixtures(Sort sort);
 
 }

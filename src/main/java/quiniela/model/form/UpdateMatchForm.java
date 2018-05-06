@@ -2,7 +2,7 @@ package quiniela.model.form;
 
 public class UpdateMatchForm extends TokenAbleForm {
     private Long idMatch;
-    private String ladderName;
+    private String laddername;
     private Integer homeScore;
     private Integer visitScore;
 
@@ -12,14 +12,6 @@ public class UpdateMatchForm extends TokenAbleForm {
 
     public void setIdMatch(Long idMatch) {
         this.idMatch = idMatch;
-    }
-
-    public String getLadderName() {
-        return ladderName;
-    }
-
-    public void setLadderName(String ladderName) {
-        this.ladderName = ladderName;
     }
 
     public Integer getHomeScore() {
@@ -36,5 +28,13 @@ public class UpdateMatchForm extends TokenAbleForm {
 
     public void setVisitScore(Integer visitScore) {
         this.visitScore = visitScore;
+    }
+
+    public String getLaddername() {
+        return laddername;
+    }
+
+    public void setLaddername(String laddername) {
+        this.laddername = laddername;
     }
 }
