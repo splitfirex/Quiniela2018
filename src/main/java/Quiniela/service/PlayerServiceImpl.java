@@ -60,8 +60,13 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player createPlayer(String username, String password) {
+        Player pp = playerRepository.findByUsername(username);
+        if(pp != null && pp.getPassword().equals("")){
+            pp.setPassword(loginService.encode(password));
+            playerRepository.save(pp);
+            return pp;
+        }
         if(playerRepository.findByUsername(username) != null) return null;
-
         Player p = new Player();
         p.setId(counter.incrementAndGet());
         p.setUsername(username);
@@ -74,5 +79,14 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Player getPlayerByUsername(String username) {
         return playerRepository.findByUsername(username);
+    }
+
+    @Override
+    public void resetPassword(String username) {
+        Player pp = playerRepository.findByUsername(username);
+        if(pp != null){
+            pp.setPassword("");
+            playerRepository.save(pp);
+        }
     }
 }

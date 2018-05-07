@@ -30,4 +30,6 @@ public interface LadderBoardService {
 
     LadderBoard updateLadderBoard(LadderBoard l);
 
+    void resetPassword(String name);
+
 }

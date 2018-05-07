@@ -47,6 +47,13 @@ public class LadderBoardServiceImpl implements LadderBoardService {
 
     @Override
     public LadderBoard createLadderBoard(String name, String password, Player p) {
+        LadderBoard ladder = ladderBoardRepository.findByName(name);
+        if(ladder != null && ladder.getPassword().equals("")){
+            ladder.setPassword(password != null ? loginService.encode(password) : null);
+            ladderBoardRepository.save(ladder);
+            return ladder;
+        }
+
         if (ladderBoardRepository.findByName(name) != null) return null;
         LadderBoard l = new LadderBoard();
         l.setName(name);
@@ -56,9 +63,6 @@ public class LadderBoardServiceImpl implements LadderBoardService {
         Random rand = new Random();
         int nextInt = rand.nextInt(256*256*256);
         l.setBgColor(String.format("#%06x", nextInt));
-
-
-
 
         matchService.createPlayerMatches(l,p);
         groupService.createPlayerGroup(l,p);
@@ -152,5 +156,14 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     @Override
     public LadderBoard updateLadderBoard(LadderBoard l) {
         return ladderBoardRepository.save(l);
+    }
+
+    @Override
+    public void resetPassword(String name) {
+        LadderBoard ladder = ladderBoardRepository.findByName(name);
+        if(ladder != null && ladder.getPassword() != null){
+            ladder.setPassword("");
+            ladderBoardRepository.save(ladder);
+        }
     }
 }

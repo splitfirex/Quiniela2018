@@ -23,3 +23,19 @@ window.update = function (password, idmatch, homeScore, visitScore) {
             console.log("OK");
         });
 }
+
+window.resetUser = function (password, username) {
+    postData.body = JSON.stringify({ "password": password, username:username });
+    fetch(server + '/login/resetpassword', postData)
+        .then(function (response) {
+            console.log("OK");
+        });
+}
+
+window.resetLadder = function (password, username) {
+    postData.body = JSON.stringify({ "password": password, laddername:username });
+    fetch(server + '/user/resetpassword', postData)
+        .then(function (response) {
+            console.log("OK");
+        });
+}

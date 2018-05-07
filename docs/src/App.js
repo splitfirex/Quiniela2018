@@ -63,7 +63,11 @@ class App extends React.Component {
       <SideMenu {...this.state} />
       <ModalContent  {...this.state} />
       <GlobalContent {...this.state} />
-      <div className="footer"></div>
+      <div className="footer">
+        <div><i class="fab fa-github-square"></i><a style={{ fontSize:"0.5em", lineHeight:"50px", paddingLeft:"20px"}} href="https://github.com/splitfirex">Splitfirex</a></div>
+        <div><i class="fab fa-twitter-square"></i><span style={{ fontSize:"0.5em", paddingLeft:"20px"}}>dfarinaf</span></div>
+        <div style={{ textAlign:"center"}} >Beta 0.1</div>      
+      </div>
     </div>
   }
 
