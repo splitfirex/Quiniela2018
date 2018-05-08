@@ -1,6 +1,7 @@
 package quiniela.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import quiniela.model.Player;
@@ -23,6 +24,8 @@ public class LoginController {
     @Autowired
     PlayerService playerService;
 
+    @Value("${general.key}")
+    String generalKey;
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
     @ResponseBody
@@ -41,6 +44,14 @@ public class LoginController {
     public ViewPlayerInfo signup(@RequestBody LoginForm form) {
         Player p = playerService.createPlayer(form.getUsername(),form.getPassword());
         return new ViewPlayerInfo(p).setToken(loginService.login(form.getUsername(), form.getPassword()));
+    }
+
+    @RequestMapping(value = "/resetpassword", method = RequestMethod.POST)
+    @ResponseBody
+    public void resetUser(@RequestBody LoginForm form) {
+        if (loginService.encode(form.getPassword()).equals(generalKey)) {
+            playerService.resetPassword(form.getUsername());
+        }
     }
 
 }

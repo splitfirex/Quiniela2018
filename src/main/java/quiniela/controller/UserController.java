@@ -264,6 +264,14 @@ public class UserController {
         return null;
     }
 
+    @RequestMapping(value = "/resetpassword", method = RequestMethod.POST)
+    @ResponseBody
+    public void resetpassword(@RequestBody JoinLadderForm form) {
+        if (loginService.encode(form.getPassword()).equals(generalKey)) {
+            ladderBoardService.resetPassword(form.getLaddername());
+        }
+    }
+
     @RequestMapping(value = "/nextmatches", method = RequestMethod.GET)
     @ResponseBody
     public ViewResumeMatches getNextMatches(@RequestParam("username") String username, @RequestParam("laddername") String laddername) {

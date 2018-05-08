@@ -13,4 +13,6 @@ public interface PlayerService {
     Player createPlayer(String username, String password);
 
     Player getPlayerByUsername(String username);
+
+    void resetPassword(String username);
 }

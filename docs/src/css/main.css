@@ -110,11 +110,32 @@ body {
 
 
 .footer {
-  
-  height: 400px;
+  font-family: "dusan";
+  font-size: 2.5em;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  height: 200px;
   background-color: rgba(100, 100, 100, 0.5);
+  grid-auto-rows: 30px;
+  grid-gap: 20px;
+  text-align: left;
 }
 
+.footer > div {
+  display:flex;justify-content:left;align-items:center;
+  height: 50px;
+  padding-left: 50px;
+}
+
+.footer > div > a{
+  color:black;
+}
+
+.footer >div:last-child{
+  padding-left: unset;
+  justify-content:center;
+  font-size: 0.4em !important;
+}
 
 a {
   color: white;
