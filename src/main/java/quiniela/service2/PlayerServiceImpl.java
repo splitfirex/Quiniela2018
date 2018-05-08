@@ -1,4 +1,4 @@
-package quiniela.service;
+package quiniela.service2;
 
 import com.fasterxml.uuid.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +12,18 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class PlayerServiceImpl implements PlayerService {
 
+    private AtomicLong counter = new AtomicLong();
     private static Map<UUID,Player> uuidPlayer = new HashMap<>();
     private static MessageDigest sha;
 
     private static final long EXPIDED_MINUTES = 10;
 
     private static final long RENO_MINUTES = 5;
-
-
 
     @Value("${encryption.algorithm}")
     String algorithmEncode;
@@ -32,7 +32,7 @@ public class LoginServiceImpl implements LoginService {
     PlayerRepository playerRepository;
 
     @Autowired
-    PlayerService playerService;
+    quiniela.service.PlayerService playerService;
 
     @Override
     public String encode(String value){
@@ -104,6 +104,38 @@ public class LoginServiceImpl implements LoginService {
         return uuidPlayer.get(UUID.fromString(token));
     }
 
+    @Override
+    public Player createPlayer(String username, String password) {
+        Player pp = playerRepository.findByUsername(username);
+        if(pp != null && pp.getPassword().equals("")){
+            pp.setPassword(encode(password));
+            playerRepository.save(pp);
+            return pp;
+        }
+        if(playerRepository.findByUsername(username) != null) return null;
+        Player p = new Player();
+        p.setId(counter.incrementAndGet());
+        p.setUsername(username);
+        p.setPassword(encode(password));
+        playerRepository.save(p);
+
+        return  p;
+    }
+
+    @Override
+    public Player getPlayerByUsername(String username) {
+        return playerRepository.findByUsername(username);
+    }
+
+    @Override
+    public void resetPassword(String username) {
+        Player pp = playerRepository.findByUsername(username);
+        if(pp != null){
+            pp.setPassword("");
+            playerRepository.save(pp);
+        }
+    }
+
     private void  revalidateTokens(){
         Iterator itTokens = uuidPlayer.keySet().iterator();
         while(itTokens.hasNext()){
@@ -125,5 +157,4 @@ public class LoginServiceImpl implements LoginService {
 
         return token.toString();
     }
-
 }

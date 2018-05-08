@@ -1,4 +1,4 @@
-var server = "http://192.168.0.156:9000";
+var server = "http://localhost:9000";
 var genericPlayername = "_NOT_A_PLAYER_";
 var genericLaddername = "_NOT_A_LADDERBOARD_";
 
@@ -90,7 +90,7 @@ export const GlobalAppActions = (state, action) => {
             return { forceReload: true, contentModalWindow: "", showBreadcrumbs: true, breadcrumbs: [action.laddername], subTitle: action.laddername, contentWindow: "PLAYERS", showModal: false, laddername: action.laddername }
         case "SUCCESS_LEAVE":
         case "SUCCESS_JOIN":
-            return { forceReload: true, showModal: false, subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false }
+            return { forceReload: true, contentModalWindow: "", showModal: false, subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false }
         case "UNFORCE":
             return { forceReload: false }
         case "CLOSE_AND_RELOAD":
@@ -232,7 +232,7 @@ export var fetchLogin = function () {
 }
 
 export var fetchRegister = function () {
-    if (this.state.password.length === 0) {
+    if (this.state.password.length === 0 || this.state.passwordRepeat != this.state.password) {
         this.dispatch({ type: "FAIL_PROCESS" });
         return;
     }

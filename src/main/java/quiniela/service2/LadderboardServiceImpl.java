@@ -1,61 +1,36 @@
-package quiniela.service;
+package quiniela.service2;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import quiniela.model.LadderBoard;
 import quiniela.model.LadderBoardPlayer;
 import quiniela.model.Player;
 import quiniela.repository.LadderBoardRepository;
-import quiniela.repository.PlayerMatchRepositoty;
-import quiniela.utils.RESTClient;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class LadderBoardServiceImpl implements LadderBoardService {
+public class LadderboardServiceImpl implements LadderboardService{
 
-    static private AtomicLong counter = new AtomicLong();
-
-    @Autowired
-    private LadderBoardRepository ladderBoardRepository;
+    private AtomicLong counter = new AtomicLong();
 
     @Autowired
-    private PlayerMatchRepositoty playerMatchRepositoty;
+    LadderBoardRepository ladderBoardRepository;
 
     @Autowired
-    private LoginService loginService;
+    PlayerService playerService;
 
     @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private MatchService matchService;
-
-    @Autowired
-    private RESTClient restClient;
-
-    @Value("${clean_and_build}")
-    Boolean cleanAndBuild;
-
-    @PostConstruct
-    private void init() {
-        restClient.requestData();
-
-        if(cleanAndBuild) {
-            ladderBoardRepository.deleteAll();
-        }
-    }
+    GroupService groupService;
 
 
     @Override
     public LadderBoard createLadderBoard(String name, String password, Player p) {
         LadderBoard ladder = ladderBoardRepository.findByName(name);
         if(ladder != null && ladder.getPassword().equals("")){
-            ladder.setPassword(password != null ? loginService.encode(password) : null);
+            ladder.setPassword(password != null ? playerService.encode(password) : null);
             ladderBoardRepository.save(ladder);
             return ladder;
         }
@@ -63,15 +38,15 @@ public class LadderBoardServiceImpl implements LadderBoardService {
         if (ladderBoardRepository.findByName(name) != null) return null;
         LadderBoard l = new LadderBoard();
         l.setName(name);
-        l.setPassword(password != null ? loginService.encode(password) : null);
+        l.setPassword(password != null ? playerService.encode(password) : null);
         l.setId(counter.incrementAndGet());
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true, true));
         Random rand = new Random();
         int nextInt = rand.nextInt(256*256*256);
         l.setBgColor(String.format("#%06x", nextInt));
 
-        matchService.createPlayerMatches(l,p);
-        groupService.createPlayerGroup(l,p);
+        groupService.generateGroupsForPlayerAndLadder(p.getId(),ladder.getId());
+
         ladderBoardRepository.save(l);
         return l;
     }
@@ -80,12 +55,12 @@ public class LadderBoardServiceImpl implements LadderBoardService {
     public LadderBoard joinLadderBoard(String name, String password, Player p) {
         LadderBoard l = ladderBoardRepository.findByName(name);
         if (l == null || l.getPlayerByName(p.getUsername()) != null) return null;
-        if (l.getPassword() != null && (password == null || !l.getPassword().equals(loginService.encode(password))))
+        if (l.getPassword() != null && (password == null || !l.getPassword().equals(playerService.encode(password))))
             return null;
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), false));
 
-        matchService.createPlayerMatches(l,p);
-        groupService.createPlayerGroup(l,p);
+        groupService.generateGroupsForPlayerAndLadder(p.getId(),l.getId());
+
         ladderBoardRepository.save(l);
         return l;
     }
@@ -111,9 +86,10 @@ public class LadderBoardServiceImpl implements LadderBoardService {
                     lbp.setAdmin(true);
                 }
             }
-            matchService.deletePlayerMatches(l,p);
-            groupService.deletePlayerGroup(l,p);
+
         }
+
+        groupService.deleteGroupsForPlayerAndLadder(p.getId(),l.getId());
 
         ladderBoardRepository.save(l);
         if(l.getListPlayers().size() == 0){
