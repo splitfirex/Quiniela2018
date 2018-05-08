@@ -43,8 +43,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    prefetchMatches.bind(this)();
-    prefetchGroups.bind(this)();
     prefetchTeams.bind(this)();
   }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GlobalAppActions, fetchLadders, fetchUpdateScore, fetchMatches  } from '../lib/actions.js'
+import { GlobalAppActions, fetchLadders, fetchUpdateScore, fetchMatches } from '../lib/actions.js'
 import Loading from './ContentUtils.jsx';
 import zeroPad from '../lib/utils.js';
 
@@ -84,63 +84,47 @@ export class ContentMatch extends React.Component {
             case "QUARTER_FINALS": return "Cuartos de final";
             case "SEMI_FINALS": return "Semi Finales";
             case "FINALS": return "Finales";
-            default : return "";
+            default: return "";
         }
     }
 
     renderMatches() {
         return this.state.content.map(function (currentValue, index, array) {
-            var d = new Date(this.props.matches[index].date);
-            return this.props.playername !== undefined && 
-            this.props.username === this.props.playername && 
-            this.props.matches[index].editable && !this.props.matches[index].finish  ?
+            var d = new Date(currentValue.date);
+            var homeTeam = currentValue.type === "group" ? this.props.teams[currentValue.home_team-1] : (currentValue.home_team_ph || undefined);
+            var awayTeam = currentValue.type === "group" ? this.props.teams[currentValue.away_team-1] : (currentValue.away_team_ph || undefined);
+            return this.props.playername !== undefined &&
+                this.props.username === this.props.playername &&
+                currentValue.finished ?
                 this.state.editables.indexOf(index) !== -1 ?
-                    [this.renderSubtitle(this.props.matches[index].typeMatch), <MatchEdit round={index + 1} key={"match" + index}
+                    [this.renderSubtitle(currentValue.type), <MatchEdit round={index + 1} key={"match" + index}
                         index={index}
                         date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
-                        homeTeamShort={this.props.teams[currentValue.hT] === undefined ?
-                            this.props.matches[index].homeTeam : this.props.teams[currentValue.hT].shortName}
-                        visitorTeamShort={this.props.teams[currentValue.vT] === undefined ?
-                            this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT].shortName}
-                        flagUrlHome={this.props.teams[currentValue.hT] === undefined ?
-                            "none" : this.props.teams[currentValue.hT].flagUrl}
-                        flagUrlVisitor={this.props.teams[currentValue.vT - 1] === undefined ?
-                            "none" : this.props.teams[currentValue.vT].flagUrl}
-                        homeTeamScore={currentValue.hS == undefined ? "*" : currentValue.hS}
-                        visitorTeamScore={currentValue.vS == undefined ? "*" : currentValue.vS}
+                        homeTeam={homeTeam}
+                        awayTeam={awayTeam}
+                        homeScore={currentValue.home_result}
+                        awayScore={currentValue.away_result}
                         toggleEdit={(index) => this.toggleEdit(index)}
                         inc={(index, home) => this.incrementScore(index, home)}
                         dec={(index, home) => this.decrementScore(index, home)}
-                        matchStatus={currentValue.status}  />]
+                        matchStatus={currentValue.status} />]
                     :
-                    [this.renderSubtitle(this.props.matches[index].typeMatch), <MatchUser round={index + 1} key={"match" + index}
+                    [this.renderSubtitle(currentValue.type), <MatchUser round={index + 1} key={"match" + index}
                         index={index}
                         date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
-                        homeTeamShort={this.props.teams[currentValue.hT ] === undefined ?
-                            this.props.matches[index].homeTeam : this.props.teams[currentValue.hT].shortName}
-                        visitorTeamShort={this.props.teams[currentValue.vT] === undefined ?
-                            this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT].shortName}
-                        flagUrlHome={this.props.teams[currentValue.hT ] === undefined ?
-                            "none" : this.props.teams[currentValue.hT ].flagUrl}
-                        flagUrlVisitor={this.props.teams[currentValue.vT ] === undefined ?
-                            "none" : this.props.teams[currentValue.vT ].flagUrl}
-                        homeTeamScore={currentValue.hS == undefined ? "*" : currentValue.hS}
-                        visitorTeamScore={currentValue.vS == undefined ? "*" : currentValue.vS}
+                        homeTeam={homeTeam}
+                        awayTeam={awayTeam}
+                        homeScore={currentValue.home_result}
+                        awayScore={currentValue.away_result}
                         toggleEdit={(index) => this.toggleEdit(index)}
-                        matchStatus={currentValue.status}  />]
+                        matchStatus={currentValue.status} />]
                 :
-                [this.renderSubtitle(this.props.matches[index].typeMatch), <Match round={index + 1} key={"match" + index}
+                [this.renderSubtitle(currentValue.type), <Match round={index + 1} key={"match" + index}
                     date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
-                    homeTeamShort={this.props.teams[currentValue.hT] === undefined ?
-                        this.props.matches[index].homeTeam : this.props.teams[currentValue.hT ].shortName}
-                    visitorTeamShort={this.props.teams[currentValue.vT] === undefined ?
-                        this.props.matches[index].visitorTeam : this.props.teams[currentValue.vT ].shortName}
-                    flagUrlHome={this.props.teams[currentValue.hT] === undefined ?
-                        "none" : this.props.teams[currentValue.hT].flagUrl}
-                    flagUrlVisitor={this.props.teams[currentValue.vT] === undefined ?
-                        "none" : this.props.teams[currentValue.vT].flagUrl}
-                    homeTeamScore={currentValue.hS == undefined ? "*" : currentValue.hS}
-                    visitorTeamScore={currentValue.vS == undefined ? "*" : currentValue.vS}
+                    homeTeam={homeTeam}
+                    awayTeam={awayTeam}
+                    homeScore={currentValue.home_result}
+                    awayScore={currentValue.away_result}
                     matchStatus={currentValue.status} />]
         }.bind(this))
     }
@@ -158,17 +142,17 @@ function Match(props) {
             <div>{props.round}</div>
             <div className="matchInfo">
                 <div><div>{props.date}</div></div>
-                <div className={"teamMatch " + (props.matchStatus === 0 || props.matchStatus == undefined ? "whiteBG" : (props.matchStatus === 1  ? "greenBG" : "tomatoBG" ))}>
+                <div className={"teamMatch " + (props.matchStatus === 0 || props.matchStatus == undefined ? "whiteBG" : (props.matchStatus === 1 ? "greenBG" : "tomatoBG"))}>
                     <div className="teambox">
-                        <div>{props.homeTeamShort}</div>
-                        <div><div className={"flag flag-" + props.flagUrlHome}></div></div>
-                        <div>{props.homeTeamScore}</div>
+                        <div>{ typeof props.homeTeam === 'object' ? props.homeTeam.shortCode : props.homeTeam }</div>
+                        <div><div className={"flag flag-" + (typeof props.homeTeam === 'object' ? props.homeTeam.flagUrl : "none")}></div></div>
+                        <div>{props.homeScore}</div>
                     </div>
                     <div className="teamboxSeparator">-</div>
                     <div className="teambox left">
-                        <div>{props.visitorTeamScore}</div>
-                        <div><div className={"flag flag-" + props.flagUrlVisitor}></div></div>
-                        <div>{props.visitorTeamShort}</div>
+                        <div>{props.awayScore}</div>
+                        <div><div className={"flag flag-" + (typeof props.awayTeam === 'object' ? props.awayTeam.flagUrl : "none")}></div></div>
+                        <div>{typeof props.awayTeam === 'object' ? props.awayTeam.shortCode : props.awayTeam}</div>
                     </div>
                 </div>
             </div>
@@ -182,7 +166,7 @@ function MatchUser(props) {
             <div>{props.round}</div>
             <div className="matchInfo">
                 <div><div>{props.date}</div></div>
-                <div className={"teamMatch " + (props.matchStatus === 0 || props.matchStatus == undefined ? "whiteBG" : (props.matchStatus === 1  ? "greenBG" : "tomatoBG" ))}>
+                <div className={"teamMatch " + (props.matchStatus === 0 || props.matchStatus == undefined ? "whiteBG" : (props.matchStatus === 1 ? "greenBG" : "tomatoBG"))}>
                     <div className="teambox">
                         <div>{props.homeTeamShort}</div>
                         <div><div className={"flag flag-" + props.flagUrlHome}></div></div>
@@ -206,7 +190,7 @@ function MatchEdit(props) {
         <div>{props.round}</div>
         <div className="matchInfo">
             <div><div>{props.date}</div></div>
-            <div className={"teamMatch " + (props.matchStatus === 0 || props.matchStatus == undefined ? "whiteBG" : (props.matchStatus === 1  ? "greenBG" : "tomatoBG" ))}>
+            <div className={"teamMatch " + (props.matchStatus === 0 || props.matchStatus == undefined ? "whiteBG" : (props.matchStatus === 1 ? "greenBG" : "tomatoBG"))}>
                 <div className="teambox">
                     <div>{props.homeTeamShort}</div>
                     <div><div className={"flag flag-" + props.flagUrlHome}></div></div>

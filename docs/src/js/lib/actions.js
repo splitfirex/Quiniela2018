@@ -33,7 +33,7 @@ export const GlobalAppActions = (state, action) => {
             return { showWelcome: true }
         case "SUCCESS_PREFETCHS":
             state[action.prefetch] = action.content;
-            if (state.matches.length === 0 || state.groups.length === 0 || state.teams.length === 0) {
+            if (state.teams.length === 0) {
                 return { ...state }
             }
             return { showWelcome: false }
