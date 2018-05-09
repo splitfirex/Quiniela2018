@@ -1,14 +1,18 @@
 package quinielas.repository2;
 
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import quinielas.model.LadderBoard;
 import quinielas.utils.dom.DOMGroup;
 import quinielas.utils.dom.DOMMatch;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,19 +26,20 @@ public class DOMGroupCustomRepositoryImpl implements DOMGroupCustomRepository {
     String genericLaddername;
 
     @Override
-    public List<DOMMatch> getMatchesByIdPlayerAndIdLadder(Long idPlayer, Long IdLadder){
+    public void updateGroupsMatchesByNearDate() {
 
-        Query query = new Query(Criteria.where("idLadder").is(IdLadder).and("idPlayer").is(idPlayer));
-        List<DOMMatch> matches = new ArrayList<>();
-        List<DOMGroup> groups = mongoTemplate.find(query,DOMGroup.class);
+        Long time = ZonedDateTime.now().plusDays(1).toInstant().toEpochMilli();
+        Query query = new Query(Criteria.where("matches").elemMatch(Criteria.where("date").lte(time).and("finished").is(new Boolean(false)).and("editable").is(new Boolean(true))));
+        query.fields().elemMatch("matches", Criteria.where("date").lte(time).and("finished").is(new Boolean(false)).and("editable").is(new Boolean(true)));
 
-        for(DOMGroup grupo: groups){
-            matches.addAll(grupo.getMatches());
-        }
+        Update update = new Update();
+        update.set("matches.$.editable", false);
+        mongoTemplate.updateMulti(query, update,DOMGroup.class);
+    }
 
+    @Override
+    public void getNextMatches(Long idPlayer, Long idLadder) {
 
-
-        return matches;
     }
 
 }

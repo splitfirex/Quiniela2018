@@ -1,20 +1,5 @@
-var server = "http://localhost:9000";
-var genericPlayername = "_NOT_A_PLAYER_";
-var genericLaddername = "_NOT_A_LADDERBOARD_";
-
-var postData = {
-    method: 'POST',
-    headers: new Headers({ 'Content-Type': 'application/json' }),
-    mode: 'cors',
-    cache: 'default'
-};
-
-var getData = {
-    method: 'GET',
-    headers: new Headers({ 'Content-Type': 'application/json' }),
-    mode: 'cors',
-    cache: 'default'
-};
+import React from 'react';
+import {server, genericLaddername, genericPlayername, postData, getData} from './basicConfig.js'
 
 export const GlobalAppActions = (state, action) => {
 
@@ -79,6 +64,12 @@ export const GlobalAppActions = (state, action) => {
             return { public: !state.public }
         case "SUCCESS_CONTENT":
             return { showLoading: false, content: action.content }
+
+        case "SUCCESS_MATCHES":
+            return { showLoading: false, content: action.content }
+        case "SUCCESS_GROUPS":{
+            return { groups: action.content }
+        }
         case "SUCCESS_LOGIN":
             window.scrollTo(0, 0);
             return { contentModalWindow: "", showBreadcrumbs: false, subTitle: "Quinielas", contentWindow: "LADDERS", showModal: false, showLoading: false, username: action.username, token: action.token }
@@ -167,14 +158,32 @@ export var fetchMatches = function () {
         fetch(server + '/user/playermatches?username=' + (this.props.playername || genericPlayername) + '&laddername=' + (this.props.laddername || genericLaddername), getData)
             .then(res => res.json())
             .then(function (json) {
-                this.dispatch({ type: "SUCCESS_CONTENT", content: json });
+                this.dispatch({ type: "SUCCESS_MATCHES", content: json });
             }.bind(this));
     } else {
         postData.body = JSON.stringify({ "token": this.props.token, "username": (this.props.playername || genericPlayername), "laddername": (this.props.laddername || genericLaddername) });
         fetch(server + "/user/playermatches", postData)
             .then(res => res.json())
             .then(function (json) {
-                this.dispatch({ type: "SUCCESS_CONTENT", content: json });
+                this.dispatch({ type: "SUCCESS_MATCHES", content: json });
+            }.bind(this));
+    }
+}
+
+export var fetchMatchesGroups = function () {
+    this.dispatch({ type: "LOADING_CONTENT" });
+    if (this.props.token === undefined) {
+        fetch(server + '/user/playergroups?username=' + (this.props.playername || genericPlayername) + '&laddername=' + (this.props.laddername || genericLaddername), getData)
+            .then(res => res.json())
+            .then(function (json) {
+                this.dispatch({ type: "SUCCESS_GROUPS", content: json });
+            }.bind(this));
+    } else {
+        postData.body = JSON.stringify({ "token": this.props.token, "username": (this.props.playername || genericPlayername), "laddername": (this.props.laddername || genericLaddername) });
+        fetch(server + "/user/playergroups", postData)
+            .then(res => res.json())
+            .then(function (json) {
+                this.dispatch({ type: "SUCCESS_GROUPS", content: json });
             }.bind(this));
     }
 }
@@ -308,13 +317,13 @@ export var fetchBanPlayer = function () {
         }.bind(this));
 }
 
-export var fetchUpdateScore = function (index, homeScore, visitScore) {
-    postData.body = JSON.stringify({ "token": this.props.token, laddername: this.props.laddername, "idMatch": index, "homeScore": homeScore, "visitScore": visitScore });
+export var fetchUpdateScore = function (index, homeScore, visitScore,homePenalty,visitPenalty) {
+    postData.body = JSON.stringify({ "token": this.props.token, laddername: this.props.laddername, "idMatch": index, "homeScore": homeScore, "visitScore": visitScore, "homePenalty": homePenalty , "visitPenalty": visitPenalty });
     fetch(server + '/user/updatematch', postData)
         .then(function (response) {
             return response.json();
-        }).then(function (res) {
-            this.dispatch({ type: "SUCCESS_CONTENT", content: res });
+        }).then(function (res) {    
+            this.dispatch({ type: "SUCCESS_GROUPS", content: res });
         }.bind(this));
 }
 

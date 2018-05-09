@@ -1,12 +1,15 @@
 package quinielas.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlayerGroupDetail {
 
     private Long id;
 
-    private Integer p = 0;
-    private Integer pg = 0;
-    private Integer ng = 0;
+    private int p = 0;
+    private int pg = 0;
+    private int ng = 0;
 
 
     public Long getId() {

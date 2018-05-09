@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -148,7 +149,7 @@ public class UserController {
         List<DOMGroup> groups2 = groupService.getGroupsByPlayerAndLadder(p.getId(), l.getId());
         List<PlayerGroup> groups = new ArrayList<>();
         groups2.stream().forEachOrdered(g-> groups.add(g.generatePlayerGroup()));
-        return groups;
+        return groups.stream().filter(x -> x!=null).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/playergroups", method = RequestMethod.POST)
@@ -164,7 +165,7 @@ public class UserController {
             List<PlayerGroup> groups = new ArrayList<>();
             groups2.stream().forEachOrdered(g-> groups.add(g.generatePlayerGroup()));
 
-            return groups;
+            return groups.stream().filter(x -> x!=null).collect(Collectors.toList());
 
         }
         return null;
@@ -173,10 +174,10 @@ public class UserController {
 
     @RequestMapping(value = "/updatematch", method = RequestMethod.POST)
     @ResponseBody
-    public List<DOMGroup> updateMatch(@RequestBody UpdateMatchForm form) {
+    public List<PlayerGroup> updateMatch(@RequestBody UpdateMatchForm form) {
         Player player = playerService.getPlayerByToken(form.getToken());
         LadderBoard l = ladderboardService.getLadderBoard(form.getLaddername());
-        return groupService.updatePlayerMatches(player.getId(), l.getId(), form.getIdMatch(), form.getHomeScore(), form.getVisitScore());
+        return groupService.updatePlayerMatches(player.getId(), l.getId(), form.getIdMatch(), form.getHomeScore(), form.getVisitScore(), form.getHomePenalty(), form.getVisitPenalty());
     }
 
 
@@ -226,7 +227,10 @@ public class UserController {
         if (playerService.encode(form.getPassword()).equals(generalKey)) {
             LadderBoard l = ladderboardService.getLadderBoard(genericLaddername);
             Player p = playerService.getPlayerByUsername(genericUsername);
-            groupService.updatePlayerMatches(p.getId(), l.getId(), form.getIdMatch() - 1, form.getHomeScore(), form.getVisitScore());
+
+            List<DOMMatch> matches = groupService.getMatchesByPlayerAndLadder(p.getId(), l.getId());
+
+            groupService.updatePlayerMatches(p.getId(), l.getId(), form.getIdMatch(), form.getHomeScore(), form.getVisitScore(), form.getHomePenalty(), form.getVisitPenalty());
         }
         return null;
     }

@@ -13,6 +13,10 @@ public interface LadderboardService {
 
     LadderBoard joinLadderBoard(String name, String password, Player p);
 
+    void createLadderBoardDemo(String name, String password, Player p);
+
+    void joinLadderBoardDemo(String name, String password, Player p);
+
     LadderBoard leaveLadderBoard(LadderBoard ladderBoard, Player p);
 
     List<LadderBoard> listLadderBoard();
@@ -22,6 +26,8 @@ public interface LadderboardService {
     LadderBoard getLadderBoardByName(String name, Player p);
 
     LadderBoard getLadderBoard(String name);
+
+    LadderBoard getLadderBoard(Long name);
 
     LadderBoard updateUserStatus(LadderBoard l, LadderBoardPlayer lbp);
 

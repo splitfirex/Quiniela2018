@@ -1,5 +1,6 @@
 package quinielas.utils.dom;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -7,12 +8,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import quinielas.model.PlayerGroup;
 import quinielas.model.PlayerGroupDetail;
-import quinielas.model.PlayerMatch;
-import quinielas.model.enums.TypeMatch;
 
 import java.util.*;
 
 @Document(collection = "domGroup")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DOMGroup {
 
     public DOMGroup(){};
@@ -141,32 +141,35 @@ public class DOMGroup {
         Map<Long, PlayerGroupDetail> team_group = new HashMap<>();
 
         for (DOMMatch playerMatch : this.matches) {
-            if(team_group.keySet().contains(playerMatch.getHome_team())){
-                team_group.put(playerMatch.getHome_team(), new PlayerGroupDetail(){{setP(playerMatch.getHome_team().intValue());}});
+
+            if(!team_group.keySet().contains(playerMatch.getHome_team())){
+                team_group.put(playerMatch.getHome_team(), new PlayerGroupDetail(){{setId(playerMatch.getHome_team()); setP(0);}});
             }
-            if(team_group.keySet().contains(playerMatch.getAway_team())){
-                team_group.put(playerMatch.getAway_team(), new PlayerGroupDetail(){{setP(playerMatch.getAway_team().intValue());}});
+            if(!team_group.keySet().contains(playerMatch.getAway_team())){
+                team_group.put(playerMatch.getAway_team(), new PlayerGroupDetail(){{setId(playerMatch.getAway_team()); setP(0);}});
             }
 
             PlayerGroupDetail homeTeamDetail = team_group.get(playerMatch.getHome_team());
             PlayerGroupDetail awayTeamDetail = team_group.get(playerMatch.getAway_team());
 
-            homeTeamDetail.setP( playerMatch.getHome_result() > playerMatch.getAway_result() ? homeTeamDetail.getP() + 3 : 0 );
-            awayTeamDetail.setP( playerMatch.getHome_result() < playerMatch.getAway_result() ? awayTeamDetail.getP() + 3 : 0 );
-            homeTeamDetail.setP( playerMatch.getHome_result() == playerMatch.getAway_result() ? homeTeamDetail.getP() + 1 : 0 );
-            awayTeamDetail.setP( playerMatch.getHome_result() == playerMatch.getAway_result() ? awayTeamDetail.getP() + 1 : 0 );
+            if (playerMatch.getAway_team() != null && playerMatch.getHome_result() != null) {
 
-            homeTeamDetail.setPg( homeTeamDetail.getPg() +  playerMatch.getHome_result().intValue() );
-            awayTeamDetail.setPg( awayTeamDetail.getPg() +  playerMatch.getAway_result().intValue() );
+                homeTeamDetail.setP(playerMatch.getHome_result() > playerMatch.getAway_result() ? homeTeamDetail.getP() + 3 : homeTeamDetail.getP());
+                awayTeamDetail.setP(playerMatch.getHome_result() < playerMatch.getAway_result() ? awayTeamDetail.getP() + 3 : awayTeamDetail.getP());
+                homeTeamDetail.setP(playerMatch.getHome_result() == playerMatch.getAway_result() ? homeTeamDetail.getP() + 1 : homeTeamDetail.getP());
+                awayTeamDetail.setP(playerMatch.getHome_result() == playerMatch.getAway_result() ? awayTeamDetail.getP() + 1 : awayTeamDetail.getP());
 
-            homeTeamDetail.setPg( homeTeamDetail.getNg() +  playerMatch.getAway_result().intValue() );
-            awayTeamDetail.setPg( awayTeamDetail.getNg() +  playerMatch.getHome_result().intValue() );
+                homeTeamDetail.setPg(homeTeamDetail.getPg() + playerMatch.getHome_result().intValue());
+                awayTeamDetail.setPg(awayTeamDetail.getPg() + playerMatch.getAway_result().intValue());
+
+                homeTeamDetail.setNg(homeTeamDetail.getNg() + playerMatch.getAway_result().intValue());
+                awayTeamDetail.setNg(awayTeamDetail.getNg() + playerMatch.getHome_result().intValue());
+            }
 
         }
 
         PlayerGroup playerGroup = new PlayerGroup();
-        playerGroup.setIdPlayer(this.idPlayer);
-        playerGroup.setIdLadder(this.idLadder);
+        playerGroup.setGroupName(this.name.toUpperCase().substring(this.name.length() - 1));
         playerGroup.setDetails(new LinkedList<>(team_group.values()));
 
         Collections.sort(playerGroup.getDetails(), new Comparator<PlayerGroupDetail>() {
@@ -183,4 +186,10 @@ public class DOMGroup {
         return playerGroup;
     }
 
+    public void updateStatus() {
+        if(!this.type.equals("groups")) return;
+        PlayerGroup PG = generatePlayerGroup();
+        this.setWinner(PG.getDetails().getFirst().getId());
+        this.setRunnerup(PG.getDetails().get(1).getId());
+    }
 }

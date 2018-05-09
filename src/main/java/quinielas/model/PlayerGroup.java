@@ -1,5 +1,6 @@
 package quinielas.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,25 +9,23 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-@Document(collection = "playerGroup")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlayerGroup {
 
-    @Id
-    private Long id;
-    private Long idGroup;
+
+    private String groupName;
     private Long idPlayer;
     private Long idLadder;
 
     private LinkedList<PlayerGroupDetail> details = new LinkedList<>();
 
-    public Long getId() {
-        return id;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
-
 
     public Long getIdPlayer() {
         return idPlayer;
@@ -42,15 +41,6 @@ public class PlayerGroup {
 
     public void setIdLadder(Long idLadder) {
         this.idLadder = idLadder;
-    }
-
-
-    public Long getIdGroup() {
-        return idGroup;
-    }
-
-    public void setIdGroup(Long idGroup) {
-        this.idGroup = idGroup;
     }
 
     public LinkedList<PlayerGroupDetail> getDetails() {

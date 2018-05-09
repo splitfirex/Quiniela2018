@@ -35,39 +35,45 @@ public class ScoreMath {
     @Value("${player.username}")
     String genericPlayername;
 
-    private final LadderBoard systemLadder;
-    private final Player systemPlayer;
+    private static LadderBoard systemLadder;
+    private static Player systemPlayer;
 
-    {
-        systemLadder = new LadderBoard();
-        systemLadder.setId(1L);
-        systemLadder.setName(genericLaddername);
-
-        systemPlayer = new Player();
-        systemPlayer.setId(1L);
-        systemPlayer.setUsername(genericPlayername);
+    private void getDefaults(){
+        systemLadder =  ladderboardService.getLadderBoard(genericLaddername);
+        systemPlayer = playerService.getPlayerByUsername(genericPlayername);
     }
 
 
     public void updatesPoints() {
+        if(systemLadder == null) getDefaults();
         List<LadderBoard> ladders = ladderboardService.listLadderBoard().stream().filter(lad -> !lad.getName().equals(genericLaddername)).collect(Collectors.toList());
         List<DOMMatch> systemMatches = groupService.getGroupsByPlayerAndLadder(systemPlayer.getId(), systemLadder.getId())
                 .stream().map(doc -> doc.getMatches())
                 .flatMap(List::stream).collect(Collectors.toList());
 
-        ladders.stream().forEach(
-                lad -> lad.getListPlayers().stream().forEach(
-                        lbp -> {
-                            lbp.setPoints(0L);
-                            Player p = playerService.getPlayerByUsername(lbp.getUsername());
-                            List<DOMMatch> playerMatches = groupService.getGroupsByPlayerAndLadder(p.getId(), lad.getId())
-                                    .stream().map(doc -> doc.getMatches())
-                                    .flatMap(List::stream).collect(Collectors.toList());
-                            for(int i =0 ; i< playerMatches.size() ; i++){
-                                lbp.setPoints(lbp.getPoints() + systemMatches.get(i).compareMatch(playerMatches.get(i)));
+        ladders.parallelStream().forEach(
+                lad -> {
+                    lad.getListPlayers().parallelStream().forEach(
+                            lbp -> {
+                                lbp.setPoints(0L);
+                                Player p = playerService.getPlayerByUsername(lbp.getUsername());
+                                List<DOMGroup> playerGroups = groupService.getGroupsByPlayerAndLadder(p.getId(), lad.getId());
+                                List<DOMMatch> playerMatches = playerGroups
+                                        .stream().map(doc -> doc.getMatches())
+                                        .flatMap(List::stream).collect(Collectors.toList());
+                                for (int i = 0; i < playerMatches.size(); i++) {
+                                    Long value = systemMatches.get(i).compareMatch(playerMatches.get(i));
+                                    if(value == null) continue;
+                                    playerMatches.get(i).setStatus(value.intValue());
+                                    playerMatches.get(i).setFinished(true);
+                                    lbp.setPoints(lbp.getPoints() + value );
+                                }
+                                playerGroups.stream().forEach(g -> groupService.updateGroup(g) );
                             }
-                        }
-                )
+
+                    );
+                    ladderboardService.updateLadderBoard(lad);
+                }
         );
     }
 

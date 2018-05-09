@@ -80,8 +80,6 @@ public class RESTClient {
             domTeamRepository.saveAll(domTeams);
             domGroupRepository.saveAll(domGroups);
 
-            groupService.setDefaultList(domGroups);
-
         }catch(Exception ex){
             ex.printStackTrace();
         }

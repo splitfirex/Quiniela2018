@@ -3,6 +3,7 @@ package quinielas.service2;
 import org.springframework.stereotype.Service;
 import quinielas.model.LadderBoard;
 import quinielas.model.Player;
+import quinielas.model.PlayerGroup;
 import quinielas.utils.dom.DOMGroup;
 import quinielas.utils.dom.DOMMatch;
 
@@ -17,10 +18,11 @@ public interface GroupService {
 
     void generateGroupsForPlayerAndLadder(Long idUsuario, Long ladderName);
 
+    void generateDemoGroupsForPlayerAndLadder(Long idUsuario, Long ladderName);
+
     void deleteGroupsForPlayerAndLadder(Long idUsuario, Long ladderName);
 
-    List<DOMGroup> updatePlayerMatches(Long p, Long l, Long idMatch, Integer homeScore, Integer visitScore);
+    void updateGroup(DOMGroup group);
 
-    void setDefaultList(List<DOMGroup> groups);
-
+    List<PlayerGroup> updatePlayerMatches(Long id, Long id1, Long idMatch, Integer homeScore, Integer visitScore, Integer homePenalty, Integer visitPenalty);
 }

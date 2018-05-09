@@ -1,7 +1,7 @@
 package quinielas.model.views;
 
 import quinielas.model.PlayerGroup;
-import quinielas.model.PlayerMatch;
+import quinielas.utils.dom.DOMMatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ public class ViewPlayerMatchesGroup {
 
     String username;
     Integer points;
-    Map<Long, PlayerMatch> matches = new HashMap<>();
+    Map<Long, DOMMatch> matches = new HashMap<>();
     Map<String, PlayerGroup> groups = new HashMap<>();
 
     public String getUsername() {
@@ -29,11 +29,11 @@ public class ViewPlayerMatchesGroup {
         this.points = points;
     }
 
-    public Map<Long, PlayerMatch> getMatches() {
+    public Map<Long, DOMMatch> getMatches() {
         return matches;
     }
 
-    public void setMatches(Map<Long, PlayerMatch> matches) {
+    public void setMatches(Map<Long, DOMMatch> matches) {
         this.matches = matches;
     }
 

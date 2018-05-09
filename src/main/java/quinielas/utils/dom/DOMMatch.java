@@ -1,5 +1,6 @@
 package quinielas.utils.dom;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Document(collection = "domMatch")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DOMMatch {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM/yyyy HH:mm");
@@ -15,12 +17,12 @@ public class DOMMatch {
     public DOMMatch() {
     }
 
-    ;
 
     public DOMMatch(JSONObject o) throws JSONException {
 
         this.id = o.getLong("name");
         this.type = o.getString("type");
+        this.editable =  true;
 
         if (this.type.equals("group")) {
             this.home_team = o.getLong("home_team");
@@ -31,11 +33,11 @@ public class DOMMatch {
             this.home_team_ph = this.home_team_ph.split("_")[1].toUpperCase() + "_" + (this.home_team_ph.split("_")[0].equals("winner") ? 1 : 2);
             this.away_team_ph = this.away_team_ph.split("_")[1].toUpperCase() + "_" + (this.away_team_ph.split("_")[0].equals("winner") ? 1 : 2);
         } else if (this.type.equals("winner")) {
-            this.home_team_ph = "WIN_" + o.getLong("home_team");
-            this.away_team_ph = "WIN_" + o.getLong("away_team");
+            this.home_team_ph = "W" + o.getLong("home_team");
+            this.away_team_ph = "W" + o.getLong("away_team");
         } else if (this.type.equals("loser")) {
-            this.home_team_ph = "LOS_" + o.getLong("home_team");
-            this.away_team_ph = "LOS_" + o.getLong("away_team");
+            this.home_team_ph = "L" + o.getLong("home_team");
+            this.away_team_ph = "L" + o.getLong("away_team");
 
         }
 
@@ -88,6 +90,15 @@ public class DOMMatch {
     Long date;
     Integer status;
     Boolean finished;
+    Boolean editable;
+
+    public Boolean getEditable() {
+        return editable;
+    }
+
+    public void setEditable(Boolean editable) {
+        this.editable = editable;
+    }
 
     public Integer getStatus() {
         return status;
@@ -202,6 +213,8 @@ public class DOMMatch {
     }
 
     public Long compareMatch(DOMMatch match) {
+        if (match.getAway_team() == null || match.getHome_result() == null || this.getAway_team() == null || this.getHome_result() == null) return null;
+
         if (match.getAway_team() != this.getAway_team() || match.getHome_team() != this.getHome_team()) return 0L;
 
         if (match.getHome_result() == this.getHome_result() && match.getAway_result() == this.getAway_result())

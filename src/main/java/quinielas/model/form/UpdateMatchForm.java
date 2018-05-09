@@ -6,8 +6,27 @@ public class UpdateMatchForm extends TokenAbleForm {
     private Integer homeScore;
     private Integer visitScore;
 
+    private Integer homePenalty;
+    private Integer visitPenalty;
+
     public Long getIdMatch() {
         return idMatch;
+    }
+
+    public Integer getHomePenalty() {
+        return homePenalty;
+    }
+
+    public void setHomePenalty(Integer homePenalty) {
+        this.homePenalty = homePenalty;
+    }
+
+    public Integer getVisitPenalty() {
+        return visitPenalty;
+    }
+
+    public void setVisitPenalty(Integer visitPenalty) {
+        this.visitPenalty = visitPenalty;
     }
 
     public void setIdMatch(Long idMatch) {

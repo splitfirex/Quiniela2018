@@ -58,9 +58,13 @@ public class PlayerServiceImpl implements PlayerService {
         if(cleanAndBuild) {
             playerRepository.deleteAll();
             Player p = createPlayer(genericUsername, genericPassword);
-            //String token = loginService.login(genericUsername, genericPassword);
             ladderBoardService.createLadderBoard(genericLaddername, genericLadderPassword, p);
-            ladderBoardService.createLadderBoard("PRUEBA", null, p);
+
+            p = createPlayer("Jugador 1", "jugador");
+            ladderBoardService.createLadderBoardDemo("DEMO", null, p);
+            p = createPlayer("Jugador 2", "jugador");
+            ladderBoardService.joinLadderBoardDemo("DEMO", null, p);
+
         }
     }
 
@@ -144,7 +148,7 @@ public class PlayerServiceImpl implements PlayerService {
         }
         if(playerRepository.findByUsername(username) != null) return null;
         Player p = new Player();
-        p.setId(counter.incrementAndGet());
+        p.setId(Generators.randomBasedGenerator().generate().getLeastSignificantBits());
         p.setUsername(username);
         p.setPassword(encode(password));
         playerRepository.save(p);

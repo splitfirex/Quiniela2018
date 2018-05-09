@@ -1,11 +1,13 @@
 package quinielas.utils.dom;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "domTeam")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DOMTeam {
 
     public DOMTeam(){
@@ -15,8 +17,8 @@ public class DOMTeam {
     public DOMTeam(JSONObject object) throws JSONException {
         this.id = object.getLong("id") - 1;
         this.name = object.getString("name");
-        this.shortCode = object.getString("iso2");
-        this.flagUrl = object.getString("flag");
+        this.shortCode = object.getString("fifaCode");
+        this.flagUrl = object.getString("iso2");
     }
 
     @Id

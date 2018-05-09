@@ -1,5 +1,6 @@
 package quinielas.service2;
 
+import com.fasterxml.uuid.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class LadderboardServiceImpl implements LadderboardService{
         LadderBoard l = new LadderBoard();
         l.setName(name);
         l.setPassword(password != null ? playerService.encode(password) : null);
-        l.setId(counter.incrementAndGet());
+        l.setId(Generators.randomBasedGenerator().generate().getLeastSignificantBits());
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true, true));
         Random rand = new Random();
         int nextInt = rand.nextInt(256*256*256);
@@ -74,6 +75,28 @@ public class LadderboardServiceImpl implements LadderboardService{
 
         ladderBoardRepository.save(l);
         return l;
+    }
+
+    @Override
+    public void createLadderBoardDemo(String name, String password, Player p) {
+        LadderBoard l = new LadderBoard();
+        l.setName(name);
+        l.setPassword(password != null ? playerService.encode(password) : null);
+        l.setId(Generators.randomBasedGenerator().generate().getLeastSignificantBits());
+        l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true, true));
+        Random rand = new Random();
+        int nextInt = rand.nextInt(256*256*256);
+        l.setBgColor(String.format("#%06x", nextInt));
+        ladderBoardRepository.save(l);
+        groupService.generateDemoGroupsForPlayerAndLadder(p.getId(),l.getId());
+    }
+
+    @Override
+    public void joinLadderBoardDemo(String name, String password, Player p) {
+        LadderBoard l = ladderBoardRepository.findByName(name);
+        l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true));
+        groupService.generateDemoGroupsForPlayerAndLadder(p.getId(),l.getId());
+        ladderBoardRepository.save(l);
     }
 
     @Override
@@ -131,6 +154,11 @@ public class LadderboardServiceImpl implements LadderboardService{
     @Override
     public LadderBoard getLadderBoard(String name) {
         return ladderBoardRepository.findByName(name);
+    }
+
+    @Override
+    public LadderBoard getLadderBoard(Long name) {
+        return ladderBoardRepository.findById(name).get();
     }
 
     @Override

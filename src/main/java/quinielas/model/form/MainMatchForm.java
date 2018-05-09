@@ -7,6 +7,25 @@ public class MainMatchForm {
     private Integer homeScore;
     private Integer visitScore;
 
+    private Integer homePenalty;
+    private Integer visitPenalty;
+
+    public Integer getHomePenalty() {
+        return homePenalty;
+    }
+
+    public void setHomePenalty(Integer homePenalty) {
+        this.homePenalty = homePenalty;
+    }
+
+    public Integer getVisitPenalty() {
+        return visitPenalty;
+    }
+
+    public void setVisitPenalty(Integer visitPenalty) {
+        this.visitPenalty = visitPenalty;
+    }
+
     public String getPassword() {
         return password;
     }
