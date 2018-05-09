@@ -24,5 +24,5 @@ public interface GroupService {
 
     void updateGroup(DOMGroup group);
 
-    List<PlayerGroup> updatePlayerMatches(Long id, Long id1, Long idMatch, Integer homeScore, Integer visitScore, Integer homePenalty, Integer visitPenalty);
+    public List<PlayerGroup> updatePlayerMatches(Player player, LadderBoard l, List<DOMMatch> match);
 }

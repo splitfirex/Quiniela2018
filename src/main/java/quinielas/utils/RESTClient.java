@@ -10,11 +10,12 @@ import quinielas.repository2.DOMGroupRepository;
 import quinielas.repository2.DOMTeamRepository;
 import quinielas.service2.GroupService;
 import quinielas.utils.dom.DOMGroup;
+import quinielas.utils.dom.DOMMatch;
 import quinielas.utils.dom.DOMTeam;
 
-import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RESTClient {
@@ -32,15 +33,6 @@ public class RESTClient {
 
     @Value("${clean_and_build}")
     Boolean cleanAndBuild;
-
-   /* @PostConstruct
-    private void init() {
-        if(cleanAndBuild) {
-            requestData();
-        }
-    }*/
-
-
 
     public void requestData(){
         List<DOMGroup> domGroups  = new LinkedList<>();
@@ -77,12 +69,29 @@ public class RESTClient {
                 domGroups.add(new DOMGroup(Generators.randomBasedGenerator().generate().toString(),counter++,"knockout", knockout.getJSONObject(key)));
             }
 
+            updateReferences(domGroups);
+
             domTeamRepository.saveAll(domTeams);
             domGroupRepository.saveAll(domGroups);
 
         }catch(Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    public void updateReferences(List<DOMGroup> domGroups){
+        List<DOMMatch> matches = domGroups.stream().map(v -> v.getMatches()).flatMap(List::stream)
+                .sorted((f2, f1) -> f2.getDate().compareTo(f1.getDate())).collect(Collectors.toList());
+
+        matches.stream().forEach( m ->{
+            if(m.getType().equals("winner") || m.getType().equals("loser")){
+                Long idMatchHome = Long.parseLong(m.getHome_team_ph().replace("W","").replace("L",""));
+                Long idMatchAway = Long.parseLong(m.getAway_team_ph().replace("W","").replace("L",""));
+
+                matches.stream().filter(p-> p.getId() == idMatchHome).forEach(p-> p.getReferences().add(m.getId()));
+                matches.stream().filter(p-> p.getId() == idMatchAway).forEach(p-> p.getReferences().add(m.getId()));
+            }
+        });
     }
 
     public static String getFileContent(

@@ -35,7 +35,7 @@ public class DOMGroup {
         JSONArray array = object.getJSONArray("matches");
 
         for (int i = 0; i < array.length(); i++) {
-            this.matches.add(new DOMMatch((JSONObject) array.get(i)));
+            this.matches.add(new DOMMatch(this.name,(JSONObject) array.get(i)));
         }
     }
 

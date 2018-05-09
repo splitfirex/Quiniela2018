@@ -1,52 +1,21 @@
 package quinielas.model.form;
 
+import quinielas.utils.dom.DOMMatch;
+
+import java.util.List;
+
 public class UpdateMatchForm extends TokenAbleForm {
-    private Long idMatch;
+
+    private String password;
     private String laddername;
-    private Integer homeScore;
-    private Integer visitScore;
+    List<DOMMatch> listMatches;
 
-    private Integer homePenalty;
-    private Integer visitPenalty;
-
-    public Long getIdMatch() {
-        return idMatch;
+    public String getPassword() {
+        return password;
     }
 
-    public Integer getHomePenalty() {
-        return homePenalty;
-    }
-
-    public void setHomePenalty(Integer homePenalty) {
-        this.homePenalty = homePenalty;
-    }
-
-    public Integer getVisitPenalty() {
-        return visitPenalty;
-    }
-
-    public void setVisitPenalty(Integer visitPenalty) {
-        this.visitPenalty = visitPenalty;
-    }
-
-    public void setIdMatch(Long idMatch) {
-        this.idMatch = idMatch;
-    }
-
-    public Integer getHomeScore() {
-        return homeScore;
-    }
-
-    public void setHomeScore(Integer homeScore) {
-        this.homeScore = homeScore;
-    }
-
-    public Integer getVisitScore() {
-        return visitScore;
-    }
-
-    public void setVisitScore(Integer visitScore) {
-        this.visitScore = visitScore;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getLaddername() {
@@ -55,5 +24,13 @@ public class UpdateMatchForm extends TokenAbleForm {
 
     public void setLaddername(String laddername) {
         this.laddername = laddername;
+    }
+
+    public List<DOMMatch> getListMatches() {
+        return listMatches;
+    }
+
+    public void setListMatches(List<DOMMatch> listMatches) {
+        this.listMatches = listMatches;
     }
 }

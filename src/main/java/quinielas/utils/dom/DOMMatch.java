@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "domMatch")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,10 +20,11 @@ public class DOMMatch {
     }
 
 
-    public DOMMatch(JSONObject o) throws JSONException {
+    public DOMMatch(String groupname,JSONObject o) throws JSONException {
 
         this.id = o.getLong("name");
         this.type = o.getString("type");
+        this.groupname= groupname;
         this.editable =  true;
 
         if (this.type.equals("group")) {
@@ -91,6 +94,27 @@ public class DOMMatch {
     Integer status;
     Boolean finished;
     Boolean editable;
+    List<Long> references;
+    String groupname;
+
+    public String getGroupname() {
+        return groupname;
+    }
+
+    public void setGroupname(String groupname) {
+        this.groupname = groupname;
+    }
+
+    public List<Long> getReferences() {
+        if(this.references == null){
+            this.references = new ArrayList<>();
+        }
+        return references;
+    }
+
+    public void setReferences(List<Long> references) {
+        this.references = references;
+    }
 
     public Boolean getEditable() {
         return editable;
@@ -225,6 +249,28 @@ public class DOMMatch {
         if (match.getHome_result() < match.getAway_result() && this.getHome_result() < this.getAway_result()) return 1L;
 
         return 0L;
+    }
+
+    public Long getCalculatedWinner(){
+        if (this.getAway_team() == null || this.getHome_result() == null) return null;
+        if( this.getHome_result() == this.getAway_result()){
+            if( this.getHome_penalty() > this.getAway_penalty()) return this.getHome_team();
+            if( this.getHome_penalty() < this.getAway_penalty()) return this.getAway_team();
+        }
+        if( this.getHome_result() > this.getAway_result()) return this.getHome_team();
+        if( this.getHome_result() < this.getAway_result()) return this.getAway_team();
+        return null;
+    }
+
+    public Long getCalculatedLoser(){
+        if (this.getAway_team() == null || this.getHome_result() == null) return null;
+        if( this.getHome_result() == this.getAway_result()){
+            if( this.getHome_penalty() > this.getAway_penalty()) return this.getAway_team();
+            if( this.getHome_penalty() < this.getAway_penalty()) return this.getHome_team();
+        }
+        if( this.getHome_result() > this.getAway_result()) return this.getAway_team();
+        if( this.getHome_result() < this.getAway_result()) return this.getHome_team();
+        return null;
     }
 
 }

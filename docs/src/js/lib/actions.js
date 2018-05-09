@@ -1,5 +1,5 @@
 import React from 'react';
-import {server, genericLaddername, genericPlayername, postData, getData} from './basicConfig.js'
+import { server, genericLaddername, genericPlayername, postData, getData } from './basicConfig.js'
 
 export const GlobalAppActions = (state, action) => {
 
@@ -67,7 +67,7 @@ export const GlobalAppActions = (state, action) => {
 
         case "SUCCESS_MATCHES":
             return { showLoading: false, content: action.content }
-        case "SUCCESS_GROUPS":{
+        case "SUCCESS_GROUPS": {
             return { groups: action.content }
         }
         case "SUCCESS_LOGIN":
@@ -317,12 +317,14 @@ export var fetchBanPlayer = function () {
         }.bind(this));
 }
 
-export var fetchUpdateScore = function (index, homeScore, visitScore,homePenalty,visitPenalty) {
-    postData.body = JSON.stringify({ "token": this.props.token, laddername: this.props.laddername, "idMatch": index, "homeScore": homeScore, "visitScore": visitScore, "homePenalty": homePenalty , "visitPenalty": visitPenalty });
+export var fetchUpdateScore = function (listMatches) {
+    postData.body = JSON.stringify({
+        "token": this.props.token, laddername: this.props.laddername, "listMatches": listMatches
+    });
     fetch(server + '/user/updatematch', postData)
         .then(function (response) {
             return response.json();
-        }).then(function (res) {    
+        }).then(function (res) {
             this.dispatch({ type: "SUCCESS_GROUPS", content: res });
         }.bind(this));
 }

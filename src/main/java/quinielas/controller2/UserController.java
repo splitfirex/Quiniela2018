@@ -177,7 +177,7 @@ public class UserController {
     public List<PlayerGroup> updateMatch(@RequestBody UpdateMatchForm form) {
         Player player = playerService.getPlayerByToken(form.getToken());
         LadderBoard l = ladderboardService.getLadderBoard(form.getLaddername());
-        return groupService.updatePlayerMatches(player.getId(), l.getId(), form.getIdMatch(), form.getHomeScore(), form.getVisitScore(), form.getHomePenalty(), form.getVisitPenalty());
+        return groupService.updatePlayerMatches(player, l, form.getListMatches() );
     }
 
 
@@ -223,14 +223,11 @@ public class UserController {
 
     @RequestMapping(value = "/updatemainmatch", method = RequestMethod.POST)
     @ResponseBody
-    public ViewLadderBoard updateMainMatch(@RequestBody MainMatchForm form) {
+    public ViewLadderBoard updateMainMatch(@RequestBody UpdateMatchForm form) {
         if (playerService.encode(form.getPassword()).equals(generalKey)) {
             LadderBoard l = ladderboardService.getLadderBoard(genericLaddername);
             Player p = playerService.getPlayerByUsername(genericUsername);
-
-            List<DOMMatch> matches = groupService.getMatchesByPlayerAndLadder(p.getId(), l.getId());
-
-            groupService.updatePlayerMatches(p.getId(), l.getId(), form.getIdMatch(), form.getHomeScore(), form.getVisitScore(), form.getHomePenalty(), form.getVisitPenalty());
+            groupService.updatePlayerMatches(p, l, form.getListMatches());
         }
         return null;
     }

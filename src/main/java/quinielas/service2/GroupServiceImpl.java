@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import quinielas.model.LadderBoard;
+import quinielas.model.Player;
 import quinielas.model.PlayerGroup;
 import quinielas.repository2.DOMGroupRepository;
 import quinielas.utils.RESTClient;
@@ -49,8 +50,8 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
-    private  List<DOMGroup> getDefaultGroups(){
-        return domGroupRepository.findAllByIdPlayerAndIdLadder(null,null,new Sort(Sort.Direction.ASC, "order"));
+    private List<DOMGroup> getDefaultGroups() {
+        return domGroupRepository.findAllByIdPlayerAndIdLadder(null, null, new Sort(Sort.Direction.ASC, "order"));
     }
 
     @Override
@@ -93,15 +94,18 @@ public class GroupServiceImpl implements GroupService {
 
         List<DOMGroup> list = domGroupRepository.findAllByIdPlayerAndIdLadder(idUsuario, ladderName, new Sort(Sort.Direction.ASC, "order"));
         list.stream()
-                .forEach(p -> {p.getMatches().stream()
-                        .forEach(m -> {
-                            m.setHome_result(rand.nextInt(5));
-                            m.setAway_result(rand.nextInt(5));
-                            if(m.getHome_result().equals(m.getAway_result())){
-                                m.setHome_penalty(rand.nextInt(6));
-                                m.setAway_penalty(rand.nextInt(6));
-                            }
-                        }); p.updateStatus();});
+                .forEach(p -> {
+                    p.getMatches().stream()
+                            .forEach(m -> {
+                                m.setHome_result(rand.nextInt(5));
+                                m.setAway_result(rand.nextInt(5));
+                                if (m.getHome_result().equals(m.getAway_result())) {
+                                    m.setHome_penalty(rand.nextInt(6));
+                                    m.setAway_penalty(rand.nextInt(6));
+                                }
+                            });
+                    p.updateStatus();
+                });
         domGroupRepository.saveAll(list);
     }
 
@@ -111,31 +115,53 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<PlayerGroup> updatePlayerMatches(Long p, Long l, Long idMatch, Integer homeScore, Integer visitScore, Integer homePenalty, Integer visitPenalty) {
-        List<DOMGroup> group = getGroupsByPlayerAndLadder(p,l);
-        List<DOMGroup> editgroup = group.stream().filter(g -> !g.getMatches().stream().filter(gp -> gp.getId() == idMatch).collect(Collectors.toList()).isEmpty()).collect(Collectors.toList());
-        editgroup.get(0).getMatches().stream().filter(gp -> gp.getId() == idMatch).forEach(gp -> {
-            gp.setHome_result(homeScore);
-            gp.setAway_result(visitScore);
-            gp.setHome_penalty(homePenalty);
-            gp.setAway_penalty(visitPenalty);
-        });
-        group.get(0).updateStatus();
+    public void updateGroup(DOMGroup group) {
+        domGroupRepository.save(group);
+    }
 
-        domGroupRepository.saveAll(editgroup);
-        LadderBoard ladder = ladderBoardService.getLadderBoard(l);
-        if (ladder.getName().equals(genericLaddername)) {
+    @Override
+    public List<PlayerGroup> updatePlayerMatches(Player player, LadderBoard l, List<DOMMatch> match) {
+        List<DOMGroup> group = getGroupsByPlayerAndLadder(player.getId(), l.getId());
+        List<Long> matchesId = match.stream().map(m -> m.getId()).collect(Collectors.toList());
+        group.stream()
+                .filter(g -> g.getMatches().stream()
+                        .filter(m -> matchesId.contains(m.getId()))
+                        .collect(Collectors.toList()).isEmpty()).forEach(gr -> {
+                     gr.getMatches().stream().filter(m -> matchesId.contains(m.getId())).forEach(rr -> {
+                         DOMMatch mm = match.stream().filter( jj -> jj.getId()==rr.getId()).findFirst().get();
+                         rr.setHome_result(mm.getHome_result());
+                         rr.setAway_result(mm.getAway_result());
+                         rr.setHome_penalty(mm.getHome_penalty());
+                         rr.setAway_penalty(mm.getAway_penalty());
+                         rr.setHome_team(mm.getHome_team());
+                         rr.setAway_team(mm.getAway_team());
+                     });
+                }
+        );
+
+       /*List<DOMGroup> editgroup = group.stream().filter(g -> !g.getMatches().stream()
+                .filter(gp ->
+                        gp.getId() == match.getId()).collect(Collectors.toList()).isEmpty())
+                .collect(Collectors.toList());
+        editgroup.get(0).getMatches().stream().filter(gp -> gp.getId() == match.getId()).forEach(rr -> {
+            rr.setHome_result(match.getHome_result());
+            rr.setAway_result(match.getAway_result());
+            rr.setHome_penalty(match.getHome_penalty());
+            rr.setAway_penalty(match.getAway_penalty());
+            rr.setHome_team(match.getHome_team());
+            rr.setAway_team(match.getAway_team());
+        });
+*/
+
+        domGroupRepository.saveAll(group);
+        if (l.getName().equals(genericLaddername)) {
             scoreMath.updatesPoints();
         }
 
         List<PlayerGroup> groups = new ArrayList<>();
-        group.stream().forEachOrdered(g-> groups.add(g.generatePlayerGroup()));
+        group.stream().forEachOrdered(g -> groups.add(g.generatePlayerGroup()));
 
-        return groups.stream().filter(x -> x!=null).collect(Collectors.toList());
+        return groups.stream().filter(x -> x != null).collect(Collectors.toList());
     }
 
-    @Override
-    public void updateGroup(DOMGroup group) {
-        domGroupRepository.save(group);
-    }
 }

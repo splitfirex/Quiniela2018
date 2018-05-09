@@ -13,8 +13,7 @@ export class ContentMatch extends React.Component {
             groups: [],
             editables: []
         }
-        this.auxString = "";
-        this.currentSubtitle = -1;
+        this.currentSubtitle = "";
     }
 
     componentWillReceiveProps(nextProps) {
@@ -29,10 +28,21 @@ export class ContentMatch extends React.Component {
         if (this.state.editables.indexOf(id) === -1) {
             this.state.editables.push(id);
         } else {
+
+            this.state.content.map(function (currentValue, index, array) {
+                var homeTeam = calculateTeam(currentValue, this.state.groups, array, this.props.teams, "home");
+                var awayTeam = calculateTeam(currentValue, this.state.groups, array, this.props.teams, "away");
+                if (currentValue.type != "group") {
+                    currentValue.home_team = typeof homeTeam === 'object' ? homeTeam.id : null;
+                    currentValue.away_team = typeof awayTeam === 'object' ? awayTeam.id : null;
+                }
+            }.bind(this));
+
+
             var index = this.state.content.map(function (e) { return e.id; }).indexOf(id);
             this.state.editables.splice(this.state.editables.indexOf(id), 1);
-            fetchUpdateScore.bind(this)(id, this.state.content[index].home_result, this.state.content[index].away_result, 
-                this.state.content[index].home_penalty, this.state.content[index].away_penalty);
+            this.updateReferencies(index);
+
         }
         this.setState({
             editables: this.state.editables
@@ -40,11 +50,28 @@ export class ContentMatch extends React.Component {
 
     }
 
+    updateReferencies(index) {
+
+        fetchUpdateScore.bind(this)([this.state.content[index]]);
+
+        if (this.state.content[index].references != null) {
+            for (var i = 0; i < this.state.content[index].references.length; i++) {
+                var id = this.state.content[index].references[i];
+                var index = this.state.content.map(function (e) { return e.id; }).indexOf(id);
+                this.updateReferencies(index);
+            }
+        }
+    }
+
     incrementScore(id, score) {
         var content = this.state.content;
         var index = content.map(function (e) { return e.id; }).indexOf(id);
 
         content[index][score] = this.state.content[index][score] == undefined ? 0 : this.state.content[index][score] + 1;
+
+        if ((score == "home_penalty" || score == "away_penalty") && content[index]["home_penalty"] === content[index]["away_penalty"]) {
+            content[index][score] = this.state.content[index][score] == undefined ? 0 : this.state.content[index][score] + 1;
+        }
 
         this.setState({
             content: content
@@ -57,6 +84,11 @@ export class ContentMatch extends React.Component {
 
         content[index][score] = this.state.content[index][score] == undefined ? undefined : this.state.content[index][score] - 1;
         if (this.state.content[index][score] === -1) content[index][score] = undefined;
+
+        if ((score == "home_penalty" || score == "away_penalty") && content[index]["home_penalty"] != undefined && content[index]["home_penalty"] === content[index]["away_penalty"]) {
+            content[index][score] = this.state.content[index][score] == undefined ? undefined : this.state.content[index][score] - 1;
+            if (this.state.content[index][score] === -1) content[index][score] = undefined;
+        }
 
         this.setState({
             content: content
@@ -73,23 +105,21 @@ export class ContentMatch extends React.Component {
     }
 
     renderSubtitle(newSubtitle) {
-        if (this.auxString === newSubtitle) {
+        if (newSubtitle.indexOf("Group") != -1) newSubtitle = "Group";
+        if (this.currentSubtitle === newSubtitle) {
             return undefined;
         }
-        this.auxString = newSubtitle;
-        this.currentSubtitle = this.currentSubtitle+1;
+        this.currentSubtitle = newSubtitle;
         return <div>{this._translate(this.currentSubtitle)}</div>
     }
 
     _translate(value) {
-        switch (value) {
-            case 0: return "Fase de grupos";
-            case 1: return "Octavos de final";
-            case 2: return "Cuartos de final";
-            case 3: return "Semi Finales";
-            case 4: return "Finales";
-            default: return "";
-        }
+        if (value.indexOf("Group") != -1) return "Fase de grupos";
+        if (value.indexOf("Round of 16") != -1) return "Octavos de final";
+        if (value.indexOf("Quarter-finals") != -1) return "Cuartos de final";
+        if (value.indexOf("Semi-finals") != -1) return "Semi Final";
+        if (value.indexOf("Third place play-off") != -1) return "Tercer lugar";
+        if (value.indexOf("Final") != -1) return "Final";
     }
 
     renderMatches() {
@@ -106,7 +136,7 @@ export class ContentMatch extends React.Component {
                 this.props.username === this.props.playername &&
                 !currentValue.finished && currentValue.editable ?
                 this.state.editables.indexOf(currentValue.id) !== -1 ?
-                    [this.renderSubtitle(currentValue.type), <MatchEdit round={index + 1} key={"match" + currentValue.id}
+                    [this.renderSubtitle(currentValue.groupname), <MatchEdit round={index + 1} key={"match" + currentValue.id}
                         id={currentValue.id}
                         date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
                         homeTeam={homeTeam}
@@ -117,7 +147,7 @@ export class ContentMatch extends React.Component {
                         dec={(index, home) => this.decrementScore(index, home)}
                         matchStatus={currentValue.status} />]
                     :
-                    [this.renderSubtitle(currentValue.type), <MatchUser round={index + 1} key={"match" + currentValue.id}
+                    [this.renderSubtitle(currentValue.groupname), <MatchUser round={index + 1} key={"match" + currentValue.id}
                         id={currentValue.id}
                         date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
                         homeTeam={homeTeam}
@@ -126,7 +156,7 @@ export class ContentMatch extends React.Component {
                         toggleEdit={(index) => this.toggleEdit(index)}
                         matchStatus={currentValue.status} />]
                 :
-                [this.renderSubtitle(currentValue.type), <Match round={index + 1} key={"match" + currentValue.id}
+                [this.renderSubtitle(currentValue.groupname), <Match round={index + 1} key={"match" + currentValue.id}
                     date={zeroPad(d.getDate(), 2) + "/" + zeroPad(d.getMonth(), 2) + " " + zeroPad(d.getHours(), 2) + ":" + zeroPad(d.getMinutes(), 2)}
                     homeTeam={homeTeam}
                     awayTeam={awayTeam}
