@@ -70,11 +70,16 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void generateGroupsForPlayerAndLadder(Long idUsuario, Long ladderName) {
+    public void generateGroupsForPlayerAndLadder(Long idUsuario, Long ladderName, String type) {
         domGroupRepository.saveAll(getDefaultGroups().stream().map(v -> {
             DOMGroup d = new DOMGroup(v);
             d.setIdLadder(ladderName);
             d.setIdPlayer(idUsuario);
+            if(type.equals("Completo")){
+                d.setForced(true);
+            }else{
+                d.setForced(false);
+            }
             d.setId(Generators.randomBasedGenerator().generate().toString());
             return d;
         }).collect(Collectors.toList()));
@@ -120,6 +125,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public void updateGroup(List<DOMGroup> group) {
+        domGroupRepository.saveAll(group);
+    }
+
+    @Override
     public void updatePlayerMatches(Player player, LadderBoard l, List<DOMMatch> listMatch) {
         List<DOMGroup> group = getGroupsByPlayerAndLadder(player.getId(), l.getId());
         List<DOMMatch> matches = group.stream().map(v -> v.getMatches()).flatMap(List::stream)
@@ -140,14 +150,40 @@ public class GroupServiceImpl implements GroupService {
 
         domGroupRepository.saveAll(group);
         if (l.getName().equals(genericLaddername)) {
+            //demoContent(group);
             scoreMath.updatesPoints();
         }
 
-        DOMMatch ma = listMatch.stream().filter(m -> m.getId() == 64L && m.getAway_team()!= null && m.getHome_team()!=null).findFirst().get();
+        DOMMatch ma = listMatch.stream().filter(m -> m.getId() == 64L && m.getAway_team()!= null && m.getHome_team()!=null).findFirst().orElse(null);
         if(ma != null){
             l.getPlayerByName(player.getUsername()).setWinnerTeam(ma.calculateWinner());
             ladderBoardService.updateLadderBoard(l);
         }
+    }
+
+    private void demoContent(List<DOMGroup> group){
+        Random rand = new Random();
+        group.stream().filter(f-> f.getType().equals("groups")).forEachOrdered( g->{
+            g.getMatches().stream().forEach(m->{
+                m.setHome_result(rand.nextInt(5));
+                m.setAway_result(rand.nextInt(5));
+            });
+            g.updateStatus(group);
+        });
+        group.stream().filter(f-> f.getName().equals("Round of 16")).forEachOrdered( g->{
+            g.updateStatus(group);
+        });
+        domGroupRepository.saveAll(group);
+    }
+
+    @Override
+    public List<DOMGroup> getAllGroups() {
+        return domGroupRepository.findAll();
+    }
+
+    @Override
+    public List<DOMGroup> getAllUnforcedGroups() {
+        return domGroupRepository.findAllUnforcedGroups();
     }
 
 

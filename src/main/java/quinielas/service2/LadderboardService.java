@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LadderboardService {
 
-    LadderBoard createLadderBoard(String name, String password, Player p, boolean encode);
+    LadderBoard createLadderBoard(String name, String password, Player p, String type, boolean encode);
 
     LadderBoard joinLadderBoard(String name, String password, Player p);
 

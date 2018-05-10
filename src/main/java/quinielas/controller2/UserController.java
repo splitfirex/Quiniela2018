@@ -73,7 +73,7 @@ public class UserController {
     public ViewLadderBoard getLaddersCompleteNoPassword(@RequestParam("laddername") String laddername) {
         LadderBoard l = ladderboardService.getLadderBoard(laddername);
         if (!isPasswordProtected(l) || !isGeneric(l)) {
-             l.getListPlayers().stream().sorted((p1, p2) -> p2.getPoints().intValue() - p1.getPoints().intValue()).collect(Collectors.toList());
+            l.setListPlayers(l.getListPlayers().stream().sorted((p1, p2) -> p2.getPoints().intValue() - p1.getPoints().intValue()).collect(Collectors.toList()));
             return new ViewLadderBoard(l);
         }
         return null;
@@ -91,7 +91,7 @@ public class UserController {
     @ResponseBody
     public ViewLadderBoard createLadder(@RequestBody JoinLadderForm form) {
         Player player = playerService.getPlayerByToken(form.getToken());
-        return new ViewLadderBoard(ladderboardService.createLadderBoard(form.getLaddername(), form.getPassword(), player,true));
+        return new ViewLadderBoard(ladderboardService.createLadderBoard(form.getLaddername(), form.getPassword(), player, form.getType(),true));
     }
 
 
@@ -218,17 +218,6 @@ public class UserController {
         if (l != null) {
             if (!isActive(l,player)) return null;
             return new ViewLadderBoard(ladderboardService.leaveLadderBoard(l, player));
-        }
-        return null;
-    }
-
-    @RequestMapping(value = "/updatemainmatch", method = RequestMethod.POST)
-    @ResponseBody
-    public ViewLadderBoard updateMainMatch(@RequestBody UpdateMatchForm form) {
-        if (playerService.encode(form.getPassword()).equals(generalKey)) {
-            LadderBoard l = ladderboardService.getLadderBoard(genericLaddername);
-            Player p = playerService.getPlayerByUsername(genericUsername);
-            groupService.updatePlayerMatches(p, l, form.getListMatches());
         }
         return null;
     }

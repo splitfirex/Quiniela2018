@@ -5,6 +5,15 @@ public class JoinLadderForm extends TokenAbleForm {
     private String laddername;
     private String password;
     private Long idLadder;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getPassword() {
         return password;

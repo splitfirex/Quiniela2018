@@ -2,6 +2,7 @@ import React from 'react';
 import { GlobalAppActions, fetchLadders, fetchUpdateScore, fetchMatches, fetchMatchesGroups } from '../lib/actions.js'
 import Loading from './ContentUtils.jsx';
 import { zeroPad, colorScore, calculateTeam, recalculateGroups } from '../lib/utils.js';
+import {genericPlayername} from '../lib/basicConfig'
 
 export class ContentMatch extends React.Component {
 
@@ -142,7 +143,7 @@ export class ContentMatch extends React.Component {
             }
             return this.props.playername !== undefined &&
                 this.props.username === this.props.playername &&
-                currentValue.editable ?
+                (currentValue.editable && !currentValue.finished) || genericPlayername == this.props.username ?
                 this.state.editables.indexOf(currentValue.id) !== -1 ?
                     [this.renderSubtitle(currentValue.groupname), <MatchEdit round={index + 1} key={"match" + currentValue.id}
                         id={currentValue.id}

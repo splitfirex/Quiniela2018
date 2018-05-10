@@ -24,14 +24,14 @@ export var calculateTeam = (match, group, matches, teams, location) => {
         case "group":
             return getTeamObject(teams, match[loc]);
         case "qualified":
-            if (match[loc] != null) getTeamObject(teams, match[loc]);
+            if (match[loc] != null) return getTeamObject(teams, match[loc]);
             var g = group.filter(function (el) {
                 return el.groupName == match[loc2].split("_")[0];
             })[0];
             if (g.details[parseInt(match[loc2].split("_")[1]) - 1].p == 0) return match[loc2];
             return getTeamObject(teams,g.details[parseInt(match[loc2].split("_")[1])-1].id);
         case "winner":
-            if (match[loc] != null) getTeamObject(teams, match[loc]);
+            if (match[loc] != null) return getTeamObject(teams, match[loc]);
 
             var m = matches.filter((e) => e.id == match[loc2].replace(/\D+/g, ''))[0];
             if (m.home_result == null || m.away_result == null) return match[loc2];
@@ -40,7 +40,7 @@ export var calculateTeam = (match, group, matches, teams, location) => {
             }
             return getTeamObject(teams,(m.home_result > m.away_result ? m.home_team : m.away_team));
         case "loser":
-            if (match[loc] != null) getTeamObject(teams, match[loc]);
+            if (match[loc] != null) return getTeamObject(teams, match[loc]);
 
             var m = matches.filter((e) => e.id == match[loc2].replace(/\D+/g, ''))[0];
             if (m.home_result == null || m.away_result == null) return match[loc2];

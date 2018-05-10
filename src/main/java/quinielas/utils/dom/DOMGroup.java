@@ -47,22 +47,30 @@ public class DOMGroup {
         this.name = domGroups.name;
         this.winner = domGroups.winner;
         this.runnerup = domGroups.runnerup;
+        this.forced =false;
         this.matches.addAll(domGroups.matches);
     }
 
     @Id
     String id;
-
     Long idLadder;
-
     Long idPlayer;
 
     String name;
     String type;
     Short order;
+    Boolean forced;
     Long winner;
     Long runnerup;
     List<DOMMatch> matches = new ArrayList<>();
+
+    public Boolean getForced() {
+        return forced;
+    }
+
+    public void setForced(Boolean forced) {
+        this.forced = forced;
+    }
 
     public Short getOrder() {
         return order;

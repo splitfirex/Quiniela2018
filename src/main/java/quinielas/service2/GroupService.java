@@ -17,7 +17,7 @@ public interface GroupService {
 
     List<DOMGroup> getGroupsByPlayerAndLadder(Long idUsuario, Long ladderName);
 
-    void generateGroupsForPlayerAndLadder(Long idUsuario, Long ladderName);
+    void generateGroupsForPlayerAndLadder(Long idUsuario, Long ladderName, String type);
 
     void generateDemoGroupsForPlayerAndLadder(Long idUsuario, Long ladderName);
 
@@ -25,5 +25,11 @@ public interface GroupService {
 
     void updateGroup(DOMGroup group);
 
+    void updateGroup(List<DOMGroup> group);
+
     void updatePlayerMatches(Player player, LadderBoard l, List<DOMMatch> match);
+
+    List<DOMGroup> getAllGroups();
+
+    List<DOMGroup> getAllUnforcedGroups();
 }

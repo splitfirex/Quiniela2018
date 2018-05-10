@@ -20,4 +20,6 @@ public interface DOMGroupRepository extends MongoRepository<DOMGroup, String>, D
     @Query("{matches.id:{$in: ?0 },  idPlayer: ?1, idLadder: ?2}")
     List<DOMGroup> findAllByIdMatchesAndIdPlayerAndIdLadder(List<Long> ids, Long idUser, Long idLadder, Sort sort);
 
+    @Query("{'forced': false}")
+    List<DOMGroup> findAllUnforcedGroups();
 }

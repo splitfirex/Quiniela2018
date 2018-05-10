@@ -13,26 +13,12 @@ public interface LadderBoardRepository extends MongoRepository<LadderBoard, Long
     @Query("{ 'name' : ?0 }")
     LadderBoard findByName(String name);
 
-    @Query("{ 'id' : ?0 }")
-    LadderBoard findById(long id);
-
-    @Query("{ 'password' : { '$exists' : false } }")
-    List<LadderBoard> findPublic();
 
     @Query("{ 'listPlayers.username' : ?0, 'listPlayers.isActive': ?1 } }")
     List<LadderBoard> findByUsername(String username, boolean active);
 
-    @Query(value = "{}", fields = "{ 'name' : 1, 'bgColor': 1, 'listPlayers.username' : 1 , 'listPlayers.isActive': 1, 'listPlayers.isAdmin': 1, 'password': 1 }")
+    @Query(value = "{}", fields = "{ 'name' : 1, 'type': 1, 'bgColor': 1, 'listPlayers.username' : 1 , 'listPlayers.isActive': 1, 'listPlayers.isAdmin': 1, 'password': 1 }")
     List<LadderBoard> findAllShort();
-
-    @Query("{ 'name': ?0, 'listPlayers.username' : ?1, 'listPlayers.isActive': true }")
-    LadderBoard findByIdAndActive(String ladderName, String username);
-
-    @Query("{ 'name': ?0, 'password' : { '$exists' : false } }")
-    LadderBoard findIfPublic(String ladderName);
-
-    @Query("{ 'name': ?0, 'password' : { '$exists' : true } }")
-    LadderBoard isPasswordLadderBoard(String ladderName);
 
 
 

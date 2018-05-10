@@ -1,5 +1,5 @@
-export var server = "http://localhost:9000";
-export var genericPlayername = "MAIN_PLAYER";
+export var server = "http://192.168.0.156:9000";
+export var genericPlayername = "admin";
 export var genericLaddername = "MAIN_LEADERBOARD";
 
 export var postData = {

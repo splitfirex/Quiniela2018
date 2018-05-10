@@ -45,8 +45,9 @@ public class LadderboardServiceImpl implements LadderboardService{
         }
     }
 
+
     @Override
-    public LadderBoard createLadderBoard(String name, String password, Player p, boolean encode) {
+    public LadderBoard createLadderBoard(String name, String password, Player p,String type, boolean encode) {
         LadderBoard ladder = ladderBoardRepository.findByName(name);
         if(ladder != null &&  ladder.getPassword() != null &&ladder.getPassword().equals("")){
             ladder.setPassword(password != null ? playerService.encode(password) : null);
@@ -55,6 +56,7 @@ public class LadderboardServiceImpl implements LadderboardService{
         }
 
         if (ladderBoardRepository.findByName(name) != null) return null;
+
         LadderBoard l = new LadderBoard();
         l.setName(name);
         if(encode) {
@@ -62,14 +64,17 @@ public class LadderboardServiceImpl implements LadderboardService{
         }else{
             l.setPassword(password != null ? password : null);
         }
+
         l.setId(Generators.randomBasedGenerator().generate().getLeastSignificantBits());
         if(name.equals(genericLaddername)) genericladderid = l.getId();
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true, true));
+        l.setType(type);
+
         Random rand = new Random();
         int nextInt = rand.nextInt(256*256*256);
         l.setBgColor(String.format("#%06x", nextInt));
 
-        groupService.generateGroupsForPlayerAndLadder(p.getId(),l.getId());
+        groupService.generateGroupsForPlayerAndLadder(p.getId(),l.getId(),l.getType());
 
         ladderBoardRepository.save(l);
         return l;
@@ -83,7 +88,7 @@ public class LadderboardServiceImpl implements LadderboardService{
             return null;
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), false));
 
-        groupService.generateGroupsForPlayerAndLadder(p.getId(),l.getId());
+        groupService.generateGroupsForPlayerAndLadder(p.getId(),l.getId(),l.getType());
 
         ladderBoardRepository.save(l);
         return l;
@@ -99,6 +104,7 @@ public class LadderboardServiceImpl implements LadderboardService{
         Random rand = new Random();
         int nextInt = rand.nextInt(256*256*256);
         l.setBgColor(String.format("#%06x", nextInt));
+        l.setType("Completo");
 
         groupService.generateDemoGroupsForPlayerAndLadder(p.getId(),l.getId());
         l.getPlayerByName(p.getUsername()).setWinnerTeam(groupService.getMatchesByPlayerAndLadder(p.getId(),l.getId()).stream().filter(f -> f.getId() == 64L).findFirst().get().calculateWinner());
@@ -168,7 +174,7 @@ public class LadderboardServiceImpl implements LadderboardService{
     @Override
     public LadderBoard getLadderBoardByName(String name, Player p) {
         LadderBoard ladder = ladderBoardRepository.findByIdOrIfActive(name, p == null ? null : p.getUsername());
-        ladder.getListPlayers().stream().sorted((p1, p2) -> p2.getPoints().intValue() - p1.getPoints().intValue()).collect(Collectors.toList());
+        ladder.setListPlayers(ladder.getListPlayers().stream().sorted((p1, p2) -> p2.getPoints().intValue() - p1.getPoints().intValue()).collect(Collectors.toList()));
         return ladder;
     }
 

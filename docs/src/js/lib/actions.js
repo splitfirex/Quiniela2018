@@ -62,6 +62,8 @@ export const GlobalAppActions = (state, action) => {
             return { forceReload: false, showLoading: true }
         case "TOGGLE_PUBLIC":
             return { public: !state.public }
+        case "TOGGLE_TYPE":
+            return { type: (state.type == "Completo") ? "Por Fases" : "Completo" }
         case "SUCCESS_CONTENT":
             return { showLoading: false, content: action.content }
 
@@ -265,7 +267,7 @@ export var fetchNewLadder = function () {
         return;
     }
     this.dispatch({ type: "LOADING_CONTENT" });
-    postData.body = JSON.stringify({ laddername: this.state.laddername, token: this.props.token, "password": this.state.password });
+    postData.body = JSON.stringify({ laddername: this.state.laddername, token: this.props.token, type: this.state.type , "password": this.state.password });
     fetch(server + '/user/createladder', postData)
         .then(function (response) {
             return response.json();

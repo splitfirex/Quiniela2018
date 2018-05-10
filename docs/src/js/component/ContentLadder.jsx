@@ -40,6 +40,7 @@ export class ContentLadder extends React.Component {
                     name={currentValue.name}
                     protected={currentValue.protected}
                     bgColor={currentValue.bgColor}
+                    type={currentValue.type}
                     dispatch={(action) => this.props.dispatch(action)}
                 />
             } else {
@@ -49,6 +50,7 @@ export class ContentLadder extends React.Component {
                     name={currentValue.name}
                     protected={currentValue.protected}
                     bgColor={currentValue.bgColor}
+                    type={currentValue.type}
                     dispatch={(action) => this.props.dispatch(action)}
                 />
             }
@@ -93,7 +95,7 @@ function LoggedLadder(props) {
                 onClick={!props.protected || props.containsUser ? (() => { props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYERS", laddername: props.name }) })
                     : (() => { })}>
                 <div>
-                    {props.name}
+                    {props.name + " | "+ (props.type =="Completo" ? "C" : "P")}
                 </div>
             </div>
             <div className="ladderMenu">
@@ -114,7 +116,7 @@ function Ladder(props) {
                     (() => { props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYERS", laddername: props.name }) })
                     : (() => { props.dispatch({ type: "GO_TO", dest: "SIGN_IN" }) })} >
                 <div>
-                    {props.name}
+                    {props.name + " | "+ (props.type =="Completo" ? "C" : "P")}
                 </div>
             </div>
             <div className="ladderMenu">

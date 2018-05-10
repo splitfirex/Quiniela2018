@@ -272,7 +272,10 @@ public class DOMMatch {
     }
 
     public Long compareMatch(DOMMatch match) {
-        if (match.getAway_result() == null || match.getHome_result() == null || this.getAway_result() == null || this.getHome_result() == null) return null;
+        if (this.getAway_result() == null || this.getHome_result() == null) return null;
+        if(match.getAway_result() == null || match.getHome_result() == null) return 0L;
+        if (match.getAway_result() == null || match.getHome_result() == null ||
+                this.getAway_result() == null || this.getHome_result() == null) return null;
 
         if (match.getAway_team() != this.getAway_team() || match.getHome_team() != this.getHome_team()) return 0L;
 

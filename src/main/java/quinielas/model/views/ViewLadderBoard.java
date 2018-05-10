@@ -16,6 +16,15 @@ public class ViewLadderBoard extends TokenAbleView {
     private List<LadderBoardPlayer> listPlayers;
     private Boolean isProtected;
     private String bgColor;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public List<LadderBoardPlayer> getListPlayers() {
         return listPlayers;
@@ -40,6 +49,7 @@ public class ViewLadderBoard extends TokenAbleView {
         this.name = board.getName();
         this.listPlayers = board.getListPlayers();
         this.isProtected = board.getPassword() != null;
+        this.type = board.getType();
         this.setBgColor(board.getBgColor());
 
     }

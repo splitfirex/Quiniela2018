@@ -58,7 +58,7 @@ public class PlayerServiceImpl implements PlayerService {
         if(cleanAndBuild) {
             playerRepository.deleteAll();
             Player p = createPlayer(genericUsername, genericPassword, false);
-            ladderBoardService.createLadderBoard(genericLaddername, genericLadderPassword, p, false);
+            ladderBoardService.createLadderBoard(genericLaddername, genericLadderPassword, p, "Completo",false);
 
             p = createPlayer("Jugador 1", "jugador", true);
             ladderBoardService.createLadderBoardDemo("DEMO", null, p);
