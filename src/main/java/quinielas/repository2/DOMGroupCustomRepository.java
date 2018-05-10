@@ -11,5 +11,4 @@ import java.util.List;
 public interface DOMGroupCustomRepository{
     void updateGroupsMatchesByNearDate();
 
-    void getNextMatches(Long idPlayer, Long idLadder);
 }

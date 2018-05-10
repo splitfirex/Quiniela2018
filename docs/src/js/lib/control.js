@@ -1,21 +1,5 @@
 import { server, genericLaddername, genericPlayername, postData, getData } from './basicConfig.js'
 
-window.update2 = function (password, idmatch, homeScore, visitScore, homePenalty, visitPenalty) {
-    postData.body = JSON.stringify({ "password": password, "idMatch": idmatch, "homeScore": homeScore, "visitScore": visitScore, "homePenalty": homePenalty, "visitPenalty": visitPenalty });
-    fetch(server + '/user/updatemainmatch', postData)
-        .then(function (response) {
-            console.log("OK");
-        });
-}
-
-window.update = function (password, idmatch, homeScore, visitScore) {
-    postData.body = JSON.stringify({ "password": password, idMatch: idmatch, homeScore: homeScore, visitScore: visitScore });
-    fetch(server + '/user/updatemainmatch', postData)
-        .then(function (response) {
-            console.log("OK");
-        });
-}
-
 window.resetUser = function (password, username) {
     postData.body = JSON.stringify({ "password": password, username: username });
     fetch(server + '/login/resetpassword', postData)

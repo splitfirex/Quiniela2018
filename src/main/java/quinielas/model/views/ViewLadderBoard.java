@@ -4,6 +4,7 @@ import quinielas.model.LadderBoard;
 import quinielas.model.LadderBoardPlayer;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -12,10 +13,17 @@ public class ViewLadderBoard extends TokenAbleView {
 
     private Long id;
     private String name;
-    private Set<LadderBoardPlayer> listPlayers;
+    private List<LadderBoardPlayer> listPlayers;
     private Boolean isProtected;
     private String bgColor;
 
+    public List<LadderBoardPlayer> getListPlayers() {
+        return listPlayers;
+    }
+
+    public void setListPlayers(List<LadderBoardPlayer> listPlayers) {
+        this.listPlayers = listPlayers;
+    }
 
     public static List<ViewLadderBoard> fromList(List<LadderBoard> boards) {
         if (boards == null) return null;
@@ -60,13 +68,6 @@ public class ViewLadderBoard extends TokenAbleView {
         this.name = name;
     }
 
-    public Set<LadderBoardPlayer> getListPlayers() {
-        return listPlayers;
-    }
-
-    public void setListPlayers(Set<LadderBoardPlayer> listPlayers) {
-        this.listPlayers = listPlayers;
-    }
 
     public Boolean getProtected() {
         return isProtected;

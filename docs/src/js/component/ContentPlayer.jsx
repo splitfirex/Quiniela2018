@@ -1,5 +1,6 @@
 import React from 'react';
 import { GlobalAppActions, fetchNextMatches, fetchPlayers, fetchPlayerStatus, fetchUpdateColor } from '../lib/actions.js'
+import {getTeamObject, colorScore} from '../lib/utils.js'
 import Loading from './ContentUtils.jsx';
 
 class ContentPlayer extends React.Component {
@@ -89,9 +90,10 @@ class ContentPlayer extends React.Component {
 }
 
 function Player(props) {
+
     return (
         <div className="player">
-            <div className={"playerShow f" + (props.currentValue.winnerTeam && props.teams[props.currentValue.winnerTeam].shortName)}>
+            <div className={"playerShow f" + ((props.currentValue.winnerTeam != null) && getTeamObject(props.teams,props.currentValue.winnerTeam).shortCode)}>
                 <div> {props.currentValue.username} | {props.currentValue.points} </div>
             </div>
             <div id={"id" + props.currentValue.username} className="playerContent">
@@ -108,7 +110,7 @@ function Player(props) {
 function PlayerAdmin(props) {
     return (
         <div className="player">
-            <div className={"playerShow f" + (props.currentValue.winnerTeam && props.teams[props.currentValue.winnerTeam - 1].shortName)}>
+            <div className={"playerShow f" + ((props.currentValue.winnerTeam != null) &&  getTeamObject(props.teams,props.currentValue.winnerTeam).shortCode)}>
                 <div> {props.currentValue.username} | {props.points} </div>
             </div>
             <div id={"id" + props.currentValue.username} className="playerContent">
@@ -151,7 +153,7 @@ class PlayerShortMatches extends React.Component {
     renderNextMatches() {
         return this.state.content.nextMatches.map(function (currentValue, index, array) {
             return <AuxMatch  key={this.props.username + " "+ index}
-                currentMatch={currentValue}
+                match={currentValue}
                 index={index} round={currentValue.idMatch + 1}
                 oddLast={(index + 1) % 2 !== 0 && (this.state.content.nextMatches.length - 1 === index)}
                 matchStatus={currentValue.status}  {...this.props} />
@@ -160,8 +162,8 @@ class PlayerShortMatches extends React.Component {
 
     renderPrevMatches() {
         return this.state.content.prevMatches.map(function (currentValue, index, array) {
-            return <AuxMatch key={this.props.username + " "+ index} currentMatch={currentValue}
-                index={index} round={currentValue.idMatch + 1}
+            return <AuxMatch key={this.props.username + " "+ index} match={currentValue}
+                index={index} round={currentValue.idMatch + 1} 
                 oddLast={(index + 1) % 2 !== 0 && (this.state.content.prevMatches.length - 1 === index)}
                 matchStatus={currentValue.status} {...this.props} />
         }.bind(this));
@@ -179,26 +181,29 @@ class PlayerShortMatches extends React.Component {
 
 function AuxMatch(props) {
 
-    var hTeam = props.teams[props.currentMatch.hT] || {};
-    var vTeam = props.teams[props.currentMatch.vT] || {};
+    var homeP = "";
+    var awayP = "";
+    if (props.match.home_result != undefined && props.match.home_result == props.match.away_result && props.match.type != "group") {
+        homeP = "(" + (props.match.home_penalty == undefined ? "*" : props.match.home_penalty) + ")";
+        awayP = "(" + (props.match.away_penalty == undefined ? "*" : props.match.away_penalty) + ")";
+    }
+
+    var homeTeam = getTeamObject(props.teams,props.match.home_team) || {};
+    var awayTeam = getTeamObject(props.teams,props.match.away_team) || {};
 
     return (
         <div style={{ gridColumn: props.oddLast && "1 / span 2" }}>
-            <div className={"teamMatch " + (props.matchStatus === 0 || props.matchStatus === null ? "whiteBG" : (props.matchStatus === 1 ? "greenBG" : "tomatoBG"))} style={{ "borderBottom": "grey 1px solid" }}>
+            <div className={"teamMatch " + colorScore(props.match.status)} style={{ "borderBottom": "grey 1px solid" }}>
                 <div className="teambox">
-                    <div>{hTeam === undefined ?
-                        props.matches[props.index].homeTeam :
-                        hTeam.shortName}</div>
-                    <div><div className={"flag flag-" + hTeam.flagUrl}></div></div>
-                    <div>{props.currentMatch.hS === null ? "*" : props.currentMatch.hS}</div>
+                    <div>{typeof homeTeam === 'object' ? homeTeam.shortCode : homeTeam}</div>
+                    <div><div className={"flag flag-" +(typeof homeTeam === 'object' ? homeTeam.flagUrl : "none")}></div></div>
+                    <div>{(props.match.home_result == undefined ? "*" : props.match.home_result) + homeP}</div>
                 </div>
                 <div className="teamboxSeparator">-</div>
                 <div className="teambox left">
-                    <div>{props.currentMatch.vS === null ? "*" : props.currentMatch.vS}</div>
-                    <div><div className={"flag flag-" + vTeam.flagUrl}></div></div>
-                    <div>{vTeam === undefined ?
-                        props.matches[props.index].visitorTeam :
-                        vTeam.shortName}</div>
+                    <div>{awayP + (props.match.away_result == undefined ? "*" : props.match.away_result)}</div>
+                    <div><div className={"flag flag-" + (typeof awayTeam === 'object' ? awayTeam.flagUrl : "none")}></div></div>
+                    <div>{typeof awayTeam === 'object' ? awayTeam.shortCode : awayTeam}</div>
                 </div>
             </div>
         </div>

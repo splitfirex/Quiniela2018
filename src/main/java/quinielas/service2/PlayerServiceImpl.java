@@ -57,12 +57,12 @@ public class PlayerServiceImpl implements PlayerService {
     private void init() {
         if(cleanAndBuild) {
             playerRepository.deleteAll();
-            Player p = createPlayer(genericUsername, genericPassword);
-            ladderBoardService.createLadderBoard(genericLaddername, genericLadderPassword, p);
+            Player p = createPlayer(genericUsername, genericPassword, false);
+            ladderBoardService.createLadderBoard(genericLaddername, genericLadderPassword, p, false);
 
-            p = createPlayer("Jugador 1", "jugador");
+            p = createPlayer("Jugador 1", "jugador", true);
             ladderBoardService.createLadderBoardDemo("DEMO", null, p);
-            p = createPlayer("Jugador 2", "jugador");
+            p = createPlayer("Jugador 2", "jugador", true);
             ladderBoardService.joinLadderBoardDemo("DEMO", null, p);
 
         }
@@ -77,8 +77,17 @@ public class PlayerServiceImpl implements PlayerService {
                 e.printStackTrace();
             }
         }
-        sha.update(value.getBytes());
-        return Base64.getEncoder().encodeToString( sha.digest());
+
+        return byteArrayToHexString(sha.digest(value.getBytes()));
+    }
+
+    public static String byteArrayToHexString(byte[] b) {
+        String result = "";
+        for (int i=0; i < b.length; i++) {
+            result +=
+                    Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+        }
+        return result;
     }
 
     static final long NUM_100NS_INTERVALS_SINCE_UUID_EPOCH = 0x01b21dd213814000L;
@@ -139,7 +148,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player createPlayer(String username, String password) {
+    public Player createPlayer(String username, String password, boolean encode) {
         Player pp = playerRepository.findByUsername(username);
         if(pp != null && pp.getPassword().equals("")){
             pp.setPassword(encode(password));
@@ -150,7 +159,11 @@ public class PlayerServiceImpl implements PlayerService {
         Player p = new Player();
         p.setId(Generators.randomBasedGenerator().generate().getLeastSignificantBits());
         p.setUsername(username);
-        p.setPassword(encode(password));
+        if(encode){
+            p.setPassword(encode(password));
+        }else{
+            p.setPassword(password);
+        }
         playerRepository.save(p);
 
         return  p;

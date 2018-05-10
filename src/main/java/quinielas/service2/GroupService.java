@@ -7,6 +7,7 @@ import quinielas.model.PlayerGroup;
 import quinielas.utils.dom.DOMGroup;
 import quinielas.utils.dom.DOMMatch;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,5 +25,5 @@ public interface GroupService {
 
     void updateGroup(DOMGroup group);
 
-    public List<PlayerGroup> updatePlayerMatches(Player player, LadderBoard l, List<DOMMatch> match);
+    void updatePlayerMatches(Player player, LadderBoard l, List<DOMMatch> match);
 }

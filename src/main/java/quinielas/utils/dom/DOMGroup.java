@@ -10,6 +10,7 @@ import quinielas.model.PlayerGroup;
 import quinielas.model.PlayerGroupDetail;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Document(collection = "domGroup")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -186,10 +187,32 @@ public class DOMGroup {
         return playerGroup;
     }
 
-    public void updateStatus() {
-        if(!this.type.equals("groups")) return;
-        PlayerGroup PG = generatePlayerGroup();
-        this.setWinner(PG.getDetails().getFirst().getId());
-        this.setRunnerup(PG.getDetails().get(1).getId());
+    public void updateStatus(List<DOMGroup> otherGroups) {
+        if(this.type.equals("groups")) {
+            PlayerGroup PG = generatePlayerGroup();
+            this.setWinner(PG.getDetails().getFirst().getId());
+            this.setRunnerup(PG.getDetails().get(1).getId());
+        }else if(this.type.equals("knockout")){
+            this.getMatches().stream().forEachOrdered(m ->{
+                if(m.type.equals("qualified")){
+                    Long homeTeam = otherGroups.stream().filter(g-> g.getName().replace("Group ","").equals(m.getHome_team_ph().split("_")[0])).findFirst().get().getWinner();
+                    Long awayTeam = otherGroups.stream().filter(g-> g.getName().replace("Group ","").equals(m.getAway_team_ph().split("_")[0])).findFirst().get().getRunnerup();
+                    m.setHome_team(homeTeam);
+                    m.setAway_team(awayTeam);
+                }else if(m.type.equals("winner")){
+                    List<DOMMatch> allMatches = otherGroups.stream().map(v -> v.getMatches()).flatMap(List::stream).sorted((f2, f1) -> f2.getDate().compareTo(f1.getDate())).collect(Collectors.toList());
+                    Long homeTeam = allMatches.stream().filter(f->f.getId()== Long.parseLong(m.getHome_team_ph().replaceAll("\\D+",""))).findFirst().get().calculateWinner();
+                    Long awayTeam = allMatches.stream().filter(f->f.getId()== Long.parseLong(m.getAway_team_ph().replaceAll("\\D+",""))).findFirst().get().calculateWinner();
+                    m.setHome_team(homeTeam);
+                    m.setAway_team(awayTeam);
+                }else if(m.type.equals("loser")){
+                    List<DOMMatch> allMatches = otherGroups.stream().map(v -> v.getMatches()).flatMap(List::stream).sorted((f2, f1) -> f2.getDate().compareTo(f1.getDate())).collect(Collectors.toList());
+                    Long homeTeam = allMatches.stream().filter(f->f.getId() == Long.parseLong(m.getHome_team_ph().replaceAll("\\D+",""))).findFirst().get().calculateLoser();
+                    Long awayTeam = allMatches.stream().filter(f->f.getId() == Long.parseLong(m.getAway_team_ph().replaceAll("\\D+",""))).findFirst().get().calculateLoser();
+                    m.setHome_team(homeTeam);
+                    m.setAway_team(awayTeam);
+                }
+            });
+        }
     }
 }

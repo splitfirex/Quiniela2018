@@ -1,6 +1,6 @@
 export var server = "http://localhost:9000";
-export var genericPlayername = "_NOT_A_PLAYER_";
-export var genericLaddername = "_NOT_A_LADDERBOARD_";
+export var genericPlayername = "MAIN_PLAYER";
+export var genericLaddername = "MAIN_LEADERBOARD";
 
 export var postData = {
     method: 'POST',

@@ -41,7 +41,7 @@ public class LoginController {
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @ResponseBody
     public ViewPlayerInfo signup(@RequestBody LoginForm form) {
-        Player p = playerService.createPlayer(form.getUsername(),form.getPassword());
+        Player p = playerService.createPlayer(form.getUsername(),form.getPassword(), true);
         return new ViewPlayerInfo(p).setToken(playerService.login(form.getUsername(), form.getPassword()));
     }
 

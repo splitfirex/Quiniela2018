@@ -14,7 +14,7 @@ public interface PlayerService {
 
     Player getPlayerByToken(String token);
 
-    Player createPlayer(String username, String password);
+    Player createPlayer(String username, String password, boolean encode);
 
     Player getPlayerByUsername(String username);
 

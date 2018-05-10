@@ -17,6 +17,8 @@ public class DOMMatch {
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM/yyyy HH:mm");
 
     public DOMMatch() {
+       calculateLoser();
+       calculateWinner();
     }
 
 
@@ -76,7 +78,6 @@ public class DOMMatch {
 
         this.finished = o.getBoolean("finished");
         this.date = ZonedDateTime.parse(o.getString("date")).toInstant().toEpochMilli();
-
     }
 
     Long id;
@@ -90,12 +91,34 @@ public class DOMMatch {
     Integer home_penalty;
     Integer away_penalty;
     Long winner;
+    Long loser;
     Long date;
     Integer status;
     Boolean finished;
     Boolean editable;
     List<Long> references;
     String groupname;
+
+    public Long calculateLoser(){
+        if(this.winner== null && this.home_team != null && this.away_team!= null ){
+            if(this.home_result == this.away_result){
+                this.loser = this.home_penalty < this.away_penalty? this.home_team : this.away_team;
+            }else{
+                this.loser = this.home_result < this.away_result ? this.home_team : this.away_team;
+            }
+
+        }
+        return this.loser;
+    }
+
+    public Long getLoser() {
+
+        return loser;
+    }
+
+    public void setLoser(Long loser) {
+        this.loser = loser;
+    }
 
     public String getGroupname() {
         return groupname;
@@ -212,6 +235,18 @@ public class DOMMatch {
         this.away_penalty = away_penalty;
     }
 
+    public Long calculateWinner(){
+        if(this.winner== null && this.home_team != null && this.away_team!= null ){
+            if(this.home_result == this.away_result){
+                this.winner = this.home_penalty > this.away_penalty? this.home_team : this.away_team;
+            }else{
+                this.winner = this.home_result > this.away_result ? this.home_team : this.away_team;
+            }
+
+        }
+        return this.getWinner();
+    }
+
     public Long getWinner() {
         return winner;
     }
@@ -237,7 +272,7 @@ public class DOMMatch {
     }
 
     public Long compareMatch(DOMMatch match) {
-        if (match.getAway_team() == null || match.getHome_result() == null || this.getAway_team() == null || this.getHome_result() == null) return null;
+        if (match.getAway_result() == null || match.getHome_result() == null || this.getAway_result() == null || this.getHome_result() == null) return null;
 
         if (match.getAway_team() != this.getAway_team() || match.getHome_team() != this.getHome_team()) return 0L;
 
@@ -249,28 +284,6 @@ public class DOMMatch {
         if (match.getHome_result() < match.getAway_result() && this.getHome_result() < this.getAway_result()) return 1L;
 
         return 0L;
-    }
-
-    public Long getCalculatedWinner(){
-        if (this.getAway_team() == null || this.getHome_result() == null) return null;
-        if( this.getHome_result() == this.getAway_result()){
-            if( this.getHome_penalty() > this.getAway_penalty()) return this.getHome_team();
-            if( this.getHome_penalty() < this.getAway_penalty()) return this.getAway_team();
-        }
-        if( this.getHome_result() > this.getAway_result()) return this.getHome_team();
-        if( this.getHome_result() < this.getAway_result()) return this.getAway_team();
-        return null;
-    }
-
-    public Long getCalculatedLoser(){
-        if (this.getAway_team() == null || this.getHome_result() == null) return null;
-        if( this.getHome_result() == this.getAway_result()){
-            if( this.getHome_penalty() > this.getAway_penalty()) return this.getAway_team();
-            if( this.getHome_penalty() < this.getAway_penalty()) return this.getHome_team();
-        }
-        if( this.getHome_result() > this.getAway_result()) return this.getAway_team();
-        if( this.getHome_result() < this.getAway_result()) return this.getHome_team();
-        return null;
     }
 
 }

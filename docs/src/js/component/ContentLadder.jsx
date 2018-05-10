@@ -1,6 +1,7 @@
 import React from 'react';
 import Loading from './ContentUtils.jsx';
 import { GlobalAppActions, fetchLadders } from '../lib/actions.js'
+import { genericPlayername, genericLaddername } from '../lib/basicConfig.js'
 
 export class ContentLadder extends React.Component {
 
@@ -29,6 +30,7 @@ export class ContentLadder extends React.Component {
 
     renderLadders() {
         return this.state.content.map(function (currentValue, index, array) {
+            if(this.props.username != genericPlayername && currentValue.name == genericLaddername) return;
             if (this.props.username !== undefined) {
                 return <LoggedLadder
                     key={"Ladder" + index}

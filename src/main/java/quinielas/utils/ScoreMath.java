@@ -38,15 +38,15 @@ public class ScoreMath {
     private static LadderBoard systemLadder;
     private static Player systemPlayer;
 
-    private void getDefaults(){
-        systemLadder =  ladderboardService.getLadderBoard(genericLaddername);
+    private void getDefaults() {
+        systemLadder = ladderboardService.getLadderBoard(genericLaddername);
         systemPlayer = playerService.getPlayerByUsername(genericPlayername);
     }
 
 
     public void updatesPoints() {
-        if(systemLadder == null) getDefaults();
-        List<LadderBoard> ladders = ladderboardService.listLadderBoard().stream().filter(lad -> !lad.getName().equals(genericLaddername)).collect(Collectors.toList());
+        if (systemLadder == null) getDefaults();
+        List<LadderBoard> ladders = ladderboardService.listCompleteLadderBoard().stream().filter(lad -> !lad.getName().equals(genericLaddername)).collect(Collectors.toList());
         List<DOMMatch> systemMatches = groupService.getGroupsByPlayerAndLadder(systemPlayer.getId(), systemLadder.getId())
                 .stream().map(doc -> doc.getMatches())
                 .flatMap(List::stream).collect(Collectors.toList());
@@ -63,19 +63,41 @@ public class ScoreMath {
                                         .flatMap(List::stream).collect(Collectors.toList());
                                 for (int i = 0; i < playerMatches.size(); i++) {
                                     Long value = systemMatches.get(i).compareMatch(playerMatches.get(i));
-                                    if(value == null) continue;
+                                    if (value == null) continue;
                                     playerMatches.get(i).setStatus(value.intValue());
                                     playerMatches.get(i).setFinished(true);
-                                    lbp.setPoints(lbp.getPoints() + value );
+                                    systemMatches.get(i).setFinished(true);
+                                    lbp.setPoints(lbp.getPoints() + value);
                                 }
-                                playerGroups.stream().forEach(g -> groupService.updateGroup(g) );
+                                playerGroups.stream().forEach(g -> groupService.updateGroup(g));
                             }
 
                     );
                     ladderboardService.updateLadderBoard(lad);
                 }
         );
-    }
 
+        long finalizadosGrupos = systemMatches.stream().filter(f -> !f.getFinished() && f.getType().equals("group")).count();
+        if (finalizadosGrupos == 0) {
+            ladders.parallelStream().forEach(
+                    lad -> {
+                        lad.getListPlayers().parallelStream().forEach(
+                                lbp -> {
+                                    Player p = playerService.getPlayerByUsername(lbp.getUsername());
+                                    List<DOMGroup> playerGroups = groupService.getGroupsByPlayerAndLadder(p.getId(), lad.getId());
+                                    playerGroups.stream().filter(f->f.getName().equals("Round of 16")).map(doc -> doc.getMatches())
+                                            .flatMap(List::stream).collect(Collectors.toList()).forEach( gg-> {
+                                        DOMMatch domma = systemMatches.stream().filter(ff-> ff.getId()==gg.getId()).findFirst().get();
+                                        gg.setAway_team(domma.getAway_team());
+                                        gg.setHome_team(domma.getHome_team());
+                                    });
+                                    groupService.updateGroup(playerGroups.stream().filter(f->f.getName().equals("Round of 16")).findFirst().get());
+                                }
+
+                        );
+                    }
+            );
+        }
+    }
 
 }

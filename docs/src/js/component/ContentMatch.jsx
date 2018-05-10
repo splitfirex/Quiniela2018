@@ -1,7 +1,7 @@
 import React from 'react';
 import { GlobalAppActions, fetchLadders, fetchUpdateScore, fetchMatches, fetchMatchesGroups } from '../lib/actions.js'
 import Loading from './ContentUtils.jsx';
-import { zeroPad, colorScore, calculateTeam } from '../lib/utils.js';
+import { zeroPad, colorScore, calculateTeam, recalculateGroups } from '../lib/utils.js';
 
 export class ContentMatch extends React.Component {
 
@@ -11,7 +11,8 @@ export class ContentMatch extends React.Component {
             showLoading: false,
             content: [],
             groups: [],
-            editables: []
+            editables: [],
+            updateReferences: [],
         }
         this.currentSubtitle = "";
     }
@@ -28,6 +29,11 @@ export class ContentMatch extends React.Component {
         if (this.state.editables.indexOf(id) === -1) {
             this.state.editables.push(id);
         } else {
+            var match = this.state.content.filter( (e) => e.id == id )[0];
+            this.state.editables.splice(this.state.editables.indexOf(id), 1);
+            var listado = [id];
+
+            recalculateGroups(this.state.groups,this.state.content);
 
             this.state.content.map(function (currentValue, index, array) {
                 var homeTeam = calculateTeam(currentValue, this.state.groups, array, this.props.teams, "home");
@@ -38,28 +44,30 @@ export class ContentMatch extends React.Component {
                 }
             }.bind(this));
 
+            this.getReferences(listado, match);
 
-            var index = this.state.content.map(function (e) { return e.id; }).indexOf(id);
-            this.state.editables.splice(this.state.editables.indexOf(id), 1);
-            this.updateReferencies(index);
+            fetchUpdateScore.bind(this)(this.state.content.filter(function (el) {
+                return listado.indexOf(el.id) != -1
+            }));
 
         }
         this.setState({
-            editables: this.state.editables
+            editables: this.state.editables,
+            groups: this.state.groups
         });
 
     }
 
-    updateReferencies(index) {
+    getReferences(listado, match) {
 
-        fetchUpdateScore.bind(this)([this.state.content[index]]);
-
-        if (this.state.content[index].references != null) {
-            for (var i = 0; i < this.state.content[index].references.length; i++) {
-                var id = this.state.content[index].references[i];
-                var index = this.state.content.map(function (e) { return e.id; }).indexOf(id);
-                this.updateReferencies(index);
+        if (match.references != null) {
+            for (var i = 0; i < match.references.length; i++) {
+                var id = match.references[i];
+                var newMatch = this.state.content.filter( (e) => e.id == id )[0];
+                listado.push(newMatch.id);
+                this.getReferences(listado, newMatch);
             }
+
         }
     }
 
@@ -134,7 +142,7 @@ export class ContentMatch extends React.Component {
             }
             return this.props.playername !== undefined &&
                 this.props.username === this.props.playername &&
-                !currentValue.finished && currentValue.editable ?
+                currentValue.editable ?
                 this.state.editables.indexOf(currentValue.id) !== -1 ?
                     [this.renderSubtitle(currentValue.groupname), <MatchEdit round={index + 1} key={"match" + currentValue.id}
                         id={currentValue.id}

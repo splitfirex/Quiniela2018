@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import quinielas.model.LadderBoard;
+import quinielas.service2.GroupService;
+import quinielas.service2.LadderboardService;
 import quinielas.utils.dom.DOMGroup;
 import quinielas.utils.dom.DOMMatch;
 
@@ -25,11 +27,15 @@ public class DOMGroupCustomRepositoryImpl implements DOMGroupCustomRepository {
     @Value("${ladder.laddername}")
     String genericLaddername;
 
+    @Autowired
+    LadderboardService ladderboardService;
+
     @Override
     public void updateGroupsMatchesByNearDate() {
 
         Long time = ZonedDateTime.now().plusDays(1).toInstant().toEpochMilli();
-        Query query = new Query(Criteria.where("matches").elemMatch(Criteria.where("date").lte(time).and("finished").is(new Boolean(false)).and("editable").is(new Boolean(true))));
+        Query query = new Query(Criteria.where("matches").elemMatch(Criteria.where("date").lte(time).and("finished").is(new Boolean(false)).and("editable").is(new Boolean(true)))
+                .and("idLadder").ne(ladderboardService.getGenericLadderBoardId()));
         query.fields().elemMatch("matches", Criteria.where("date").lte(time).and("finished").is(new Boolean(false)).and("editable").is(new Boolean(true)));
 
         Update update = new Update();
@@ -37,9 +43,5 @@ public class DOMGroupCustomRepositoryImpl implements DOMGroupCustomRepository {
         mongoTemplate.updateMulti(query, update,DOMGroup.class);
     }
 
-    @Override
-    public void getNextMatches(Long idPlayer, Long idLadder) {
-
-    }
 
 }

@@ -15,7 +15,7 @@ public class DOMTeam {
     }
 
     public DOMTeam(JSONObject object) throws JSONException {
-        this.id = object.getLong("id") - 1;
+        this.id = object.getLong("id");
         this.name = object.getString("name");
         this.shortCode = object.getString("fifaCode");
         this.flagUrl = object.getString("iso2");

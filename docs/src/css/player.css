@@ -34,14 +34,14 @@
       background-position: center center;
 }
 
-.fSAB{
+.fKSA{
     background: repeating-linear-gradient(
         -45deg,
         rgba(0,0,0,0.6),
         rgba(0,0,0,0.6) 10px,
         rgba(0,0,0,0.8) 10px,
         rgba(0,0,0,0.8) 20px
-      ), url(../img/flags/SAB.jpg);
+      ), url(../img/flags/KSA.jpg);
       background-size: cover;
       background-position: center center;
 }
@@ -94,14 +94,14 @@
       background-position: center center;
 }
 
-.fSPA{
+.fESP{
     background: repeating-linear-gradient(
         -45deg,
         rgba(0,0,0,0.6),
         rgba(0,0,0,0.6) 10px,
         rgba(0,0,0,0.8) 10px,
         rgba(0,0,0,0.8) 20px
-      ), url(../img/flags/SPA.jpg);
+      ), url(../img/flags/ESP.jpg);
       background-size: cover;
       background-position: center center;
 }
@@ -190,14 +190,14 @@
       background-position: center center;
 }
 
-.fICE{
+.fISL{
     background: repeating-linear-gradient(
         -45deg,
         rgba(0,0,0,0.6),
         rgba(0,0,0,0.6) 10px,
         rgba(0,0,0,0.8) 10px,
         rgba(0,0,0,0.8) 20px
-      ), url(../img/flags/ICE.jpg);
+      ), url(../img/flags/ISL.jpg);
       background-size: cover;
       background-position: center center;
 }
@@ -214,26 +214,26 @@
       background-position: center center;
 }
 
-.fSEB{
+.fSRB{
     background: repeating-linear-gradient(
         -45deg,
         rgba(0,0,0,0.6),
         rgba(0,0,0,0.6) 10px,
         rgba(0,0,0,0.8) 10px,
         rgba(0,0,0,0.8) 20px
-      ), url(../img/flags/SEB.jpg);
+      ), url(../img/flags/SRB.jpg);
       background-size: cover;
       background-position: center center;
 }
 
-.fSWZ{
+.fSUI{
     background: repeating-linear-gradient(
         -45deg,
         rgba(0,0,0,0.6),
         rgba(0,0,0,0.6) 10px,
         rgba(0,0,0,0.8) 10px,
         rgba(0,0,0,0.8) 20px
-      ), url(../img/flags/SWZ.jpg);
+      ), url(../img/flags/SUI.jpg);
       background-size: cover;
       background-position: center center;
 }
@@ -262,14 +262,14 @@
       background-position: center center;
 }
 
-.fSWD{
+.fSWE{
     background: repeating-linear-gradient(
         -45deg,
         rgba(0,0,0,0.6),
         rgba(0,0,0,0.6) 10px,
         rgba(0,0,0,0.8) 10px,
         rgba(0,0,0,0.8) 20px
-      ), url(../img/flags/SWD.jpg);
+      ), url(../img/flags/SWE.jpg);
       background-size: cover;
       background-position: center center;
 }

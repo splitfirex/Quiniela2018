@@ -94,7 +94,7 @@ public class GroupServiceImpl implements GroupService {
 
         List<DOMGroup> list = domGroupRepository.findAllByIdPlayerAndIdLadder(idUsuario, ladderName, new Sort(Sort.Direction.ASC, "order"));
         list.stream()
-                .forEach(p -> {
+                .forEachOrdered(p -> {
                     p.getMatches().stream()
                             .forEach(m -> {
                                 m.setHome_result(rand.nextInt(5));
@@ -104,7 +104,7 @@ public class GroupServiceImpl implements GroupService {
                                     m.setAway_penalty(rand.nextInt(6));
                                 }
                             });
-                    p.updateStatus();
+                    p.updateStatus(list);
                 });
         domGroupRepository.saveAll(list);
     }
@@ -120,48 +120,35 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<PlayerGroup> updatePlayerMatches(Player player, LadderBoard l, List<DOMMatch> match) {
+    public void updatePlayerMatches(Player player, LadderBoard l, List<DOMMatch> listMatch) {
         List<DOMGroup> group = getGroupsByPlayerAndLadder(player.getId(), l.getId());
-        List<Long> matchesId = match.stream().map(m -> m.getId()).collect(Collectors.toList());
-        group.stream()
-                .filter(g -> g.getMatches().stream()
-                        .filter(m -> matchesId.contains(m.getId()))
-                        .collect(Collectors.toList()).isEmpty()).forEach(gr -> {
-                     gr.getMatches().stream().filter(m -> matchesId.contains(m.getId())).forEach(rr -> {
-                         DOMMatch mm = match.stream().filter( jj -> jj.getId()==rr.getId()).findFirst().get();
-                         rr.setHome_result(mm.getHome_result());
-                         rr.setAway_result(mm.getAway_result());
-                         rr.setHome_penalty(mm.getHome_penalty());
-                         rr.setAway_penalty(mm.getAway_penalty());
-                         rr.setHome_team(mm.getHome_team());
-                         rr.setAway_team(mm.getAway_team());
-                     });
+        List<DOMMatch> matches = group.stream().map(v -> v.getMatches()).flatMap(List::stream)
+                .filter( m-> m.getEditable())
+                .sorted((f2, f1) -> f2.getDate().compareTo(f1.getDate())).collect(Collectors.toList());
+
+        listMatch.stream().forEach( p->
+                {
+                 DOMMatch otherMatch = matches.stream().filter( m1 -> m1.getId() == p.getId()).findFirst().get();
+                    otherMatch.setAway_penalty(p.getAway_penalty());
+                    otherMatch.setHome_penalty(p.getHome_penalty());
+                    otherMatch.setAway_result(p.getAway_result());
+                    otherMatch.setHome_result(p.getHome_result());
+                    otherMatch.setAway_team(p.getAway_team());
+                    otherMatch.setHome_team(p.getHome_team());
                 }
         );
-
-       /*List<DOMGroup> editgroup = group.stream().filter(g -> !g.getMatches().stream()
-                .filter(gp ->
-                        gp.getId() == match.getId()).collect(Collectors.toList()).isEmpty())
-                .collect(Collectors.toList());
-        editgroup.get(0).getMatches().stream().filter(gp -> gp.getId() == match.getId()).forEach(rr -> {
-            rr.setHome_result(match.getHome_result());
-            rr.setAway_result(match.getAway_result());
-            rr.setHome_penalty(match.getHome_penalty());
-            rr.setAway_penalty(match.getAway_penalty());
-            rr.setHome_team(match.getHome_team());
-            rr.setAway_team(match.getAway_team());
-        });
-*/
 
         domGroupRepository.saveAll(group);
         if (l.getName().equals(genericLaddername)) {
             scoreMath.updatesPoints();
         }
 
-        List<PlayerGroup> groups = new ArrayList<>();
-        group.stream().forEachOrdered(g -> groups.add(g.generatePlayerGroup()));
-
-        return groups.stream().filter(x -> x != null).collect(Collectors.toList());
+        DOMMatch ma = listMatch.stream().filter(m -> m.getId() == 64L && m.getAway_team()!= null && m.getHome_team()!=null).findFirst().get();
+        if(ma != null){
+            l.getPlayerByName(player.getUsername()).setWinnerTeam(ma.calculateWinner());
+            ladderBoardService.updateLadderBoard(l);
+        }
     }
+
 
 }

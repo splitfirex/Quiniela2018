@@ -8,16 +8,16 @@ import quinielas.model.LadderBoard;
 import quinielas.model.LadderBoardPlayer;
 import quinielas.model.Player;
 import quinielas.repository.LadderBoardRepository;
+import quinielas.utils.dom.DOMMatch;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Service
 public class LadderboardServiceImpl implements LadderboardService{
-
-    private AtomicLong counter = new AtomicLong();
 
     @Autowired
     LadderBoardRepository ladderBoardRepository;
@@ -31,15 +31,22 @@ public class LadderboardServiceImpl implements LadderboardService{
     @Value("${clean_and_build}")
     Boolean cleanAndBuild;
 
+    @Value("${ladder.laddername}")
+    String genericLaddername;
+
+    private Long genericladderid;
+
     @PostConstruct
     private void init() {
         if(cleanAndBuild) {
             ladderBoardRepository.deleteAll();
+        }else{
+            genericladderid = ladderBoardRepository.findByName(genericLaddername).getId();
         }
     }
 
     @Override
-    public LadderBoard createLadderBoard(String name, String password, Player p) {
+    public LadderBoard createLadderBoard(String name, String password, Player p, boolean encode) {
         LadderBoard ladder = ladderBoardRepository.findByName(name);
         if(ladder != null &&  ladder.getPassword() != null &&ladder.getPassword().equals("")){
             ladder.setPassword(password != null ? playerService.encode(password) : null);
@@ -50,8 +57,13 @@ public class LadderboardServiceImpl implements LadderboardService{
         if (ladderBoardRepository.findByName(name) != null) return null;
         LadderBoard l = new LadderBoard();
         l.setName(name);
-        l.setPassword(password != null ? playerService.encode(password) : null);
+        if(encode) {
+            l.setPassword(password != null ? playerService.encode(password) : null);
+        }else{
+            l.setPassword(password != null ? password : null);
+        }
         l.setId(Generators.randomBasedGenerator().generate().getLeastSignificantBits());
+        if(name.equals(genericLaddername)) genericladderid = l.getId();
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true, true));
         Random rand = new Random();
         int nextInt = rand.nextInt(256*256*256);
@@ -87,8 +99,10 @@ public class LadderboardServiceImpl implements LadderboardService{
         Random rand = new Random();
         int nextInt = rand.nextInt(256*256*256);
         l.setBgColor(String.format("#%06x", nextInt));
-        ladderBoardRepository.save(l);
+
         groupService.generateDemoGroupsForPlayerAndLadder(p.getId(),l.getId());
+        l.getPlayerByName(p.getUsername()).setWinnerTeam(groupService.getMatchesByPlayerAndLadder(p.getId(),l.getId()).stream().filter(f -> f.getId() == 64L).findFirst().get().calculateWinner());
+        ladderBoardRepository.save(l);
     }
 
     @Override
@@ -96,6 +110,7 @@ public class LadderboardServiceImpl implements LadderboardService{
         LadderBoard l = ladderBoardRepository.findByName(name);
         l.getListPlayers().add(new LadderBoardPlayer(p.getUsername(), true));
         groupService.generateDemoGroupsForPlayerAndLadder(p.getId(),l.getId());
+        l.getPlayerByName(p.getUsername()).setWinnerTeam(groupService.getMatchesByPlayerAndLadder(p.getId(),l.getId()).stream().filter(f -> f.getId() == 64L).findFirst().get().calculateWinner());
         ladderBoardRepository.save(l);
     }
 
@@ -133,6 +148,10 @@ public class LadderboardServiceImpl implements LadderboardService{
         return l;
     }
 
+    @Override
+    public List<LadderBoard> listCompleteLadderBoard() {
+        return ladderBoardRepository.findAll();
+    }
 
 
     @Override
@@ -148,22 +167,14 @@ public class LadderboardServiceImpl implements LadderboardService{
 
     @Override
     public LadderBoard getLadderBoardByName(String name, Player p) {
-        return ladderBoardRepository.findByIdOrIfActive(name, p == null ? null : p.getUsername());
+        LadderBoard ladder = ladderBoardRepository.findByIdOrIfActive(name, p == null ? null : p.getUsername());
+        ladder.getListPlayers().stream().sorted((p1, p2) -> p2.getPoints().intValue() - p1.getPoints().intValue()).collect(Collectors.toList());
+        return ladder;
     }
 
     @Override
     public LadderBoard getLadderBoard(String name) {
         return ladderBoardRepository.findByName(name);
-    }
-
-    @Override
-    public LadderBoard getLadderBoard(Long name) {
-        return ladderBoardRepository.findById(name).get();
-    }
-
-    @Override
-    public LadderBoard updateUserStatus(LadderBoard l, LadderBoardPlayer lbp) {
-        return ladderBoardRepository.save(l);
     }
 
     @Override
@@ -177,6 +188,11 @@ public class LadderboardServiceImpl implements LadderboardService{
     @Override
     public LadderBoard updateLadderBoard(LadderBoard l) {
         return ladderBoardRepository.save(l);
+    }
+
+    @Override
+    public Long getGenericLadderBoardId() {
+        return genericladderid;
     }
 
     @Override

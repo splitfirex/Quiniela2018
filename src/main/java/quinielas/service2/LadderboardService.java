@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LadderboardService {
 
-    LadderBoard createLadderBoard(String name, String password, Player p);
+    LadderBoard createLadderBoard(String name, String password, Player p, boolean encode);
 
     LadderBoard joinLadderBoard(String name, String password, Player p);
 
@@ -19,6 +19,8 @@ public interface LadderboardService {
 
     LadderBoard leaveLadderBoard(LadderBoard ladderBoard, Player p);
 
+    List<LadderBoard> listCompleteLadderBoard();
+
     List<LadderBoard> listLadderBoard();
 
     List<LadderBoard> listLadderBoard(Player p);
@@ -27,13 +29,11 @@ public interface LadderboardService {
 
     LadderBoard getLadderBoard(String name);
 
-    LadderBoard getLadderBoard(Long name);
-
-    LadderBoard updateUserStatus(LadderBoard l, LadderBoardPlayer lbp);
-
     LadderBoard updateLadderboardColor(LadderBoard l);
 
     LadderBoard updateLadderBoard(LadderBoard l);
+
+    Long getGenericLadderBoardId();
 
     void resetPassword(String name);
 }

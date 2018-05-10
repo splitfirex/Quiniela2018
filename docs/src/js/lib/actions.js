@@ -321,12 +321,7 @@ export var fetchUpdateScore = function (listMatches) {
     postData.body = JSON.stringify({
         "token": this.props.token, laddername: this.props.laddername, "listMatches": listMatches
     });
-    fetch(server + '/user/updatematch', postData)
-        .then(function (response) {
-            return response.json();
-        }).then(function (res) {
-            this.dispatch({ type: "SUCCESS_GROUPS", content: res });
-        }.bind(this));
+    fetch(server + '/user/updatematch', postData);
 }
 
 export var fetchUpdateColor = function () {

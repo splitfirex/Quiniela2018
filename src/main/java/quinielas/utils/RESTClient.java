@@ -90,6 +90,15 @@ public class RESTClient {
 
                 matches.stream().filter(p-> p.getId() == idMatchHome).forEach(p-> p.getReferences().add(m.getId()));
                 matches.stream().filter(p-> p.getId() == idMatchAway).forEach(p-> p.getReferences().add(m.getId()));
+            }else if(m.getType().equals("qualified")){
+                String idGroupHome = m.getHome_team_ph().split("_")[0];
+                String idGroupAway = m.getAway_team_ph().split("_")[0];
+
+                domGroups.stream().filter(g -> g.getName().replace("Group ","").equals(idGroupHome))
+                        .findFirst().get().getMatches().stream().forEach(p-> p.getReferences().add(m.getId()));
+
+                domGroups.stream().filter(g -> g.getName().replace("Group ","").equals(idGroupAway))
+                        .findFirst().get().getMatches().stream().forEach(p-> p.getReferences().add(m.getId()));
             }
         });
     }

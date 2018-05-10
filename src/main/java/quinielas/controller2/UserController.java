@@ -73,6 +73,7 @@ public class UserController {
     public ViewLadderBoard getLaddersCompleteNoPassword(@RequestParam("laddername") String laddername) {
         LadderBoard l = ladderboardService.getLadderBoard(laddername);
         if (!isPasswordProtected(l) || !isGeneric(l)) {
+             l.getListPlayers().stream().sorted((p1, p2) -> p2.getPoints().intValue() - p1.getPoints().intValue()).collect(Collectors.toList());
             return new ViewLadderBoard(l);
         }
         return null;
@@ -90,7 +91,7 @@ public class UserController {
     @ResponseBody
     public ViewLadderBoard createLadder(@RequestBody JoinLadderForm form) {
         Player player = playerService.getPlayerByToken(form.getToken());
-        return new ViewLadderBoard(ladderboardService.createLadderBoard(form.getLaddername(), form.getPassword(), player));
+        return new ViewLadderBoard(ladderboardService.createLadderBoard(form.getLaddername(), form.getPassword(), player,true));
     }
 
 
@@ -174,10 +175,10 @@ public class UserController {
 
     @RequestMapping(value = "/updatematch", method = RequestMethod.POST)
     @ResponseBody
-    public List<PlayerGroup> updateMatch(@RequestBody UpdateMatchForm form) {
+    public void updateMatch(@RequestBody UpdateMatchForm form) {
         Player player = playerService.getPlayerByToken(form.getToken());
         LadderBoard l = ladderboardService.getLadderBoard(form.getLaddername());
-        return groupService.updatePlayerMatches(player, l, form.getListMatches() );
+        groupService.updatePlayerMatches(player, l, form.getListMatches() );
     }
 
 
@@ -247,8 +248,16 @@ public class UserController {
         Player p = playerService.getPlayerByUsername(username);
         if (isPasswordProtected(l) && !isGeneric(l)) return null;
         ViewResumeMatches result =  new ViewResumeMatches();
-       // result.getNextMatches().addAll(matchService.getNextMatches(l,p));
-       // result.getPrevMatches().addAll(matchService.getPrevMatches(l,p));
+
+        List<DOMMatch> matches = groupService.getMatchesByPlayerAndLadder(p.getId(),l.getId());
+        DOMMatch next =  matches.stream().filter(p2-> !p2.getFinished()).findFirst().orElse(null);
+        DOMMatch prev =  matches.stream().filter(DOMMatch::getFinished).reduce((first, second) -> second).orElse(null);
+        if(next != null){
+            result.getNextMatches().add(next);
+        }
+        if(prev != null){
+            result.getPrevMatches().add(prev);
+        }
         return result;
     }
 
@@ -262,8 +271,15 @@ public class UserController {
             if (!isGeneric(l) && isPasswordProtected(l)&& !isActive(l,player)) return null;
 
             ViewResumeMatches result =  new ViewResumeMatches();
-          //  result.getNextMatches().addAll(matchService.getNextMatches(l,p));
-          //  result.getPrevMatches().addAll(matchService.getPrevMatches(l,p));
+            List<DOMMatch> matches = groupService.getMatchesByPlayerAndLadder(p.getId(),l.getId());
+            DOMMatch next =  matches.stream().filter(p2-> !p2.getFinished()).findFirst().orElse(null);
+            DOMMatch prev =  matches.stream().filter(DOMMatch::getFinished).reduce((first, second) -> second).orElse(null);
+            if(next != null){
+                result.getNextMatches().add(next);
+            }
+            if(prev != null){
+                result.getPrevMatches().add(prev);
+            }
             return result;
 
         }
