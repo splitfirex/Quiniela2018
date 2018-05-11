@@ -347,14 +347,14 @@
       background-position: center center;
 }
 
-.fJAP{
+.fJPN{
     background: repeating-linear-gradient(
         -45deg,
         rgba(0,0,0,0.6),
         rgba(0,0,0,0.6) 10px,
         rgba(0,0,0,0.8) 10px,
         rgba(0,0,0,0.8) 20px
-      ), url(../img/flags/JAP.jpg);
+      ), url(../img/flags/JPN.jpg);
       background-size: cover;
       background-position: center center;
 }
