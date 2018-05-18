@@ -23,7 +23,7 @@ export class ContentGroup extends React.Component {
 
     renderGroups() {
         return this.state.content.map(function (currentValue, index, array) {
-            return <Group key={"groupbox" + index} groupid={currentValue.idGroup}
+            return <Group key={"groupbox" + index} name={currentValue.groupName}
                 details={currentValue.details}  {...this.props} />
         }.bind(this));
     }
@@ -38,7 +38,7 @@ function Group(props) {
     return (
         <div className="group">
             <div className="title">
-                <div> Grupo {props.groups[props.groupid - 1].name}</div>
+                <div> Grupo {props.name}</div>
             </div>
             <div className="row">
                 <div>
@@ -62,9 +62,9 @@ function GroupRow(props) {
     return (
         <div className="row" >
             <div>
-                <div className={"flag flag-" + props.teams[props.idTeam].flagUrl}></div>
+                <div className={"flag flag-" + props.teams[props.idTeam-1].flagUrl}></div>
             </div>
-            <div>{props.teams[props.idTeam].name}</div>
+            <div>{props.teams[props.idTeam-1].name}</div>
             <div>{props.pg}</div>
             <div>{props.ng}</div>
             <div>{props.pg - props.ng}</div>

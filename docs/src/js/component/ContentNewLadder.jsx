@@ -12,6 +12,7 @@ export class ContentNewLadder extends React.Component {
 
             laddername: undefined,
             password: undefined,
+            type:"Completo",
             public: true,
             error: false,
             errorPassword: false
@@ -41,9 +42,10 @@ export class ContentNewLadder extends React.Component {
                     {this.state.public && <div onClick={() => this.dispatch({ type: "TOGGLE_PUBLIC" })} key="newLadderlock" className="iconCenter green"> <i className="fas fa-unlock" ></i> </div>}
                     {this.state.public || <div onClick={() => this.dispatch({ type: "TOGGLE_PUBLIC" })} key="newLadderUnlock" className="iconCenter red"> <i className="fas fa-lock" ></i></div>}
                 </div>
-                <div>
-                    {this.state.public || <div><input className={this.state.errorPassword ? "error" : ""} type="pasword" placeholder="Contraseña" id="password" onChange={this.handleChange.bind(this)} /></div>}
-                </div>
+                <div><button onClick={() => this.dispatch({ type: "TOGGLE_TYPE" })} >{this.state.type}</button></div>
+                
+                {this.state.public || <div><div><input className={this.state.errorPassword ? "error" : ""} type="pasword" placeholder="Contraseña" id="password" onChange={this.handleChange.bind(this)} /></div></div>}
+                
                 <div><button onClick={() => fetchNewLadder.bind(this)()} >Enviar</button></div>
                 <div> </div>
             </div>

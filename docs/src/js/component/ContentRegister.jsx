@@ -20,7 +20,7 @@ export class ContentRegister extends React.Component {
 
     handleChange = event => {
         var newErrorPassword = false;
-        if (event.target.id === "passwordRepeat" && this.state.password.indexOf(event.target.value) !== 0) {
+        if (this.state.password == null || (event.target.id === "passwordRepeat" &&  this.state.password.indexOf(event.target.value) !== 0)) {
             newErrorPassword = true;
         }
 

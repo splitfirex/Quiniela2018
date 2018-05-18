@@ -1,6 +1,7 @@
 import React from 'react';
 import Loading from './ContentUtils.jsx';
 import { GlobalAppActions, fetchLadders } from '../lib/actions.js'
+import { genericPlayername, genericLaddername } from '../lib/basicConfig.js'
 
 export class ContentLadder extends React.Component {
 
@@ -29,6 +30,7 @@ export class ContentLadder extends React.Component {
 
     renderLadders() {
         return this.state.content.map(function (currentValue, index, array) {
+            if(this.props.username != genericPlayername && currentValue.name == genericLaddername) return;
             if (this.props.username !== undefined) {
                 return <LoggedLadder
                     key={"Ladder" + index}
@@ -38,6 +40,7 @@ export class ContentLadder extends React.Component {
                     name={currentValue.name}
                     protected={currentValue.protected}
                     bgColor={currentValue.bgColor}
+                    type={currentValue.type}
                     dispatch={(action) => this.props.dispatch(action)}
                 />
             } else {
@@ -47,6 +50,7 @@ export class ContentLadder extends React.Component {
                     name={currentValue.name}
                     protected={currentValue.protected}
                     bgColor={currentValue.bgColor}
+                    type={currentValue.type}
                     dispatch={(action) => this.props.dispatch(action)}
                 />
             }
@@ -91,7 +95,7 @@ function LoggedLadder(props) {
                 onClick={!props.protected || props.containsUser ? (() => { props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYERS", laddername: props.name }) })
                     : (() => { })}>
                 <div>
-                    {props.name}
+                    {props.name + " | "+ (props.type =="Completo" ? "C" : "P")}
                 </div>
             </div>
             <div className="ladderMenu">
@@ -112,7 +116,7 @@ function Ladder(props) {
                     (() => { props.dispatch({ type: "GO_TO", dest: "SHOW_PLAYERS", laddername: props.name }) })
                     : (() => { props.dispatch({ type: "GO_TO", dest: "SIGN_IN" }) })} >
                 <div>
-                    {props.name}
+                    {props.name + " | "+ (props.type =="Completo" ? "C" : "P")}
                 </div>
             </div>
             <div className="ladderMenu">

@@ -1,20 +1,5 @@
-var server = "http://192.168.0.156:9000";
-var genericPlayername = "_NOT_A_PLAYER_";
-var genericLaddername = "_NOT_A_LADDERBOARD_";
-
-var postData = {
-    method: 'POST',
-    headers: new Headers({ 'Content-Type': 'application/json' }),
-    mode: 'cors',
-    cache: 'default'
-};
-
-var getData = {
-    method: 'GET',
-    headers: new Headers({ 'Content-Type': 'application/json' }),
-    mode: 'cors',
-    cache: 'default'
-};
+import React from 'react';
+import { server, genericLaddername, genericPlayername, postData, getData } from './basicConfig.js'
 
 export const GlobalAppActions = (state, action) => {
 
@@ -33,7 +18,7 @@ export const GlobalAppActions = (state, action) => {
             return { showWelcome: true }
         case "SUCCESS_PREFETCHS":
             state[action.prefetch] = action.content;
-            if (state.matches.length === 0 || state.groups.length === 0 || state.teams.length === 0) {
+            if (state.teams.length === 0) {
                 return { ...state }
             }
             return { showWelcome: false }
@@ -77,8 +62,16 @@ export const GlobalAppActions = (state, action) => {
             return { forceReload: false, showLoading: true }
         case "TOGGLE_PUBLIC":
             return { public: !state.public }
+        case "TOGGLE_TYPE":
+            return { type: (state.type == "Completo") ? "Por Fases" : "Completo" }
         case "SUCCESS_CONTENT":
             return { showLoading: false, content: action.content }
+
+        case "SUCCESS_MATCHES":
+            return { showLoading: false, content: action.content }
+        case "SUCCESS_GROUPS": {
+            return { groups: action.content }
+        }
         case "SUCCESS_LOGIN":
             window.scrollTo(0, 0);
             return { contentModalWindow: "", showBreadcrumbs: false, subTitle: "Quinielas", contentWindow: "LADDERS", showModal: false, showLoading: false, username: action.username, token: action.token }
@@ -90,7 +83,7 @@ export const GlobalAppActions = (state, action) => {
             return { forceReload: true, contentModalWindow: "", showBreadcrumbs: true, breadcrumbs: [action.laddername], subTitle: action.laddername, contentWindow: "PLAYERS", showModal: false, laddername: action.laddername }
         case "SUCCESS_LEAVE":
         case "SUCCESS_JOIN":
-            return { forceReload: true, showModal: false, subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false }
+            return { forceReload: true, contentModalWindow: "", showModal: false, subTitle: "Quinielas", playername: undefined, laddername: undefined, showMenu: false, contentWindow: "LADDERS", showBreadcrumbs: false }
         case "UNFORCE":
             return { forceReload: false }
         case "CLOSE_AND_RELOAD":
@@ -167,14 +160,32 @@ export var fetchMatches = function () {
         fetch(server + '/user/playermatches?username=' + (this.props.playername || genericPlayername) + '&laddername=' + (this.props.laddername || genericLaddername), getData)
             .then(res => res.json())
             .then(function (json) {
-                this.dispatch({ type: "SUCCESS_CONTENT", content: json });
+                this.dispatch({ type: "SUCCESS_MATCHES", content: json });
             }.bind(this));
     } else {
         postData.body = JSON.stringify({ "token": this.props.token, "username": (this.props.playername || genericPlayername), "laddername": (this.props.laddername || genericLaddername) });
         fetch(server + "/user/playermatches", postData)
             .then(res => res.json())
             .then(function (json) {
-                this.dispatch({ type: "SUCCESS_CONTENT", content: json });
+                this.dispatch({ type: "SUCCESS_MATCHES", content: json });
+            }.bind(this));
+    }
+}
+
+export var fetchMatchesGroups = function () {
+    this.dispatch({ type: "LOADING_CONTENT" });
+    if (this.props.token === undefined) {
+        fetch(server + '/user/playergroups?username=' + (this.props.playername || genericPlayername) + '&laddername=' + (this.props.laddername || genericLaddername), getData)
+            .then(res => res.json())
+            .then(function (json) {
+                this.dispatch({ type: "SUCCESS_GROUPS", content: json });
+            }.bind(this));
+    } else {
+        postData.body = JSON.stringify({ "token": this.props.token, "username": (this.props.playername || genericPlayername), "laddername": (this.props.laddername || genericLaddername) });
+        fetch(server + "/user/playergroups", postData)
+            .then(res => res.json())
+            .then(function (json) {
+                this.dispatch({ type: "SUCCESS_GROUPS", content: json });
             }.bind(this));
     }
 }
@@ -232,7 +243,7 @@ export var fetchLogin = function () {
 }
 
 export var fetchRegister = function () {
-    if (this.state.password.length === 0) {
+    if (this.state.password.length === 0 || this.state.passwordRepeat != this.state.password) {
         this.dispatch({ type: "FAIL_PROCESS" });
         return;
     }
@@ -256,7 +267,7 @@ export var fetchNewLadder = function () {
         return;
     }
     this.dispatch({ type: "LOADING_CONTENT" });
-    postData.body = JSON.stringify({ laddername: this.state.laddername, token: this.props.token, "password": this.state.password });
+    postData.body = JSON.stringify({ laddername: this.state.laddername, token: this.props.token, type: this.state.type , "password": this.state.password });
     fetch(server + '/user/createladder', postData)
         .then(function (response) {
             return response.json();
@@ -308,14 +319,11 @@ export var fetchBanPlayer = function () {
         }.bind(this));
 }
 
-export var fetchUpdateScore = function (index, homeScore, visitScore) {
-    postData.body = JSON.stringify({ "token": this.props.token, laddername: this.props.laddername, "idMatch": index, "homeScore": homeScore, "visitScore": visitScore });
-    fetch(server + '/user/updatematch', postData)
-        .then(function (response) {
-            return response.json();
-        }).then(function (res) {
-            this.dispatch({ type: "SUCCESS_CONTENT", content: res });
-        }.bind(this));
+export var fetchUpdateScore = function (listMatches) {
+    postData.body = JSON.stringify({
+        "token": this.props.token, laddername: this.props.laddername, "listMatches": listMatches
+    });
+    fetch(server + '/user/updatematch', postData);
 }
 
 export var fetchUpdateColor = function () {
